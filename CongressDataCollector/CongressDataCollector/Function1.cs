@@ -25,9 +25,10 @@ namespace CongressDataCollector
         }
 
         [FunctionName("Function1")]
-        public void Run([TimerTrigger("* * * * *")]TimerInfo myTimer, ILogger log)
+        public void Run([TimerTrigger("0 3 * * *")]TimerInfo myTimer, ILogger log)
         {
             log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
+            return;
             var state = new FetchState();
             var billFetchResult = FetchBills(state, log);
             state.LastFetchedBillShellActionDate = billFetchResult.Bills[0]?.latestAction?.actionDate;//.FirstOrDefault()?.latestAction.actionDate;
