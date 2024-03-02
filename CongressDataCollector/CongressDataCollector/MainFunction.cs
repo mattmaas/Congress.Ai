@@ -9,27 +9,25 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using static CongressDataCollector.MainFunction;
 
 namespace CongressDataCollector
 {
     public class MainFunction
     {
-        private static readonly HttpClient HttpClient = new HttpClient();
-        private readonly Microsoft.Azure.Cosmos.Container _container;
+        private readonly HttpClient _httpClient;
+        private readonly CosmosClient _cosmosClient;
 
-        public MainFunction()
+        public MainFunction(HttpClient httpClient, CosmosClient cosmosClient)
         {
-            var cosmosClient = new CosmosClient(Environment.GetEnvironmentVariable("CosmosDBConnection"));
-            _container = cosmosClient.GetContainer("PolitiSightDB", "Bills");
+            _httpClient = httpClient;
+            _cosmosClient = cosmosClient;
         }
 
         [FunctionName("MainFunction")]
-        public void Run([TimerTrigger("0 3 * * *")]TimerInfo myTimer, ILogger log)
+        public void Run([TimerTrigger("* * * * *")]TimerInfo myTimer, ILogger log)
         {
             log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
-            return;
-            RunAsync(log); // This blocks the thread, not ideal but necessary for timer triggers
+            RunAsync(log).GetAwaiter().GetResult(); // This blocks the thread, not ideal but necessary for timer triggers
         }
         public async Task RunAsync(ILogger log)
         {
@@ -62,7 +60,7 @@ namespace CongressDataCollector
 
         while (!string.IsNullOrEmpty(requestUri) )//&& fetchedBills.Count<750)
         {
-            var (response, updatedState) =  await SendRequestWithRetry(HttpClient, requestUri, state, log);
+            var (response, updatedState) =  await SendRequestWithRetry(_httpClient, requestUri, state, log);
             if (response.IsSuccessStatusCode)
             {
                 string content = await response.Content.ReadAsStringAsync();
@@ -97,7 +95,7 @@ namespace CongressDataCollector
         };
         }
 
-        public static async Task<FetchState> FetchBillDetails((Bill bill, FetchState state) input, ILogger log)
+        public async Task<FetchState> FetchBillDetails((Bill bill, FetchState state) input, ILogger log)
         {
             var (bill, state) = input;
 
@@ -134,7 +132,7 @@ namespace CongressDataCollector
             return state;
         }
 
-        private static async Task<FetchState> FetchDetailedRelatedBills(Bill bill, FetchState state, ILogger log)
+        private async Task<FetchState> FetchDetailedRelatedBills(Bill bill, FetchState state, ILogger log)
         {
             if (bill.number == "2670")
             {
@@ -147,7 +145,7 @@ namespace CongressDataCollector
 
             while (!string.IsNullOrEmpty(apiUrl))
             {
-                var (response, tempState) = await SendRequestWithRetry(HttpClient, apiUrl, updatedState, log);
+                var (response, tempState) = await SendRequestWithRetry(_httpClient, apiUrl, updatedState, log);
                 updatedState = tempState; // Update the state with the potentially new state from the retry logic
 
                 if (response.IsSuccessStatusCode)
@@ -193,7 +191,7 @@ namespace CongressDataCollector
             return updatedState;
         }
 
-        private static async Task<FetchState> FetchDetailedSubjects(Bill bill, FetchState state, ILogger log)
+        private async Task<FetchState> FetchDetailedSubjects(Bill bill, FetchState state, ILogger log)
         {
             if (bill.number == "2670")
             {
@@ -206,7 +204,7 @@ namespace CongressDataCollector
 
             while (!string.IsNullOrEmpty(apiUrl))
             {
-                var (response, tempState) = await SendRequestWithRetry(HttpClient, apiUrl, updatedState, log);
+                var (response, tempState) = await SendRequestWithRetry(_httpClient, apiUrl, updatedState, log);
                 updatedState = tempState; // Update the state with potentially new state from the retry logic
 
                 if (response.IsSuccessStatusCode)
@@ -240,7 +238,7 @@ namespace CongressDataCollector
 
             return updatedState;
         }
-        private static async Task<FetchState> FetchDetailedSummaries(Bill bill, FetchState state, ILogger log)
+        private async Task<FetchState> FetchDetailedSummaries(Bill bill, FetchState state, ILogger log)
         {
             var apiKey = Environment.GetEnvironmentVariable("CongressAPIKEY");
             var apiUrl = $"{bill.summaries?.url}&limit=250&api_key={apiKey}";
@@ -249,7 +247,7 @@ namespace CongressDataCollector
 
             while (!string.IsNullOrEmpty(apiUrl))
             {
-                var (response, tempState) = await SendRequestWithRetry(HttpClient, apiUrl, updatedState, log);
+                var (response, tempState) = await SendRequestWithRetry(_httpClient, apiUrl, updatedState, log);
                 updatedState = tempState; // Update the state with potentially new state from the retry logic
 
                 if (response.IsSuccessStatusCode)
@@ -281,11 +279,11 @@ namespace CongressDataCollector
 
             return updatedState;
         }
-        private static async Task<FetchState> FetchGeneralBillDetails(Bill bill, FetchState state, ILogger log)
+        private async Task<FetchState> FetchGeneralBillDetails(Bill bill, FetchState state, ILogger log)
         {
             var apiKey = Environment.GetEnvironmentVariable("CongressAPIKEY");
             var apiUrl = $"{bill?.url}&limit=250&api_key={apiKey}";
-            var (response, updatedState) = await SendRequestWithRetry(HttpClient, apiUrl, state, log);
+            var (response, updatedState) = await SendRequestWithRetry(_httpClient, apiUrl, state, log);
 
             if (response.IsSuccessStatusCode)
             {
@@ -326,7 +324,7 @@ namespace CongressDataCollector
             }
             return updatedState;
         }
-        private static async Task<FetchState> FetchDetailedActions(Bill bill, FetchState state, ILogger log)
+        private  async Task<FetchState> FetchDetailedActions(Bill bill, FetchState state, ILogger log)
         {
             if (bill.number == "2670")
             {
@@ -339,7 +337,7 @@ namespace CongressDataCollector
 
             while (!string.IsNullOrEmpty(apiUrl))
             {
-                var (response, tempState) = await SendRequestWithRetry(HttpClient, apiUrl, updatedState, log);
+                var (response, tempState) = await SendRequestWithRetry(_httpClient, apiUrl, updatedState, log);
                 updatedState = tempState;
 
                 if (response.IsSuccessStatusCode)
@@ -386,7 +384,7 @@ namespace CongressDataCollector
 
             return updatedState;
         }
-        private static async Task<FetchState> FetchDetailedCosponsors(Bill bill, FetchState state, ILogger log)
+        private  async Task<FetchState> FetchDetailedCosponsors(Bill bill, FetchState state, ILogger log)
         {
             if(bill.number == "1668" || bill.number == "4010" )
             {
@@ -399,7 +397,7 @@ namespace CongressDataCollector
 
             while (!string.IsNullOrEmpty(apiUrl))
             {
-                var (response, tempState) = await SendRequestWithRetry(HttpClient, apiUrl, updatedState, log);
+                var (response, tempState) = await SendRequestWithRetry(_httpClient, apiUrl, updatedState, log);
                 updatedState = tempState; // Update the state with the potentially new state from the retry logic
 
                 if (response.IsSuccessStatusCode)
@@ -470,7 +468,7 @@ namespace CongressDataCollector
             return (response, state); // Return the last response and the updated state
         }
 
-        private static async Task<FetchState> FetchDetailedTextVersions(Bill bill, FetchState state, ILogger log)
+        private  async Task<FetchState> FetchDetailedTextVersions(Bill bill, FetchState state, ILogger log)
         {
             // Check if bill or its textVersions or apiUrl is null before proceeding
             if (bill?.textVersions?.url == null)
@@ -485,7 +483,7 @@ namespace CongressDataCollector
             bill.detailedTextVersions = Array.Empty<TextVersion>();
             while (!string.IsNullOrEmpty(apiUrl))
             {
-                var (response, tempState) = await SendRequestWithRetry(HttpClient, apiUrl, updatedState, log);
+                var (response, tempState) = await SendRequestWithRetry(_httpClient, apiUrl, updatedState, log);
                 updatedState = tempState; // Update the state with potentially new state from the retry logic
 
                 if (response.IsSuccessStatusCode)
