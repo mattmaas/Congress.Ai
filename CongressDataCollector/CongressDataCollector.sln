@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34616.47
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CongressDataCollector", "CongressDataCollector\CongressDataCollector.csproj", "{532072DE-C8D8-4977-BCD6-9BCE2AEE3882}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CongressDataCollector.Functions", "CongressDataCollector\CongressDataCollector.Functions.csproj", "{532072DE-C8D8-4977-BCD6-9BCE2AEE3882}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CongressDataCollector.Core", "CongressDataCollector.Core\CongressDataCollector.Core.csproj", "{4DAF378B-23FA-423F-A989-204EF31DBB9C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CongressDataCollector.Services", "CongressDataCollector.Services\CongressDataCollector.Services.csproj", "{3C90AB0F-9253-4643-8BB3-2144338E8564}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CongressDataCollector.Infrastructure", "CongressDataCollector.Infrastructure\CongressDataCollector.Infrastructure.csproj", "{7E7608FC-D3E8-42F3-967D-BBFBB3EE351C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{532072DE-C8D8-4977-BCD6-9BCE2AEE3882}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{532072DE-C8D8-4977-BCD6-9BCE2AEE3882}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{532072DE-C8D8-4977-BCD6-9BCE2AEE3882}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DAF378B-23FA-423F-A989-204EF31DBB9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DAF378B-23FA-423F-A989-204EF31DBB9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DAF378B-23FA-423F-A989-204EF31DBB9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DAF378B-23FA-423F-A989-204EF31DBB9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C90AB0F-9253-4643-8BB3-2144338E8564}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C90AB0F-9253-4643-8BB3-2144338E8564}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C90AB0F-9253-4643-8BB3-2144338E8564}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C90AB0F-9253-4643-8BB3-2144338E8564}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E7608FC-D3E8-42F3-967D-BBFBB3EE351C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E7608FC-D3E8-42F3-967D-BBFBB3EE351C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E7608FC-D3E8-42F3-967D-BBFBB3EE351C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E7608FC-D3E8-42F3-967D-BBFBB3EE351C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
