@@ -1,12 +1,14 @@
-﻿using Microsoft.Azure.Functions.Extensions.DependencyInjection;
+﻿using System;
+using CongressDataCollector.Core.Interfaces;
+using CongressDataCollector.Services;
+using CongressDataCollector.Infrastructure; 
+using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
-using System.Net.Http;
 using Microsoft.Azure.Cosmos;
-using System;
 
-[assembly: FunctionsStartup(typeof(CongressDataCollector.Startup))]
+[assembly: FunctionsStartup(typeof(CongressDataCollector.Functions.Startup))]
 
-namespace CongressDataCollector
+namespace CongressDataCollector.Functions
 {
     public class Startup : FunctionsStartup
     {
@@ -15,14 +17,40 @@ namespace CongressDataCollector
             // Register HttpClient as a singleton
             builder.Services.AddHttpClient();
 
-            // Register CosmosClient or any other services
-            builder.Services.AddSingleton((s) =>
+            // Utilize CosmosDbInitializer to register CosmosClient
+            builder.Services.AddSingleton(_ => CosmosDbInitializer.InitializeCosmosClient());
+
+            // Utilize CosmosDbInitializer to register Cosmos Container
+            builder.Services.AddSingleton(serviceProvider =>
             {
-                var connectionString = Environment.GetEnvironmentVariable("CosmosDBConnection");
-                return new CosmosClient(connectionString);
+                var cosmosClient = serviceProvider.GetService<CosmosClient>();
+                return CosmosDbInitializer.InitializeContainer(cosmosClient);
             });
 
-            // Add more services as needed
+            // Register services
+            builder.Services.AddSingleton<IBillService, BillService>();
+
+            // Register CosmosDbService with DI, using the initialized Container
+            builder.Services.AddSingleton<ICosmosDbService>(serviceProvider =>
+            {
+                var container = serviceProvider.GetService<Container>();
+                return new CosmosDbService(container);
+            });
+
+            // Register BlobStorageManager
+            builder.Services.AddSingleton(_ =>
+            {
+                var connectionString = Environment.GetEnvironmentVariable("BlobStorageConnection");
+                return new BlobStorageManager(connectionString ?? throw new InvalidOperationException("Cant find Blob Storage connection string"));
+            });
+
+            // Adjusted StateService registration to use BlobStorageManager
+            builder.Services.AddSingleton<IStateService>(serviceProvider =>
+            {
+                var blobStorageManager = serviceProvider.GetService<BlobStorageManager>();
+                return new StateService(blobStorageManager);
+            });
+
         }
     }
 }
