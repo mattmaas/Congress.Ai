@@ -12,15 +12,17 @@ namespace CongressDataCollector.Services
 {
     public class BillService : IBillService
     {
+        private readonly OpenAiService _openAIService;
         private readonly string _apiKey;
         private readonly ICosmosDbService _cosmosDbService;
         private readonly HttpClient _httpClient;
 
-        public BillService(ICosmosDbService cosmosDbService, HttpClient httpClient)
+        public BillService(ICosmosDbService cosmosDbService, HttpClient httpClient, OpenAiService openAIService)
         {
             _apiKey = Environment.GetEnvironmentVariable("CongressAPIKEY") ?? throw new InvalidOperationException("API KEY not found");
             _cosmosDbService = cosmosDbService;
             _httpClient = httpClient;
+            _openAIService = openAIService;
         }
 
         public async Task<BillsFetchResult> FetchBillsAsync(FetchState state, ILogger log, DateTime? fromDateTime = null, DateTime? toDateTime = null, string sort = "updateDate+desc")
@@ -90,24 +92,87 @@ namespace CongressDataCollector.Services
         }
         public async Task<Bill> FetchBillDetailsAsync(Bill bill, FetchState state, ILogger log)
         {
-            await FetchGeneralBillDetailsAsync(bill, log);
-            if (bill.HasDetailedInfo) // Assuming 'HasDetailedInfo' is a property you add to 'Bill' to indicate that general details were successfully fetched
+            await FetchGeneralBillDetailsAsync(bill, log, async () =>
             {
-                // Proceed with fetching additional details only if general details are fetched successfully
-                await FetchDetailedActionsAsync(bill, log);
-                await FetchDetailedCosponsorsAsync(bill, log);
-                await FetchDetailedRelatedBillsAsync(bill, log);
-                await FetchDetailedSubjectsAsync(bill, log);
-                await FetchDetailedSummariesAsync(bill, log);
-                await FetchDetailedTextVersionsAsync(bill, log);
-                // Repeat for other detailed fetch methods...
-            }
-            await _cosmosDbService.StoreBillInCosmosDbAsync(bill);
+                if (bill.HasDetailedInfo)
+                {
+                    // Start tasks that can run concurrently
+                    var concurrentTasks = new List<Task>
+                    {
+                        FetchDetailedActionsAsync(bill, log),
+                        FetchDetailedCosponsorsAsync(bill, log),
+                        FetchDetailedRelatedBillsAsync(bill, log),
+                        FetchDetailedSubjectsAsync(bill, log),
+                        FetchDetailedSummariesAsync(bill, log)
+                    };
 
+                    // Start FetchDetailedTextVersionsAsync and wait for it to complete before starting FetchBillTextAsync
+                    await FetchDetailedTextVersionsAsync(bill, log, async () => {
+                        await FetchBillTextAsync(bill, log, async () =>
+                        {
+                            // Once FetchBillTextAsync is complete and bill.PlainText is not empty, fetch OpenAI summaries
+                            if (!string.IsNullOrEmpty(bill.PlainText))
+                            {
+                                await FetchOpenAiSummaries(bill, log);
+                            }
+                        });
+                    });
+                    
+
+                    // Await all concurrent tasks
+                    await Task.WhenAll(concurrentTasks);
+                }
+            });
+
+            await _cosmosDbService.StoreBillInCosmosDbAsync(bill);
             return bill;
         }
 
-        private async Task FetchGeneralBillDetailsAsync(Bill bill, ILogger log)
+        public async Task FetchBillTextAsync(Bill bill, ILogger log, Func<Task> onSuccessCallback)
+        {
+            // Prefer "Formatted Text" but fallback to any available format
+            var preferredTextVersion = bill.DetailedTextVersions
+                                           .SelectMany(tv => tv.Formats.Select(f => new { TextVersion = tv, Format = f }))
+                                           .FirstOrDefault(tf => tf.Format.Type == "Formatted Text") ??
+                                       bill.DetailedTextVersions
+                                           .SelectMany(tv => tv.Formats.Select(f => new { TextVersion = tv, Format = f }))
+                                           .FirstOrDefault();
+
+            if (preferredTextVersion == null)
+            {
+                log.LogWarning($"No text versions available for Bill ID: {bill.Id}");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(preferredTextVersion.Format.Url))
+            {
+                log.LogWarning($"No URL available for the text version of Bill ID: {bill.Id}");
+                return;
+            }
+
+            try
+            {
+                var textContent = await _httpClient.GetStringAsync(preferredTextVersion.Format.Url);
+                bill.PlainText = textContent; // Set the fetched text to the PlainText property of the Bill
+                log.LogInformation($"Fetched text for Bill ID: {bill.Id}");
+                await onSuccessCallback?.Invoke();
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex, $"Failed to fetch or set text for Bill ID: {bill.Id}");
+            }
+        }
+
+        private async Task FetchOpenAiSummaries(Bill bill, ILogger log)
+        {
+            // Assuming bill text is available and set to bill.PlainText
+            var analysis = await _openAIService.AnalyzeBillTextAsync(bill.PlainText);
+
+            // Deserialize JSON response and update the Bill object
+            bill.OpenAiSummaries = JsonConvert.DeserializeObject<OpenAiSummaries>(analysis);
+        }
+
+        private async Task FetchGeneralBillDetailsAsync(Bill bill, ILogger log, Func<Task> onSuccessCallback)
         {
             if (bill == null || string.IsNullOrEmpty(bill.Url)) return;
 
@@ -121,7 +186,9 @@ namespace CongressDataCollector.Services
             if (billResponse?.Bill != null)
             {
                 bill.UpdateWithDetailedInfo(billResponse.Bill);
+                bill.HasDetailedInfo = true;
                 log.LogInformation($"Fetched and updated general bill details for {bill.Number}.");
+                await onSuccessCallback?.Invoke();
             }
             else
             {
@@ -267,7 +334,7 @@ namespace CongressDataCollector.Services
             bill.DetailedSummaries = detailedSummaries; // Update the bill's detailed summaries outside the loop
         }
 
-        private async Task FetchDetailedTextVersionsAsync(Bill bill, ILogger log)
+        private async Task FetchDetailedTextVersionsAsync(Bill bill, ILogger log, Func<Task> func)
         {
             if (bill?.TextVersions == null || bill.TextVersions.Count == 0) return;
 

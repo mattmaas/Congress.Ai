@@ -81,9 +81,15 @@ public class Bill
 
     [JsonProperty("summaries")]
     public Stub Summaries { get; set; }
+    [JsonProperty("openAiSummaries")]
+    public OpenAiSummaries? OpenAiSummaries { get; set; }
+    
 
     [JsonProperty("textVersions")]
     public Stub TextVersions { get; set; }
+    [JsonProperty("plainText")]
+    public string PlainText { get; set; }
+
 
     [JsonProperty("titles")]
     public Stub Titles { get; set; }

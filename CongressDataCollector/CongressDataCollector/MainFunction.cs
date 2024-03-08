@@ -21,7 +21,7 @@ namespace CongressDataCollector.Functions
         }
 
         [FunctionName("MainFunction")]
-        public async Task RunAsync([TimerTrigger("0 0 3 * * *")] TimerInfo myTimer, ILogger log)
+        public async Task RunAsync([TimerTrigger("* * * * *")] TimerInfo myTimer, ILogger log)
         {
             log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
 
@@ -32,7 +32,7 @@ namespace CongressDataCollector.Functions
             if (!state.LatestFetchedBillActionDate.HasValue || !state.EarliestFetchedBillActionDate.HasValue)
             {
                 var allBillsFetchResult = await _billService.FetchBillsAsync(state, log);
-                processedBills.AddRange(allBillsFetchResult.Bills);
+                processedBills.AddRange(allBillsFetchResult.Bills.Take(10));
             }
             else
             {
