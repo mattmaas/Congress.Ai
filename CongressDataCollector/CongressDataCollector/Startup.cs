@@ -1,7 +1,7 @@
 ﻿using System;
 using CongressDataCollector.Core.Interfaces;
 using CongressDataCollector.Services;
-using CongressDataCollector.Infrastructure; 
+using CongressDataCollector.Infrastructure;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Azure.Cosmos;
@@ -41,7 +41,7 @@ namespace CongressDataCollector.Functions
             builder.Services.AddSingleton(_ =>
             {
                 var connectionString = Environment.GetEnvironmentVariable("BlobStorageConnection");
-                return new BlobStorageManager(connectionString ?? throw new InvalidOperationException("Cant find Blob Storage connection string"));
+                return new BlobStorageManager(connectionString ?? throw new InvalidOperationException("Can't find Blob Storage connection string"));
             });
 
             // Adjusted StateService registration to use BlobStorageManager
@@ -51,6 +51,8 @@ namespace CongressDataCollector.Functions
                 return new StateService(blobStorageManager);
             });
 
+            // Register OpenAIService with HttpClient
+            builder.Services.AddHttpClient<OpenAiService>();
         }
     }
 }
