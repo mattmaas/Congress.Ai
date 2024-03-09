@@ -31,26 +31,28 @@ namespace CongressDataCollector.Functions
 
             if (!state.LatestFetchedBillActionDate.HasValue || !state.EarliestFetchedBillActionDate.HasValue)
             {
-                var allBillsFetchResult = await _billService.FetchBillsAsync(state, log);
-                processedBills.AddRange(allBillsFetchResult.Bills.Take(10));
+                var allBillsFetchResult = _billService.FetchBills(state, log);
+                processedBills.AddRange(allBillsFetchResult.Bills);
             }
             else
             {
                 var latestToDate = DateTime.UtcNow;
                 var latestFromDate = state.LatestFetchedBillActionDate ?? DateTime.MinValue;
-                var latestBillsFetchResult = await _billService.FetchBillsAsync(state, log, latestFromDate, latestToDate, "updateDate+desc");
+                var latestBillsFetchResult = _billService.FetchBills(state, log, latestFromDate, latestToDate, "updateDate+desc");
                 processedBills.AddRange(latestBillsFetchResult.Bills);
 
                 var earliestToDate = state.EarliestFetchedBillActionDate ?? latestFromDate.AddDays(1);
                 var earliestFromDate = DateTime.MinValue;
-                var earliestBillsFetchResult = await _billService.FetchBillsAsync(state, log, earliestFromDate, earliestToDate, "updateDate+asc");
+                var earliestBillsFetchResult = _billService.FetchBills(state, log, earliestFromDate, earliestToDate, "updateDate+asc");
                 processedBills.AddRange(earliestBillsFetchResult.Bills);
             }
-            var fetchDetailsTasks = processedBills.ConvertAll(bill => _billService.FetchBillDetailsAsync(bill, state, log));
-            await Task.WhenAll(fetchDetailsTasks);
+            foreach (var bill in processedBills)
+            {
+                _billService.FetchBillDetails(bill, state, log);
+            }
 
             UpdateStateDates(processedBills, state);
-            await _stateService.SaveStateAsync(state);
+            await _stateService.SaveStateAsync(state); // Assuming there's a synchronous version of this method
 
             log.LogInformation("Processing complete!");
         }

@@ -1,6 +1,7 @@
 using CongressDataCollector.Core.Interfaces;
 using CongressDataCollector.Core.Models;
 using Microsoft.Azure.Cosmos;
+using Microsoft.Extensions.Logging;
 
 namespace CongressDataCollector.Services;
 
@@ -14,17 +15,18 @@ public class CosmosDbService : ICosmosDbService
         _container = container;
     }
 
-    public async Task StoreBillInCosmosDbAsync(Bill bill)
+    public async void StoreBillInCosmosDb(Bill bill, ILogger log)
     {
         try
         {
+
             // Serialize and store the bill data in Cosmos DB
             await _container.UpsertItemAsync(bill, new PartitionKey(bill.Id));
-            Console.WriteLine($"Stored bill {bill.Id} in Cosmos DB.");
+            log.LogInformation($"Stored bill {bill.Id} in Cosmos DB.");
         }
         catch (CosmosException ex)
         {
-            Console.WriteLine($"Failed to store bill {bill.Id} in Cosmos DB: {ex.Message}");
+            log.LogInformation($"Failed to store bill {bill.Id} in Cosmos DB: {ex.Message}");
         }
     }
 }
