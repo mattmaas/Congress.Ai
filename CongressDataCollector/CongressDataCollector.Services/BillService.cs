@@ -5,387 +5,240 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace CongressDataCollector.Services
 {
     public class BillService : IBillService
     {
-        private readonly OpenAiService _openAIService;
+        private readonly IOpenAiService _openAiService;
         private readonly string _apiKey;
         private readonly ICosmosDbService _cosmosDbService;
         private readonly HttpClient _httpClient;
 
-        public BillService(ICosmosDbService cosmosDbService, HttpClient httpClient, OpenAiService openAIService)
+        public BillService(ICosmosDbService cosmosDbService, HttpClient httpClient, IOpenAiService openAiService)
         {
             _apiKey = Environment.GetEnvironmentVariable("CongressAPIKEY") ?? throw new InvalidOperationException("API KEY not found");
             _cosmosDbService = cosmosDbService;
             _httpClient = httpClient;
-            _openAIService = openAIService;
+            _openAiService = openAiService;
         }
 
-        public async Task<BillsFetchResult> FetchBillsAsync(FetchState state, ILogger log, DateTime? fromDateTime = null, DateTime? toDateTime = null, string sort = "updateDate+desc")
+        public BillsFetchResult FetchBills(FetchState state, ILogger log, DateTime? fromDateTime = null, DateTime? toDateTime = null, string sort = "updateDate+desc")
         {
-            log.LogInformation($"FetchBillsAsync function executed at: {DateTime.Now}");
+            log.LogInformation($"FetchBills function executed at: {DateTime.Now}");
             var fetchedBills = new List<Bill>();
 
-            const int congressNumber = 118; // Example congress number
-            var offset = 0; // Start at the first record
-            const int limit = 250; // Maximum records per request
+            const int congressNumber = 118;
+            var offset = 0;
+            const int limit = 250;
 
             var baseUri = $"https://api.congress.gov/v3/bill/{congressNumber}?format=json&limit={limit}&sort={sort}";
+            var requestUri = baseUri + $"&api_key={_apiKey}";
 
-            var requestUri = baseUri;
             if (fromDateTime.HasValue)
-            {
-                var fromDateTimeStr = fromDateTime.Value.ToString("yyyy-MM-ddTHH:mm:ssZ");
-                requestUri += $"&fromDateTime={fromDateTimeStr}";
-            }
+                requestUri += $"&fromDateTime={fromDateTime.Value:yyyy-MM-ddTHH:mm:ssZ}";
             if (toDateTime.HasValue)
-            {
-                var toDateTimeStr = toDateTime.Value.ToString("yyyy-MM-ddTHH:mm:ssZ");
-                requestUri += $"&toDateTime={toDateTimeStr}";
-            }
-            requestUri += $"&api_key={_apiKey}";
+                requestUri += $"&toDateTime={toDateTime.Value:yyyy-MM-ddTHH:mm:ssZ}";
 
-            while (!string.IsNullOrEmpty(requestUri) && fetchedBills.Count < 250)
+            while (!string.IsNullOrEmpty(requestUri) && fetchedBills.Count < limit)
             {
-                var response = await SendRequestWithRetryAsync(requestUri, log);
+                var response = SendRequestWithRetry(requestUri, log);
                 if (response.IsSuccessStatusCode)
                 {
-                    var responseData = await ParseResponseAsync<RootObject>(response);
-                    if (responseData?.Bills != null && responseData.Bills.Length > 0)
-                    {
-                        fetchedBills.AddRange(responseData.Bills);
-                        log.LogInformation($"Fetched {responseData.Bills.Length} bills. Total fetched: {fetchedBills.Count}/{responseData.Pagination.Count}");
-
-                        offset += limit; // Move to the next set of records
-                        requestUri = baseUri + $"&offset={offset}&api_key={_apiKey}";
-                        if (fromDateTime.HasValue)
-                        {
-                            requestUri += $"&fromDateTime={fromDateTime.Value:yyyy-MM-ddTHH:mm:ssZ}";
-                        }
-                        if (toDateTime.HasValue)
-                        {
-                            requestUri += $"&toDateTime={toDateTime.Value:yyyy-MM-ddTHH:mm:ssZ}";
-                        }
-                    }
-                    else
-                    {
-                        log.LogInformation("No more bills to fetch.");
-                        break;
-                    }
+                    var responseData = ParseResponse<RootObject>(response.Content.ReadAsStringAsync().Result);
+                    fetchedBills.AddRange(responseData.Bills);
+                    offset += limit;
+                    requestUri = baseUri + $"&offset={offset}&api_key={_apiKey}";
                 }
                 else
                 {
-                    log.LogError($"Failed to fetch bills. Status: {response.StatusCode}. Exiting fetch loop.");
-                    break;
+                    requestUri = null;
                 }
+                break;
             }
 
-            return new BillsFetchResult
-            {
-                Bills = fetchedBills,
-                UpdatedState = state
-            };
+            return new BillsFetchResult { Bills = fetchedBills, UpdatedState = state };
         }
-        public async Task<Bill> FetchBillDetailsAsync(Bill bill, FetchState state, ILogger log)
+
+        public Bill FetchBillDetails(Bill bill, FetchState state, ILogger log)
         {
-            await FetchGeneralBillDetailsAsync(bill, log, async () =>
+            FetchGeneralBillDetails(bill, log);
+
+            if (bill.HasDetailedInfo)
             {
-                if (bill.HasDetailedInfo)
+                if (bill.Actions?.HasStubData == true)
                 {
-                    // Start tasks that can run concurrently
-                    var concurrentTasks = new List<Task>
-                    {
-                        FetchDetailedActionsAsync(bill, log),
-                        FetchDetailedCosponsorsAsync(bill, log),
-                        FetchDetailedRelatedBillsAsync(bill, log),
-                        FetchDetailedSubjectsAsync(bill, log),
-                        FetchDetailedSummariesAsync(bill, log)
-                    };
-
-                    // Start FetchDetailedTextVersionsAsync and wait for it to complete before starting FetchBillTextAsync
-                    await FetchDetailedTextVersionsAsync(bill, log, async () => {
-                        await FetchBillTextAsync(bill, log, async () =>
-                        {
-                            // Once FetchBillTextAsync is complete and bill.PlainText is not empty, fetch OpenAI summaries
-                            if (!string.IsNullOrEmpty(bill.PlainText))
-                            {
-                                await FetchOpenAiSummaries(bill, log);
-                            }
-                        });
-                    });
-                    
-
-                    // Await all concurrent tasks
-                    await Task.WhenAll(concurrentTasks);
+                    log.LogInformation($"Fetching detailed actions for {nameof(bill)} with ID: {bill.Id}");
+                    FetchDetailedActions(bill, log);
+                    log.LogInformation($"Fetched actions");
                 }
-            });
 
-            await _cosmosDbService.StoreBillInCosmosDbAsync(bill);
+                if (bill.Cosponsors?.HasStubData == true)
+                {
+                    log.LogInformation($"Fetching detailed Cosponsors for {nameof(bill)} with ID: {bill.Id}");
+                    FetchDetailedCosponsors(bill, log);
+                    log.LogInformation($"Fetched Cosponsors");
+                }
+
+                if (bill.RelatedBills?.HasStubData == true)
+                {
+                    log.LogInformation($"Fetching detailed DetailedRelated for {nameof(bill)} with ID: {bill.Id}");
+                    FetchDetailedRelatedBills(bill, log);
+                    log.LogInformation($"Fetched DetailedRelated");
+                }
+
+                if (bill.Subjects?.HasStubData == true)
+                {
+                    log.LogInformation($"Fetching detailed Subjects for {nameof(bill)} with ID: {bill.Id}");
+                    FetchDetailedSubjects(bill, log);
+                    log.LogInformation($"Fetched Subjects");
+                }
+
+                if (bill.Summaries?.HasStubData == true)
+                {
+                    log.LogInformation($"Fetching detailed Summaries for {nameof(bill)} with ID: {bill.Id}");
+                    FetchDetailedSummaries(bill, log);
+                    log.LogInformation($"Fetched Summaries");
+                }
+
+                if(bill.TextVersions?.HasStubData == true)
+                {
+                    log.LogInformation($"Fetching detailed TextVersions for {nameof(bill)} with ID: {bill.Id}");
+                    FetchDetailedTextVersions(bill, log);
+                    log.LogInformation($"Fetched TextVersions");
+                }
+
+                if (bill.DetailedTextVersions?.Any() == true)
+                {
+                    log.LogInformation($"Fetching detailed BillText for {nameof(bill)} with ID: {bill.Id}");
+                    FetchBillText(bill, log);
+                    log.LogInformation($"Fetched BillText");
+
+                    if (!string.IsNullOrEmpty(bill.PlainText))
+                    {
+                        log.LogInformation($"Fetching OpenAiSummaries for {nameof(bill)} with ID: {bill.Id}");
+                        FetchOpenAiSummaries(bill, log);
+                        log.LogInformation($"Fetched OpenAiSummaries");
+                    }
+                }
+            }
+            log.LogInformation($"Fetched detailed information for {nameof(bill)} with ID: {bill.Id}");
+
+            _cosmosDbService.StoreBillInCosmosDb(bill, log);
+
             return bill;
         }
 
-        public async Task FetchBillTextAsync(Bill bill, ILogger log, Func<Task> onSuccessCallback)
+        private void FetchGeneralBillDetails(Bill bill, ILogger log)
         {
-            // Prefer "Formatted Text" but fallback to any available format
-            var preferredTextVersion = bill.DetailedTextVersions
-                                           .SelectMany(tv => tv.Formats.Select(f => new { TextVersion = tv, Format = f }))
-                                           .FirstOrDefault(tf => tf.Format.Type == "Formatted Text") ??
-                                       bill.DetailedTextVersions
-                                           .SelectMany(tv => tv.Formats.Select(f => new { TextVersion = tv, Format = f }))
-                                           .FirstOrDefault();
+            var requestUri = $"{bill.Url}&limit=250&api_key={_apiKey}";
+            var response = SendRequestWithRetry(requestUri, log);
+            var billResponse = ParseResponse<BillResponse>(response.Content.ReadAsStringAsync().Result);
+            bill.UpdateWithDetailedInfo(billResponse.Bill);
+            bill.HasDetailedInfo = true;
+        }
 
-            if (preferredTextVersion == null)
-            {
-                log.LogWarning($"No text versions available for Bill ID: {bill.Id}");
-                return;
-            }
+        private void FetchDetailedActions(Bill bill, ILogger log)
+        {
+            var requestUri = $"{bill.Actions.Url}&limit=250&api_key={_apiKey}";
+            var response = SendRequestWithRetry(requestUri, log);
+            var actionsResponse = ParseResponse<ActionsResponse>(response.Content.ReadAsStringAsync().Result);
+            bill.DetailedActions = actionsResponse.Actions;
+        }
 
-            if (string.IsNullOrEmpty(preferredTextVersion.Format.Url))
-            {
-                log.LogWarning($"No URL available for the text version of Bill ID: {bill.Id}");
-                return;
-            }
+        private void FetchDetailedCosponsors(Bill bill, ILogger log)
+        {
+            var requestUri = $"{bill.Cosponsors.Url}&limit=250&api_key={_apiKey}";
+            var response = SendRequestWithRetry(requestUri, log);
+            var cosponsorsResponse = ParseResponse<CosponsorsResponse>(response.Content.ReadAsStringAsync().Result);
+            bill.DetailedCosponsors = cosponsorsResponse.Cosponsors;
+        }
+
+        private void FetchDetailedRelatedBills(Bill bill, ILogger log)
+        {
+            var requestUri = $"{bill.RelatedBills.Url}&limit=250&api_key={_apiKey}";
+            var response = SendRequestWithRetry(requestUri, log);
+            var relatedBillsResponse = ParseResponse<RelatedBillsResponse>(response.Content.ReadAsStringAsync().Result);
+            bill.DetailedRelatedBills = relatedBillsResponse.RelatedBills;
+        }
+
+        private void FetchDetailedSubjects(Bill bill, ILogger log)
+        {
+            var requestUri = $"{bill.Subjects.Url}&limit=250&api_key={_apiKey}";
+            var response = SendRequestWithRetry(requestUri, log);
+            var subjectsResponse = ParseResponse<SubjectsResponse>(response.Content.ReadAsStringAsync().Result);
+            bill.DetailedSubjects = subjectsResponse.Subjects.LegislativeSubjects;
+        }
+
+        private void FetchDetailedSummaries(Bill bill, ILogger log)
+        {
+            var requestUri = $"{bill.Summaries.Url}&limit=250&api_key={_apiKey}";
+            var response = SendRequestWithRetry(requestUri, log);
+            var summariesResponse = ParseResponse<SummariesResponse>(response.Content.ReadAsStringAsync().Result);
+            bill.DetailedSummaries = summariesResponse.Summaries;
+        }
+
+        private void FetchDetailedTextVersions(Bill bill, ILogger log)
+        {
+            var requestUri = $"{bill.TextVersions.Url}&limit=250&api_key={_apiKey}";
+            var response = SendRequestWithRetry(requestUri, log);
+            var textVersionsResponse = ParseResponse<TextVersionsResponse>(response.Content.ReadAsStringAsync().Result);
+            bill.DetailedTextVersions = textVersionsResponse.TextVersions;
+        }
+        private void FetchBillText(Bill bill, ILogger log)
+        {
+            var preferredTextVersion = bill.DetailedTextVersions.Find(tv => tv.Formats.Exists(f => f.Type == "Formatted Text"))?.Formats.Find(f => f.Type == "Formatted Text") ??
+                                       bill.DetailedTextVersions.Find(tv => tv.Formats.Count > 0)?.Formats[0];
+
+            if (preferredTextVersion == null) return;
 
             try
             {
-                var textContent = await _httpClient.GetStringAsync(preferredTextVersion.Format.Url);
-                bill.PlainText = textContent; // Set the fetched text to the PlainText property of the Bill
-                log.LogInformation($"Fetched text for Bill ID: {bill.Id}");
-                await onSuccessCallback?.Invoke();
+                var request = new HttpRequestMessage(HttpMethod.Get, preferredTextVersion.Url);
+                var response = _httpClient.Send(request, HttpCompletionOption.ResponseContentRead);
+                response.EnsureSuccessStatusCode();
+                var textContent = response.Content.ReadAsStringAsync().Result; // This is the synchronous part
+                bill.PlainText = textContent;
             }
             catch (Exception ex)
             {
-                log.LogError(ex, $"Failed to fetch or set text for Bill ID: {bill.Id}");
+                log.LogError($"Error fetching bill text: {ex.Message}");
             }
         }
 
-        private async Task FetchOpenAiSummaries(Bill bill, ILogger log)
-        {
-            // Assuming bill text is available and set to bill.PlainText
-            var analysis = await _openAIService.AnalyzeBillTextAsync(bill.PlainText);
 
-            // Deserialize JSON response and update the Bill object
+        private void FetchOpenAiSummaries(Bill bill, ILogger log)
+        {
+             var analysis = _openAiService.AnalyzeBillTextAsync(bill.PlainText).Result;
             bill.OpenAiSummaries = JsonConvert.DeserializeObject<OpenAiSummaries>(analysis);
         }
 
-        private async Task FetchGeneralBillDetailsAsync(Bill bill, ILogger log, Func<Task> onSuccessCallback)
+        private HttpResponseMessage SendRequestWithRetry(string requestUri, ILogger log, int maxRetries = 20)
         {
-            if (bill == null || string.IsNullOrEmpty(bill.Url)) return;
+            log.LogInformation($"Sending request to URI: {requestUri}");
 
-            var requestUri = $"{bill.Url}&limit=250&api_key={_apiKey}";
-
-            var response = await SendRequestWithRetryAsync(requestUri, log);
-
-            if (!response.IsSuccessStatusCode) return;
-            var billResponse = await ParseResponseAsync<BillResponse>(response);
-
-            if (billResponse?.Bill != null)
-            {
-                bill.UpdateWithDetailedInfo(billResponse.Bill);
-                bill.HasDetailedInfo = true;
-                log.LogInformation($"Fetched and updated general bill details for {bill.Number}.");
-                await onSuccessCallback?.Invoke();
-            }
-            else
-            {
-                log.LogError($"Failed to fetch general bill details for {bill.Number}. Status: {response.StatusCode}");
-            }
-        }
-
-        private async Task FetchDetailedActionsAsync(Bill bill, ILogger log)
-        {
-            if (!bill.Actions.HasStubData || bill?.Actions == null || bill.Actions.Count == 0 || string.IsNullOrEmpty(bill.Actions.Url)) return;
-
-            var detailedActions = new List<LegislativeAction>();
-            var requestUri = $"{bill.Actions.Url}&limit=250&api_key={_apiKey}";
-
-            while (!string.IsNullOrEmpty(requestUri))
-            {
-                var response = await SendRequestWithRetryAsync(requestUri, log);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var actionsResponse = await ParseResponseAsync<ActionsResponse>(response);
-                    detailedActions.AddRange(actionsResponse.Actions);
-                    log.LogInformation($"Fetched detailed actions for {bill.Number}.");
-                    requestUri = $"{actionsResponse.Pagination.Next}&api_key={_apiKey}";
-                }
-                else
-                {
-                    log.LogError($"Failed to fetch detailed actions for {bill.Number}. Status: {response.StatusCode}");
-                    break;
-                }
-            }
-
-            bill.DetailedActions = detailedActions; // Update the bill's detailed actions outside the loop
-        }
-        private async Task FetchDetailedCosponsorsAsync(Bill bill, ILogger log)
-        {
-            if (bill?.Cosponsors == null || bill.Cosponsors.Count == 0) return;
-
-            var detailedCosponsors = new List<Cosponsor>();
-            var requestUri = $"{bill.Cosponsors.Url}&limit=250&api_key={_apiKey}";
-
-            while (!string.IsNullOrEmpty(requestUri))
-            {
-                var response = await SendRequestWithRetryAsync(requestUri, log);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var cosponsorsResponse = await ParseResponseAsync<CosponsorsResponse>(response);
-                    detailedCosponsors.AddRange(cosponsorsResponse.Cosponsors);
-                    log.LogInformation($"Fetched detailed cosponsors for {bill.Number}.");
-                    requestUri = $"{cosponsorsResponse.Pagination.Next}&api_key={_apiKey}";
-                }
-                else
-                {
-                    log.LogError($"Failed to fetch detailed cosponsors for {bill.Number}. Status: {response.StatusCode}");
-                    break;
-                }
-            }
-
-            bill.DetailedCosponsors = detailedCosponsors; // Update the bill's detailed cosponsors outside the loop
-        }
-
-        private async Task FetchDetailedRelatedBillsAsync(Bill bill, ILogger log)
-        {
-            if (bill?.RelatedBills == null || bill.RelatedBills.Count == 0) return;
-
-            var detailedRelatedBills = new List<RelatedBill>();
-            var requestUri = $"{bill.RelatedBills.Url}&limit=250&api_key={_apiKey}";
-
-            while (!string.IsNullOrEmpty(requestUri))
-            {
-                var response = await SendRequestWithRetryAsync(requestUri, log);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var relatedBillsResponse = await ParseResponseAsync<RelatedBillsResponse>(response);
-                    detailedRelatedBills.AddRange(relatedBillsResponse.RelatedBills);
-                    log.LogInformation($"Fetched detailed related bills for {bill.Number}.");
-                    requestUri = $"{relatedBillsResponse.Pagination.Next}&api_key={_apiKey}";
-                }
-                else
-                {
-                    log.LogError($"Failed to fetch detailed related bills for {bill.Number}. Status: {response.StatusCode}");
-                    break;
-                }
-            }
-
-            bill.DetailedRelatedBills = detailedRelatedBills; // Update the bill's detailed related bills outside the loop
-        }
-
-        private async Task FetchDetailedSubjectsAsync(Bill bill, ILogger log)
-        {
-            if (bill?.Subjects == null || bill.Subjects.Count == 0) return;
-
-            var detailedSubjects = new List<LegislativeSubject>();
-            var requestUri = $"{bill.Subjects.Url}&limit=250&api_key={_apiKey}";
-
-            while (!string.IsNullOrEmpty(requestUri))
-            {
-                var response = await SendRequestWithRetryAsync(requestUri, log);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var subjectsResponse = await ParseResponseAsync<SubjectsResponse>(response);
-                    detailedSubjects.AddRange(subjectsResponse.Subjects.LegislativeSubjects);
-                    log.LogInformation($"Fetched detailed subjects for {bill.Number}.");
-                    requestUri = $"{subjectsResponse.Pagination.Next}&api_key={_apiKey}";
-                }
-                else
-                {
-                    log.LogError($"Failed to fetch detailed subjects for {bill.Number}. Status: {response.StatusCode}");
-                    break;
-                }
-            }
-
-            bill.DetailedSubjects = detailedSubjects; // Update the bill's detailed subjects outside the loop
-        }
-        private async Task FetchDetailedSummariesAsync(Bill bill, ILogger log)
-        {
-            if (bill?.Summaries == null || bill.Summaries.Count == 0) return;
-
-            var detailedSummaries = new List<Summary>();
-            var requestUri = $"{bill.Summaries.Url}&limit=250&api_key={_apiKey}";
-
-            while (!string.IsNullOrEmpty(requestUri))
-            {
-                var response = await SendRequestWithRetryAsync(requestUri, log);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var summariesResponse = await ParseResponseAsync<SummariesResponse>(response);
-                    detailedSummaries.AddRange(summariesResponse.Summaries);
-                    log.LogInformation($"Fetched detailed summaries for {bill.Number}.");
-                    requestUri = $"{summariesResponse.Pagination.Next}&api_key={_apiKey}";
-                }
-                else
-                {
-                    log.LogError($"Failed to fetch detailed summaries for {bill.Number}. Status: {response.StatusCode}");
-                    break;
-                }
-            }
-
-            bill.DetailedSummaries = detailedSummaries; // Update the bill's detailed summaries outside the loop
-        }
-
-        private async Task FetchDetailedTextVersionsAsync(Bill bill, ILogger log, Func<Task> func)
-        {
-            if (bill?.TextVersions == null || bill.TextVersions.Count == 0) return;
-
-            var detailedTextVersions = new List<TextVersion>();
-            var requestUri = $"{bill.TextVersions.Url}&limit=250&api_key={_apiKey}";
-
-            while (!string.IsNullOrEmpty(requestUri))
-            {
-                var response = await SendRequestWithRetryAsync(requestUri, log);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var textVersionsResponse = await ParseResponseAsync<TextVersionsResponse>(response);
-                    detailedTextVersions.AddRange(textVersionsResponse.TextVersions);
-                    log.LogInformation($"Fetched detailed text versions for {bill.Number}.");
-                    requestUri = $"{textVersionsResponse.Pagination.Next}&api_key={_apiKey}";
-                }
-                else
-                {
-                    log.LogError($"Failed to fetch detailed text versions for {bill.Number}. Status: {response.StatusCode}");
-                    break;
-                }
-            }
-
-            bill.DetailedTextVersions = detailedTextVersions; // Update the bill's detailed text versions outside the loop
-        }
-
-        private async Task<HttpResponseMessage> SendRequestWithRetryAsync(string requestUri, ILogger log, int maxRetries = 3)
-        {
             HttpResponseMessage response = null;
-            var retryCount = 0;
+            int retryCount = 0;
 
             while (retryCount < maxRetries)
             {
-                response = await _httpClient.GetAsync(requestUri);
-                if (response.IsSuccessStatusCode)
-                {
+                response = _httpClient.GetAsync(requestUri).Result;
+                if (response.IsSuccessStatusCode){
+                    log.LogInformation($"Received successful response from URI: {requestUri}");
                     break;
                 }
-                else if ((int)response.StatusCode == 429) // Too many requests
+
+                if ((int)response.StatusCode == 429) // Too many requests
                 {
                     retryCount++;
                     var waitTime = GetRetryAfterTime(response);
-                    log.LogWarning($"Rate limit hit, retrying in {waitTime} seconds. Attempt {retryCount}.");
-                    await Task.Delay(waitTime * 1000);
+                    System.Threading.Thread.Sleep(waitTime * 1000);
+                    log.LogError($"Failed to fetch data from URI: {requestUri}. {response}");
+
                 }
-                else
-                {
-                    log.LogError($"Request failed with status code {response.StatusCode}.");
-                    break;
-                }
+                else break;
             }
 
             return response;
@@ -396,10 +249,9 @@ namespace CongressDataCollector.Services
             return response.Headers.RetryAfter?.Delta.HasValue ?? false ? (int)response.Headers.RetryAfter.Delta.Value.TotalSeconds : 3600;
         }
 
-        private static async Task<T> ParseResponseAsync<T>(HttpResponseMessage response)
+        private static T ParseResponse<T>(string responseContent)
         {
-            var content = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<T>(content);
+            return JsonConvert.DeserializeObject<T>(responseContent);
         }
     }
 }

@@ -51,8 +51,8 @@ namespace CongressDataCollector.Functions
                 return new StateService(blobStorageManager);
             });
 
-            // Register OpenAIService with HttpClient
-            builder.Services.AddHttpClient<OpenAiService>();
+            // This assumes OpenAiService has a constructor that takes an HttpClient or IHttpClientFactory
+            builder.Services.AddSingleton < IOpenAiService, OpenAiService>();
         }
     }
 }
