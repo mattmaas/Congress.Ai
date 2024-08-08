@@ -1,12 +1,13 @@
 using App.ViewModels;
 
-namespace App;
-
-public partial class BillListPage : ContentPage
+namespace App
 {
-	public BillListPage(BillListPageViewModel viewModel)
-	{
-		InitializeComponent();
-        BindingContext = viewModel;
+    public partial class BillListPage : ContentPage
+    {
+        public BillListPage(BillListPageViewModel viewModel)
+        {
+            InitializeComponent();
+            BindingContext = viewModel;
+        }
     }
 }
