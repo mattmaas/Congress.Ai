@@ -7,7 +7,7 @@
     <ListView ItemsSource="{Binding Bills}">
         <ListView.ItemTemplate>
             <DataTemplate>
-                <TextCell Text="{Binding BillNumber}" 
+                <TextCell Text="{Binding Type, StringFormat='{0}. '}{Binding Number}" 
                           Detail="{Binding Title}"
                           Command="{Binding BindingContext.GoToBillDetailsCommand, Source={RelativeSource AncestorType={x:Type ListView}}}"
                           CommandParameter="{Binding .}" />
