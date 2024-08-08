@@ -16,13 +16,13 @@ namespace App.ViewModels
             }
         }
 
-        private Bill _bill;
-        public Bill Bill
+        private BillViewModel _billViewModel;
+        public BillViewModel BillViewModel
         {
-            get => _bill;
+            get => _billViewModel;
             set
             {
-                _bill = value;
+                _billViewModel = value;
                 OnPropertyChanged();
             }
         }
@@ -31,13 +31,14 @@ namespace App.ViewModels
         {
             // TODO: Implement loading bill details from your data source
             // For now, we'll use dummy data
-            Bill = new Bill
+            var bill = new Bill
             {
-                BillId = billId,
-                BillNumber = "H.R. " + billId,
+                Number = billId,
                 Title = "Sample Bill " + billId,
+                Type = billId.StartsWith("H") ? "H.R." : "S.",
                 LatestAction = new LatestAction { Text = "Introduced in House" }
             };
+            BillViewModel = new BillViewModel(bill);
         }
     }
 }

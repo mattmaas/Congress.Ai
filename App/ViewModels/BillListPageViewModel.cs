@@ -4,29 +4,28 @@ using CongressDataCollector.Core.Models;
 
 namespace App.ViewModels
 {
-    public class BillListPageViewModel
+    public class BillListPageViewModel : BindableObject
     {
-        public ObservableCollection<Bill> Bills { get; } = new ObservableCollection<Bill>();
+        public ObservableCollection<BillViewModel> Bills { get; } = new ObservableCollection<BillViewModel>();
         public ICommand GoToBillDetailsCommand { get; }
 
         public BillListPageViewModel()
         {
-            GoToBillDetailsCommand = new Command<Bill>(GoToBillDetails);
-            // TODO: Load bills from your data source
+            GoToBillDetailsCommand = new Command<BillViewModel>(GoToBillDetails);
             LoadBills();
         }
 
-        private async void GoToBillDetails(Bill bill)
+        private async void GoToBillDetails(BillViewModel billViewModel)
         {
-            await Shell.Current.GoToAsync($"//BillDetailsPage?billId={bill.BillId}");
+            await Shell.Current.GoToAsync($"//BillDetailsPage?billId={billViewModel.Id}");
         }
 
         private void LoadBills()
         {
             // TODO: Implement loading bills from your data source
             // For now, we'll add some dummy data
-            Bills.Add(new Bill { BillId = "1", Number = "H.R. 1", Title = "Sample Bill 1" });
-            Bills.Add(new Bill { BillId = "2", Number = "S. 1", Title = "Sample Bill 2" });
+            Bills.Add(new BillViewModel(new Bill { Number = "H.R. 1", Title = "Sample Bill 1", Type = "H.R." }));
+            Bills.Add(new BillViewModel(new Bill { Number = "S. 1", Title = "Sample Bill 2", Type = "S." }));
         }
     }
 }
