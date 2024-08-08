@@ -25,8 +25,8 @@ namespace App.ViewModels
         {
             // TODO: Implement loading bills from your data source
             // For now, we'll add some dummy data
-            Bills.Add(new Bill { BillId = "1", BillNumber = "H.R. 1", Title = "Sample Bill 1" });
-            Bills.Add(new Bill { BillId = "2", BillNumber = "S. 1", Title = "Sample Bill 2" });
+            Bills.Add(new Bill { BillId = "1", Number = "H.R. 1", Title = "Sample Bill 1" });
+            Bills.Add(new Bill { BillId = "2", Number = "S. 1", Title = "Sample Bill 2" });
         }
     }
 }
