@@ -52,3 +52,9 @@ nunit-*.xml
 
 # Add other patterns as needed
 
+.aider*
+/.env
+/.env.swp
+
+App/.vs/
+App/
