@@ -1,1 +1,13 @@
 {} 
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "BlobContainerName": "fetchstate",
+    "CosmosEndpoint": "https://your-cosmos-account.documents.azure.com:443/",
+    "CosmosKey": "your-cosmos-key",
+    "CosmosDatabaseId": "your-database-id",
+    "CosmosContainerId": "your-container-id"
+  }
+}

@@ -58,3 +58,6 @@ nunit-*.xml
 
 App/.vs/
 App/
+
+# Local settings file
+**/local.settings.json
