@@ -8,7 +8,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-async def fetch_recent_bills(max_runtime=300):  # Default to 5 minutes max runtime
+async def fetch_recent_bills(max_runtime=1500):  # Default to 25 minutes max runtime
     config = load_config()
     async with CongressApiClient(config['congress_api_key']) as api_client:
         cosmos_client = CosmosDbClient(config['cosmos_endpoint'], config['cosmos_key'], config['cosmos_database'], config['cosmos_container'])

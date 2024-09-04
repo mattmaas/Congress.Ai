@@ -11,7 +11,7 @@ async def main(full_fetch=False, max_runtime=None):
     if full_fetch:
         await fetch_all_bills(max_runtime=max_runtime or 3600)
     else:
-        await fetch_recent_bills(max_runtime=max_runtime or 300)
+        await fetch_recent_bills(max_runtime=max_runtime or 1500)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Fetch and store congressional bills.")
