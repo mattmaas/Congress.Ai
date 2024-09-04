@@ -18,23 +18,22 @@ async def fetch_all_bills(max_runtime=3600):  # Default to 1 hour max runtime
         cosmos_client = CosmosDbClient(config['cosmos_endpoint'], config['cosmos_key'], config['cosmos_database'], config['cosmos_container'])
         logger.debug("Initialized CosmosDbClient")
 
-        bills = await api_client.fetch_bills(max_runtime=max_runtime)
-        logger.info(f"Fetched {len(bills)} bills")
-
-        for i, bill in enumerate(bills, 1):
+        bill_count = 0
+        async for bill in api_client.fetch_bills(max_runtime=max_runtime):
             if time.time() - start_time > max_runtime:
                 logger.warning(f"Reached maximum runtime of {max_runtime} seconds. Stopping processing.")
                 break
 
-            logger.debug(f"Processing bill {i}/{len(bills)}: {bill.get('id', 'Unknown ID')}")
+            bill_count += 1
+            logger.debug(f"Processing bill {bill_count}: {bill.get('id', 'Unknown ID')}")
             bill_details = await api_client.fetch_bill_details(bill)
             await cosmos_client.store_bill(bill_details)
-            logger.info(f"Stored bill {i}/{len(bills)} in CosmosDB")
+            logger.info(f"Stored bill {bill_count} in CosmosDB")
 
-            if i % 10 == 0:  # Log every 10 bills
-                logger.info(f"Processed and stored {i} bills so far")
+            if bill_count % 10 == 0:  # Log every 10 bills
+                logger.info(f"Processed and stored {bill_count} bills so far")
 
-        logger.info(f"Processed {i} out of {len(bills)} bills")
+        logger.info(f"Processed and stored a total of {bill_count} bills")
         logger.debug(f"Total runtime: {time.time() - start_time:.2f} seconds")
 
 if __name__ == "__main__":

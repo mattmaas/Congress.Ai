@@ -24,7 +24,6 @@ class CongressApiClient:
         congress = 118  # Current congress number
         offset = 0
         limit = 250
-        all_bills = []
         start_time = time.time()
 
         while True:
@@ -39,21 +38,24 @@ class CongressApiClient:
             if to_date:
                 url += f"&toDateTime={to_date.isoformat()}Z"
 
+            logger.debug(f"Fetching bills from URL: {url}")
             async with self.session.get(url) as response:
                 response.raise_for_status()
                 data = await response.json()
                 bills = data['bills']
-                all_bills.extend(bills)
+                logger.info(f"Fetched {len(bills)} bills")
+
+                for bill in bills:
+                    yield bill
 
                 if len(bills) < limit:
+                    logger.debug("Reached the end of available bills")
                     break  # We've reached the end of the available bills
 
                 offset += limit
 
             # Add a small delay to avoid hitting rate limits
             await asyncio.sleep(0.1)
-
-        return all_bills
 
     async def fetch_bill_details(self, bill):
         url = f"{bill['url']}&api_key={self.api_key}"
