@@ -10,4 +10,5 @@ def load_config():
         'cosmos_key': os.getenv('COSMOS_KEY'),
         'cosmos_database': os.getenv('COSMOS_DATABASE'),
         'cosmos_container': os.getenv('COSMOS_CONTAINER'),
+        'openai_api_key': os.getenv('OPENAI_API_KEY'),
     }

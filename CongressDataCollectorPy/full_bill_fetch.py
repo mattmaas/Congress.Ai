@@ -2,6 +2,7 @@ import asyncio
 from config import load_config
 from api_client import CongressApiClient
 from cosmos_db_client import CosmosDbClient
+from openai_service import OpenAiService
 import logging
 import time
 
@@ -17,6 +18,8 @@ async def fetch_all_bills(max_runtime=3600):  # Default to 1 hour max runtime
         logger.debug("Initialized CongressApiClient")
         cosmos_client = CosmosDbClient(config['cosmos_endpoint'], config['cosmos_key'], config['cosmos_database'], config['cosmos_container'])
         logger.debug("Initialized CosmosDbClient")
+        openai_service = OpenAiService(config['openai_api_key'])
+        logger.debug("Initialized OpenAiService")
 
         bill_count = 0
         async for bill in api_client.fetch_bills(max_runtime=max_runtime):
@@ -31,6 +34,13 @@ async def fetch_all_bills(max_runtime=3600):  # Default to 1 hour max runtime
                 if not bill_details:
                     logger.warning(f"Empty bill details for bill {bill.get('id', 'Unknown ID')}")
                     continue
+
+                bill_text = await api_client.fetch_bill_text_from_details(bill_details)
+                if bill_text:
+                    openai_summary = await openai_service.analyze_bill_text(bill_text)
+                    if openai_summary:
+                        bill_details['openAiSummaries'] = {'gpt4Summary': openai_summary}
+
                 await cosmos_client.store_bill(bill_details)
                 logger.info(f"Stored bill {bill_count} in CosmosDB")
 

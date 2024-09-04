@@ -69,3 +69,9 @@ class CongressApiClient:
         async with self.session.get(url) as response:
             response.raise_for_status()
             return await response.text()
+
+    async def fetch_bill_text_from_details(self, bill_details):
+        if 'textVersions' in bill_details and bill_details['textVersions']:
+            latest_version = bill_details['textVersions'][-1]
+            return await self.fetch_bill_text(latest_version)
+        return None
