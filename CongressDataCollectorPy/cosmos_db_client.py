@@ -12,10 +12,12 @@ class CosmosDbClient:
 
     async def store_bill(self, bill):
         try:
+            if 'id' not in bill:
+                bill['id'] = f"{bill.get('type', '')}{bill.get('number', '')}-{bill.get('congress', '')}"
             await self.container.upsert_item(bill)
             logger.info(f"Stored bill {bill['id']} in Cosmos DB.")
         except Exception as e:
-            logger.error(f"Failed to store bill {bill['id']} in Cosmos DB: {str(e)}")
+            logger.error(f"Failed to store bill in Cosmos DB: {str(e)}")
 
     async def get_date_range(self):
         query = "SELECT MIN(c.updateDate) as earliest, MAX(c.updateDate) as latest FROM c"

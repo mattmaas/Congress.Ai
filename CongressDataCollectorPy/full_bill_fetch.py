@@ -26,12 +26,18 @@ async def fetch_all_bills(max_runtime=3600):  # Default to 1 hour max runtime
 
             bill_count += 1
             logger.debug(f"Processing bill {bill_count}: {bill.get('id', 'Unknown ID')}")
-            bill_details = await api_client.fetch_bill_details(bill)
-            await cosmos_client.store_bill(bill_details)
-            logger.info(f"Stored bill {bill_count} in CosmosDB")
+            try:
+                bill_details = await api_client.fetch_bill_details(bill)
+                if not bill_details:
+                    logger.warning(f"Empty bill details for bill {bill.get('id', 'Unknown ID')}")
+                    continue
+                await cosmos_client.store_bill(bill_details)
+                logger.info(f"Stored bill {bill_count} in CosmosDB")
 
-            if bill_count % 10 == 0:  # Log every 10 bills
-                logger.info(f"Processed and stored {bill_count} bills so far")
+                if bill_count % 10 == 0:  # Log every 10 bills
+                    logger.info(f"Processed and stored {bill_count} bills so far")
+            except Exception as e:
+                logger.error(f"Error processing bill {bill.get('id', 'Unknown ID')}: {str(e)}")
 
         logger.info(f"Processed and stored a total of {bill_count} bills")
         logger.debug(f"Total runtime: {time.time() - start_time:.2f} seconds")

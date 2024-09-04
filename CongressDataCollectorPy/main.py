@@ -25,7 +25,13 @@ async def main(full_fetch=False, max_runtime=None):
             await fetch_recent_bills(max_runtime=max_runtime or 1500)
     except Exception as e:
         logger.error(f"An error occurred in main function: {str(e)}", exc_info=True)
-    logger.debug("Main function completed")
+    finally:
+        # Ensure all connections are closed
+        await asyncio.sleep(1)  # Give time for any pending tasks to complete
+        for task in asyncio.all_tasks():
+            if not task.done():
+                task.cancel()
+        logger.debug("Main function completed")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Fetch and store congressional bills.")

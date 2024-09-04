@@ -62,7 +62,7 @@ class CongressApiClient:
         async with self.session.get(url) as response:
             response.raise_for_status()
             data = await response.json()
-            return data['bill']
+            return data.get('bill', {})
 
     async def fetch_bill_text(self, text_version):
         url = text_version['formats'][0]['url']
