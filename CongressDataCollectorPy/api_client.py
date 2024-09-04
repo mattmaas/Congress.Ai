@@ -1,6 +1,8 @@
 import aiohttp
 from datetime import datetime, timezone
 import logging
+import asyncio
+import time
 
 logger = logging.getLogger(__name__)
 
@@ -18,19 +20,40 @@ class CongressApiClient:
     async def __aexit__(self, exc_type, exc, tb):
         await self.session.close()
 
-    async def fetch_bills(self, from_date=None, to_date=None, sort="updateDate+desc"):
+    async def fetch_bills(self, from_date=None, to_date=None, sort="updateDate+desc", max_runtime=300):
         congress = 118  # Current congress number
-        url = f"{self.BASE_URL}/{congress}?format=json&limit=250&sort={sort}&api_key={self.api_key}"
-        
-        if from_date:
-            url += f"&fromDateTime={from_date.isoformat()}Z"
-        if to_date:
-            url += f"&toDateTime={to_date.isoformat()}Z"
+        offset = 0
+        limit = 250
+        all_bills = []
+        start_time = time.time()
 
-        async with self.session.get(url) as response:
-            response.raise_for_status()
-            data = await response.json()
-            return data['bills']
+        while True:
+            if time.time() - start_time > max_runtime:
+                logger.warning(f"Reached maximum runtime of {max_runtime} seconds. Stopping fetch.")
+                break
+
+            url = f"{self.BASE_URL}/{congress}?format=json&limit={limit}&offset={offset}&sort={sort}&api_key={self.api_key}"
+            
+            if from_date:
+                url += f"&fromDateTime={from_date.isoformat()}Z"
+            if to_date:
+                url += f"&toDateTime={to_date.isoformat()}Z"
+
+            async with self.session.get(url) as response:
+                response.raise_for_status()
+                data = await response.json()
+                bills = data['bills']
+                all_bills.extend(bills)
+
+                if len(bills) < limit:
+                    break  # We've reached the end of the available bills
+
+                offset += limit
+
+            # Add a small delay to avoid hitting rate limits
+            await asyncio.sleep(0.1)
+
+        return all_bills
 
     async def fetch_bill_details(self, bill):
         url = f"{bill['url']}&api_key={self.api_key}"
