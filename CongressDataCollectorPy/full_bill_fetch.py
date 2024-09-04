@@ -35,9 +35,8 @@ async def fetch_all_bills(max_runtime=3600):  # Default to 1 hour max runtime
                     logger.warning(f"Empty bill details for bill {bill.get('id', 'Unknown ID')}")
                     continue
 
-                bill_text = await api_client.fetch_bill_text_from_details(bill_details)
-                if bill_text:
-                    openai_summary = await openai_service.analyze_bill_text(bill_text)
+                if 'fullText' in bill_details:
+                    openai_summary = await openai_service.analyze_bill_text(bill_details['fullText'])
                     if openai_summary:
                         bill_details['openAiSummaries'] = {'gpt4Summary': openai_summary}
 

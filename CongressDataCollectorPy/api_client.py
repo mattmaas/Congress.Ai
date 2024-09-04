@@ -62,16 +62,78 @@ class CongressApiClient:
         async with self.session.get(url) as response:
             response.raise_for_status()
             data = await response.json()
-            return data.get('bill', {})
+            bill_details = data.get('bill', {})
+            
+            if 'actions' in bill_details:
+                bill_details['detailedActions'] = await self.fetch_detailed_actions(bill_details['actions'])
+            
+            if 'cosponsors' in bill_details:
+                bill_details['detailedCosponsors'] = await self.fetch_detailed_cosponsors(bill_details['cosponsors'])
+            
+            if 'relatedBills' in bill_details:
+                bill_details['detailedRelatedBills'] = await self.fetch_detailed_related_bills(bill_details['relatedBills'])
+            
+            if 'subjects' in bill_details:
+                bill_details['detailedSubjects'] = await self.fetch_detailed_subjects(bill_details['subjects'])
+            
+            if 'summaries' in bill_details:
+                bill_details['detailedSummaries'] = await self.fetch_detailed_summaries(bill_details['summaries'])
+            
+            if 'textVersions' in bill_details:
+                bill_details['detailedTextVersions'] = await self.fetch_detailed_text_versions(bill_details['textVersions'])
+                if bill_details['detailedTextVersions']:
+                    bill_details['fullText'] = await self.fetch_bill_text(bill_details['detailedTextVersions'][-1])
+            
+            return bill_details
 
-    async def fetch_bill_text(self, text_version):
-        url = text_version['formats'][0]['url']
+    async def fetch_detailed_actions(self, actions):
+        url = f"{actions['url']}&api_key={self.api_key}"
         async with self.session.get(url) as response:
             response.raise_for_status()
-            return await response.text()
+            data = await response.json()
+            return data.get('actions', [])
 
-    async def fetch_bill_text_from_details(self, bill_details):
-        if 'textVersions' in bill_details and bill_details['textVersions']:
-            latest_version = bill_details['textVersions'][-1]
-            return await self.fetch_bill_text(latest_version)
+    async def fetch_detailed_cosponsors(self, cosponsors):
+        url = f"{cosponsors['url']}&api_key={self.api_key}"
+        async with self.session.get(url) as response:
+            response.raise_for_status()
+            data = await response.json()
+            return data.get('cosponsors', [])
+
+    async def fetch_detailed_related_bills(self, related_bills):
+        url = f"{related_bills['url']}&api_key={self.api_key}"
+        async with self.session.get(url) as response:
+            response.raise_for_status()
+            data = await response.json()
+            return data.get('relatedBills', [])
+
+    async def fetch_detailed_subjects(self, subjects):
+        url = f"{subjects['url']}&api_key={self.api_key}"
+        async with self.session.get(url) as response:
+            response.raise_for_status()
+            data = await response.json()
+            return data.get('subjects', {}).get('legislativeSubjects', [])
+
+    async def fetch_detailed_summaries(self, summaries):
+        url = f"{summaries['url']}&api_key={self.api_key}"
+        async with self.session.get(url) as response:
+            response.raise_for_status()
+            data = await response.json()
+            return data.get('summaries', [])
+
+    async def fetch_detailed_text_versions(self, text_versions):
+        url = f"{text_versions['url']}&api_key={self.api_key}"
+        async with self.session.get(url) as response:
+            response.raise_for_status()
+            data = await response.json()
+            return data.get('textVersions', [])
+
+    async def fetch_bill_text(self, text_version):
+        formats = text_version.get('formats', [])
+        formatted_text = next((f for f in formats if f['type'] == 'Formatted Text'), None)
+        if formatted_text:
+            url = formatted_text['url']
+            async with self.session.get(url) as response:
+                response.raise_for_status()
+                return await response.text()
         return None
