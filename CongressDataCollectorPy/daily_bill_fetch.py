@@ -4,12 +4,13 @@ from api_client import CongressApiClient
 from cosmos_db_client import CosmosDbClient
 from datetime import datetime, timezone
 import logging
+import time
 
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 async def fetch_recent_bills(max_runtime=1500):  # Default to 25 minutes max runtime
     logger.debug(f"Starting fetch_recent_bills with max_runtime={max_runtime}")
+    start_time = time.time()
     config = load_config()
     logger.debug(f"Loaded configuration: {config}")
     
@@ -32,11 +33,20 @@ async def fetch_recent_bills(max_runtime=1500):  # Default to 25 minutes max run
         logger.info(f"Fetched {len(bills)} bills")
 
         for i, bill in enumerate(bills, 1):
+            if time.time() - start_time > max_runtime:
+                logger.warning(f"Reached maximum runtime of {max_runtime} seconds. Stopping processing.")
+                break
+
             logger.debug(f"Processing bill {i}/{len(bills)}: {bill.get('id', 'Unknown ID')}")
             bill_details = await api_client.fetch_bill_details(bill)
             await cosmos_client.store_bill(bill_details)
+            logger.info(f"Stored bill {i}/{len(bills)} in CosmosDB")
 
-        logger.info(f"Processed {len(bills)} bills")
+            if i % 10 == 0:  # Log every 10 bills
+                logger.info(f"Processed and stored {i} bills so far")
+
+        logger.info(f"Processed {i} out of {len(bills)} bills")
+        logger.debug(f"Total runtime: {time.time() - start_time:.2f} seconds")
 
 if __name__ == "__main__":
     logger.info("Starting daily bill fetch script")

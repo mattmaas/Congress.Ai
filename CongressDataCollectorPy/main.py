@@ -3,8 +3,15 @@ import argparse
 from full_bill_fetch import fetch_all_bills
 from daily_bill_fetch import fetch_recent_bills
 import logging
+import sys
 
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+# Configure logging to output to both file and console
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                    handlers=[
+                        logging.FileHandler("debug.log"),
+                        logging.StreamHandler(sys.stdout)
+                    ])
 logger = logging.getLogger(__name__)
 
 async def main(full_fetch=False, max_runtime=None):

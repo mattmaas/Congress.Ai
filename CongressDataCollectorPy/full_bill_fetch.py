@@ -5,7 +5,6 @@ from cosmos_db_client import CosmosDbClient
 import logging
 import time
 
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 async def fetch_all_bills(max_runtime=3600):  # Default to 1 hour max runtime
@@ -30,6 +29,10 @@ async def fetch_all_bills(max_runtime=3600):  # Default to 1 hour max runtime
             logger.debug(f"Processing bill {i}/{len(bills)}: {bill.get('id', 'Unknown ID')}")
             bill_details = await api_client.fetch_bill_details(bill)
             await cosmos_client.store_bill(bill_details)
+            logger.info(f"Stored bill {i}/{len(bills)} in CosmosDB")
+
+            if i % 10 == 0:  # Log every 10 bills
+                logger.info(f"Processed and stored {i} bills so far")
 
         logger.info(f"Processed {i} out of {len(bills)} bills")
         logger.debug(f"Total runtime: {time.time() - start_time:.2f} seconds")
