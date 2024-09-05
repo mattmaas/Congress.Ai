@@ -21,25 +21,61 @@ namespace App.ViewModels
         public string LatestActionText => _bill.LatestAction?.Text ?? "No action";
         public DateTime IntroducedDate => _bill.IntroducedDate;
         public DateTime LatestActionDate => _bill.LatestAction?.ActionDate ?? DateTime.MinValue;
-        public List<string> Sponsors => _bill.DetailedCosponsors?
-            .Where(c => c.CosponsorType == "sponsor")
-            .Select(c => $"{c.FirstName} {c.LastName} ({c.Party})")
-            .ToList() ?? new List<string>();
-        public List<string> Cosponsors => _bill.DetailedCosponsors?
-            .Where(c => c.CosponsorType == "cosponsor")
-            .Select(c => $"{c.FirstName} {c.LastName} ({c.Party})")
-            .ToList() ?? new List<string>();
+        public List<string> Sponsors => GetSponsors();
+        public List<string> Cosponsors => GetCosponsors();
         public string OpenAiSummary => _bill.OpenAiSummaries?.Summary ?? "No summary available";
-        public List<string> OpenAiKeyChanges => (_bill.OpenAiSummaries?.KeyChanges ?? new List<string>())
-            .Select(change => change.StartsWith("**Affected parties:**") ? change : change.Replace("**", "<b>").Replace("**", "</b>"))
-            .ToList();
-        public List<string> Subjects => _bill.DetailedSubjects?.Select(s => s.Name).ToList() ?? new List<string>();
-        public List<string> RelatedBills => _bill.DetailedRelatedBills?
-            .Select(r => $"{r.Type}{r.Number} - {r.Title}")
-            .ToList() ?? new List<string>();
-        public List<ActionViewModel> Actions => _bill.DetailedActions?
-            .Select(a => new ActionViewModel { Date = a.ActionDate, Text = a.Text })
-            .ToList() ?? new List<ActionViewModel>();
+        public List<string> OpenAiKeyChanges => GetOpenAiKeyChanges();
+        public List<string> Subjects => GetSubjects();
+        public List<string> RelatedBills => GetRelatedBills();
+        public List<ActionViewModel> Actions => GetActions();
+
+        private List<string> GetSponsors()
+        {
+            var sponsors = _bill.DetailedCosponsors?
+                .Where(c => c.CosponsorType == "sponsor")
+                .Select(c => $"{c.FirstName} {c.LastName} ({c.Party})")
+                .ToList();
+            return sponsors?.Count > 0 ? sponsors : new List<string> { "No sponsors available" };
+        }
+
+        private List<string> GetCosponsors()
+        {
+            var cosponsors = _bill.DetailedCosponsors?
+                .Where(c => c.CosponsorType == "cosponsor")
+                .Select(c => $"{c.FirstName} {c.LastName} ({c.Party})")
+                .ToList();
+            return cosponsors?.Count > 0 ? cosponsors : new List<string> { "No cosponsors available" };
+        }
+
+        private List<string> GetOpenAiKeyChanges()
+        {
+            var keyChanges = _bill.OpenAiSummaries?.KeyChanges?
+                .Select(change => change.StartsWith("**Affected parties:**") ? change : change.Replace("**", "<b>").Replace("**", "</b>"))
+                .ToList();
+            return keyChanges?.Count > 0 ? keyChanges : new List<string> { "No key changes available" };
+        }
+
+        private List<string> GetSubjects()
+        {
+            var subjects = _bill.DetailedSubjects?.Select(s => s.Name).ToList();
+            return subjects?.Count > 0 ? subjects : new List<string> { "No subjects available" };
+        }
+
+        private List<string> GetRelatedBills()
+        {
+            var relatedBills = _bill.DetailedRelatedBills?
+                .Select(r => $"{r.Type}{r.Number} - {r.Title}")
+                .ToList();
+            return relatedBills?.Count > 0 ? relatedBills : new List<string> { "No related bills available" };
+        }
+
+        private List<ActionViewModel> GetActions()
+        {
+            var actions = _bill.DetailedActions?
+                .Select(a => new ActionViewModel { Date = a.ActionDate, Text = a.Text })
+                .ToList();
+            return actions?.Count > 0 ? actions : new List<ActionViewModel> { new ActionViewModel { Date = DateTime.MinValue, Text = "No actions available" } };
+        }
     }
 
     public class ActionViewModel
