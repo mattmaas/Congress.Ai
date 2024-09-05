@@ -10,27 +10,25 @@
             <Label Text="{Binding BillViewModel.Title}" FontSize="18" LineBreakMode="WordWrap" Margin="0,0,0,10" />
             <Label Text="{Binding BillViewModel.IntroducedDate, StringFormat='Introduced: {0:d}'}" Margin="0,0,0,20" />
             
-            <Frame BackgroundColor="#f0f0f0" Padding="10" Margin="0,0,0,20">
-                <VerticalStackLayout>
-                    <Label Text="OpenAI Summary" FontAttributes="Bold" FontSize="18" />
-                    <Label Text="{Binding BillViewModel.OpenAiSummary}" TextColor="Black" />
-                    <Label Text="Key Changes" FontAttributes="Bold" FontSize="18" Margin="0,10,0,0" />
-                    <CollectionView ItemsSource="{Binding BillViewModel.OpenAiKeyChanges}" IsEnabled="False">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Padding="0,5">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Label Text="•" Grid.Column="0" Margin="0,0,5,0" VerticalOptions="Start" TextColor="Black" />
-                                    <Label Text="{Binding .}" Grid.Column="1" TextType="Html" LineBreakMode="WordWrap" TextColor="Black" />
-                                </Grid>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                </VerticalStackLayout>
-            </Frame>
+            <VerticalStackLayout Margin="0,0,0,20">
+                <Label Text="OpenAI Summary" FontAttributes="Bold" FontSize="18" />
+                <Label Text="{Binding BillViewModel.OpenAiSummary}" TextColor="Black" />
+                <Label Text="Key Changes" FontAttributes="Bold" FontSize="18" Margin="0,10,0,0" />
+                <CollectionView ItemsSource="{Binding BillViewModel.OpenAiKeyChanges}" IsEnabled="False">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Padding="0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Text="•" Grid.Column="0" Margin="0,0,5,0" VerticalOptions="Start" TextColor="Black" />
+                                <Label Text="{Binding .}" Grid.Column="1" TextType="Html" LineBreakMode="WordWrap" TextColor="Black" />
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
 
             <Label Text="Latest Action" FontAttributes="Bold" FontSize="18" Margin="0,20,0,0" />
             <Label Text="{Binding BillViewModel.LatestActionText}" />
