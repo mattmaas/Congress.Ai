@@ -1,4 +1,4 @@
-using CongressDataCollector.Core.Models;
+using App.Models;
 using System;
 
 namespace App.ViewModels
