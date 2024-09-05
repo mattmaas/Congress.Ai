@@ -38,9 +38,9 @@
                             </Frame>
                             <StackLayout IsVisible="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.IsCompactViewMode}"
                                          Margin="5,0,5,10">
-                                <BoxView HeightRequest="1" Color="LightGray" />
+                                <BoxView HeightRequest="1" Color="LightGray" Margin="0,0,0,5" />
                                 <Label Text="{Binding Number}" FontAttributes="Bold" FontSize="16" TextColor="#3498db" />
-                                <Label Text="{Binding Title}" LineBreakMode="TailTruncation" MaxLines="2" Margin="0,2,0,2" />
+                                <Label Text="{Binding Title}" LineBreakMode="TailTruncation" MaxLines="2" Margin="0,2,0,0" />
                                 <StackLayout.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.GoToBillDetailsCommand}"
                                                           CommandParameter="{Binding .}" />
