@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<TabbedPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:App"
              x:Class="App.BillDetailsPage"
              Title="Bill Details">
 
-    <ContentPage Title="Info">
-        <ScrollView>
-            <VerticalStackLayout Padding="20">
+    <ScrollView>
+        <VerticalStackLayout Padding="20">
                 <Label Text="{Binding BillViewModel.Number}" FontSize="20" FontAttributes="Bold" Margin="0,0,0,10" />
                 <Label Text="{Binding BillViewModel.Title}" FontSize="18" LineBreakMode="WordWrap" Margin="0,0,0,10" />
                 <Label Text="{Binding BillViewModel.IntroducedDate, StringFormat='Introduced: {0:d}'}" Margin="0,0,0,20" />
@@ -85,9 +83,12 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
+
+                <Button Text="View Full Bill Text" 
+                        Command="{Binding ViewFullTextCommand}"
+                        Margin="0,20,0,0" />
             </VerticalStackLayout>
         </ScrollView>
-    </ContentPage>
-
-    <local:BillTextPage Title="Text" BindingContext="{Binding .}" />
-</TabbedPage>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

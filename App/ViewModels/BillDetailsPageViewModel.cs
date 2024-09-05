@@ -1,6 +1,6 @@
 using App.Models;
 using App.Services;
-using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace App.ViewModels
 {
@@ -16,7 +16,7 @@ namespace App.ViewModels
             set
             {
                 _billId = value;
-                LoadBill(value);
+                OnPropertyChanged();
             }
         }
 
@@ -31,14 +31,19 @@ namespace App.ViewModels
             }
         }
 
+        public ICommand ViewFullTextCommand { get; }
+
         public BillDetailsPageViewModel(CosmosDbService cosmosDbService)
         {
             _cosmosDbService = cosmosDbService;
+            ViewFullTextCommand = new Command(async () => await ViewFullText());
         }
 
-        private async void LoadBill(string billId)
+        public async void LoadBill()
         {
-            var bill = await _cosmosDbService.GetBillByIdAsync(billId);
+            if (string.IsNullOrEmpty(BillId)) return;
+
+            var bill = await _cosmosDbService.GetBillByIdAsync(BillId);
             if (bill != null)
             {
                 BillViewModel = new BillViewModel(bill);
@@ -48,6 +53,14 @@ namespace App.ViewModels
                 // Handle the case when the bill is not found
                 await Application.Current.MainPage.DisplayAlert("Error", "Bill not found", "OK");
                 await Shell.Current.GoToAsync("..");
+            }
+        }
+
+        private async Task ViewFullText()
+        {
+            if (BillViewModel != null)
+            {
+                await Shell.Current.Navigation.PushAsync(new BillTextPage(this));
             }
         }
     }
