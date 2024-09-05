@@ -83,18 +83,30 @@ class CongressApiClient:
             return bill_details
 
     async def fetch_detailed_sponsors(self, sponsors):
-        url = f"{sponsors['url']}&api_key={self.api_key}"
-        async with self.session.get(url) as response:
-            response.raise_for_status()
-            data = await response.json()
-            return data.get('sponsors', [])
+        if isinstance(sponsors, list):
+            return sponsors
+        elif isinstance(sponsors, dict) and 'url' in sponsors:
+            url = f"{sponsors['url']}&api_key={self.api_key}"
+            async with self.session.get(url) as response:
+                response.raise_for_status()
+                data = await response.json()
+                return data.get('sponsors', [])
+        else:
+            logger.warning(f"Unexpected sponsors format: {sponsors}")
+            return []
 
     async def fetch_detailed_committees(self, committees):
-        url = f"{committees['url']}&api_key={self.api_key}"
-        async with self.session.get(url) as response:
-            response.raise_for_status()
-            data = await response.json()
-            return data.get('committees', [])
+        if isinstance(committees, list):
+            return committees
+        elif isinstance(committees, dict) and 'url' in committees:
+            url = f"{committees['url']}&api_key={self.api_key}"
+            async with self.session.get(url) as response:
+                response.raise_for_status()
+                data = await response.json()
+                return data.get('committees', [])
+        else:
+            logger.warning(f"Unexpected committees format: {committees}")
+            return []
 
     async def fetch_detailed_actions(self, actions):
         url = f"{actions['url']}&api_key={self.api_key}"
