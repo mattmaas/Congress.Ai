@@ -17,14 +17,9 @@
                 <CollectionView ItemsSource="{Binding BillViewModel.OpenAiKeyChanges}" IsEnabled="False">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Grid Padding="0,5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Label Text="•" Grid.Column="0" Margin="0,0,5,0" VerticalOptions="Start" TextColor="Black" />
-                                <Label Text="{Binding .}" Grid.Column="1"  LineBreakMode="WordWrap" TextColor="Black" />
-                            </Grid>
+                            <Frame BackgroundColor="#F0F0F0" Padding="10,5" Margin="0,5" CornerRadius="5">
+                                <Label Text="{Binding .}" TextColor="#333333" LineBreakMode="WordWrap" />
+                            </Frame>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
