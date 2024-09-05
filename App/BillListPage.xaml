@@ -8,12 +8,8 @@
         <ToolbarItem Text="⚙️" Command="{Binding GoToSettingsCommand}" />
     </ContentPage.ToolbarItems>
 
-    <Grid RowDefinitions="Auto,*">
-        <Grid Grid.Row="0" ColumnDefinitions="*,*" Margin="10,10,10,0">
-            <Button Grid.Column="0" Text="House" Command="{Binding ShowHouseBillsCommand}" BackgroundColor="#3498db" TextColor="White" CornerRadius="5" />
-            <Button Grid.Column="1" Text="Senate" Command="{Binding ShowSenateBillsCommand}" BackgroundColor="#2ecc71" TextColor="White" CornerRadius="5" />
-        </Grid>
-        <Grid Grid.Row="1" Margin="0,10,0,0">
+    <Grid RowDefinitions="*,Auto">
+        <Grid Grid.Row="0" Margin="0,10,0,0">
             <CollectionView ItemsSource="{Binding CurrentBills}" 
                             RemainingItemsThreshold="1"
                             RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}"
@@ -47,6 +43,10 @@
             </CollectionView>
             <ActivityIndicator IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}" 
                                HorizontalOptions="Center" VerticalOptions="Center" />
+        </Grid>
+        <Grid Grid.Row="1" ColumnDefinitions="*,*" Margin="10,10,10,10">
+            <Button Grid.Column="0" Text="House" Command="{Binding ShowHouseBillsCommand}" BackgroundColor="#3498db" TextColor="White" CornerRadius="5" />
+            <Button Grid.Column="1" Text="Senate" Command="{Binding ShowSenateBillsCommand}" BackgroundColor="#2ecc71" TextColor="White" CornerRadius="5" />
         </Grid>
     </Grid>
 
