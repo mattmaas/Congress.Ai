@@ -17,6 +17,7 @@ namespace App.Models
         public List<Subject> DetailedSubjects { get; set; }
         public List<RelatedBill> DetailedRelatedBills { get; set; }
         public List<Action> DetailedActions { get; set; }
+        public string FullText { get; set; }
     }
 
     public class LatestAction
