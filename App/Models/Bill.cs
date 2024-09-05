@@ -30,6 +30,6 @@ namespace App.Models
     public class OpenAiSummaries
     {
         public string Summary { get; set; }
-        public string KeyChanges { get; set; }
+        public List<string> KeyChanges { get; set; }
     }
 }
