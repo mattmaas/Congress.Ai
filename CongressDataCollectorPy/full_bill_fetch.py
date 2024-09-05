@@ -20,7 +20,7 @@ async def fetch_all_bills(max_runtime=3600):  # Default to 1 hour max runtime
         cosmos_client = CosmosDbClient(config['cosmos_endpoint'], config['cosmos_key'], config['cosmos_database'], config['cosmos_container'])
         logger.debug("Initialized CosmosDbClient")
         openai_service = OpenAiService(config['openai_api_key'])
-        logger.debug("Initialized OpenAiService")
+        logger.debug(f"Initialized OpenAiService with API key: {'*' * len(config['openai_api_key'])}")
 
         bill_count = 0
         async for bill in api_client.fetch_bills(max_runtime=max_runtime):
