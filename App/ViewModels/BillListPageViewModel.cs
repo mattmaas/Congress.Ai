@@ -41,13 +41,16 @@ namespace App.ViewModels
         {
             if (billViewModel != null && !string.IsNullOrEmpty(billViewModel.Id))
             {
-                await Shell.Current.GoToAsync($"BillDetailsPage?billId={billViewModel.Id}");
+                await Shell.Current.GoToAsync($"///BillDetailsPage?billId={billViewModel.Id}");
             }
         }
 
         private async void LoadBills()
         {
             var bills = await _cosmosDbService.GetBillsAsync("SELECT * FROM c ORDER BY c.introducedDate DESC");
+
+            HouseBills.Clear();
+            SenateBills.Clear();
 
             foreach (var bill in bills)
             {
