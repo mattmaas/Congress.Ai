@@ -4,11 +4,20 @@
              x:Class="App.BillListPage"
              Title="Bills">
 
-    <Grid RowDefinitions="*,Auto">
-        <Grid Grid.Row="0">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="⚙️" Command="{Binding GoToSettingsCommand}" />
+    </ContentPage.ToolbarItems>
+
+    <Grid RowDefinitions="Auto,*">
+        <Grid Grid.Row="0" ColumnDefinitions="*,*" BackgroundColor="#f0f0f0">
+            <Button Grid.Column="0" Text="House" Command="{Binding ShowHouseBillsCommand}" BackgroundColor="#3498db" TextColor="White" CornerRadius="0" />
+            <Button Grid.Column="1" Text="Senate" Command="{Binding ShowSenateBillsCommand}" BackgroundColor="#2ecc71" TextColor="White" CornerRadius="0" />
+        </Grid>
+        <Grid Grid.Row="1">
             <CollectionView ItemsSource="{Binding CurrentBills}" 
                             RemainingItemsThreshold="1"
-                            RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}">
+                            RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}"
+                            Margin="5,0">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout>
@@ -34,11 +43,6 @@
             </CollectionView>
             <ActivityIndicator IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}" 
                                HorizontalOptions="Center" VerticalOptions="Center" />
-        </Grid>
-        <Grid Grid.Row="1" ColumnDefinitions="*,*,Auto" BackgroundColor="#f0f0f0">
-            <Button Grid.Column="0" Text="House" Command="{Binding ShowHouseBillsCommand}" BackgroundColor="#3498db" TextColor="White" CornerRadius="0" />
-            <Button Grid.Column="1" Text="Senate" Command="{Binding ShowSenateBillsCommand}" BackgroundColor="#2ecc71" TextColor="White" CornerRadius="0" />
-            <Button Grid.Column="2" Text="⚙️" Command="{Binding GoToSettingsCommand}" BackgroundColor="#f0f0f0" TextColor="Black" CornerRadius="0" />
         </Grid>
     </Grid>
 

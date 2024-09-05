@@ -70,7 +70,7 @@ namespace App.ViewModels
             ShowHouseBillsCommand = new Command(() => SwitchBillType(true));
             ShowSenateBillsCommand = new Command(() => SwitchBillType(false));
             LoadMoreCommand = new Command(async () => await LoadMoreBills());
-            GoToSettingsCommand = new Command(async () => await Shell.Current.GoToAsync("SettingsPage"));
+            GoToSettingsCommand = new Command(async () => await Shell.Current.GoToAsync("///SettingsPage"));
             LoadInitialBills();
 
             SettingsViewModel.ViewModeChanged += OnViewModeChanged;
