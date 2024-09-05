@@ -69,6 +69,14 @@ namespace App.ViewModels
             LoadMoreCommand = new Command(async () => await LoadMoreBills());
             GoToSettingsCommand = new Command(GoToSettings);
             LoadInitialBills();
+
+            SettingsViewModel.ViewModeChanged += OnViewModeChanged;
+            IsFullViewMode = Preferences.Get("IsFullViewMode", true);
+        }
+
+        private void OnViewModeChanged(object sender, bool isFullViewMode)
+        {
+            IsFullViewMode = isFullViewMode;
         }
 
         private async void GoToBillDetails(BillViewModel billViewModel)

@@ -7,6 +7,8 @@ namespace App.ViewModels
     {
         private bool _isFullViewMode = true;
 
+        public static event EventHandler<bool> ViewModeChanged;
+
         public bool IsFullViewMode
         {
             get => _isFullViewMode;
@@ -18,6 +20,7 @@ namespace App.ViewModels
                     OnPropertyChanged();
                     OnPropertyChanged(nameof(IsCompactViewMode));
                     SaveSettings();
+                    ViewModeChanged?.Invoke(this, _isFullViewMode);
                 }
             }
         }

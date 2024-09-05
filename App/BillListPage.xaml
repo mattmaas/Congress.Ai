@@ -20,6 +20,7 @@
                                 <Label Grid.Row="0" Grid.Column="0" Text="{Binding Number}" FontAttributes="Bold" FontSize="18" TextColor="#3498db" />
                                 <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Title}" LineBreakMode="TailTruncation" MaxLines="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.TitleMaxLines}" Margin="0,5,0,5" />
                                 <Label Grid.Row="2" Grid.Column="0" Text="{Binding IntroducedDate, StringFormat='Introduced: {0:d}'}" FontSize="Small" TextColor="Gray" IsVisible="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.IsFullViewMode}" />
+                                <Label Grid.Row="2" Grid.Column="1" Text="{Binding LatestActionText}" FontSize="Small" TextColor="Gray" IsVisible="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.IsFullViewMode}" />
                             </Grid>
                         </Frame>
                     </DataTemplate>
