@@ -8,12 +8,12 @@
         <ToolbarItem Text="⚙️" Command="{Binding GoToSettingsCommand}" />
     </ContentPage.ToolbarItems>
 
-    <Grid RowDefinitions="*,Auto">
-        <Grid Grid.Row="0" Margin="0,10,0,0">
+    <Grid RowDefinitions="*, Auto">
+        <Grid Grid.Row="0">
             <CollectionView ItemsSource="{Binding CurrentBills}" 
                             RemainingItemsThreshold="1"
                             RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}"
-                            Margin="5,0">
+                            Margin="5,10,5,0">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Margin="0,0,0,5">
@@ -58,9 +58,22 @@
             <ActivityIndicator IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}" 
                                HorizontalOptions="Center" VerticalOptions="Center" />
         </Grid>
-        <Grid Grid.Row="1" ColumnDefinitions="*,*" Margin="10,10,10,10">
-            <Button Grid.Column="0" Text="House" Command="{Binding ShowHouseBillsCommand}" BackgroundColor="#3498db" TextColor="White" CornerRadius="5" />
-            <Button Grid.Column="1" Text="Senate" Command="{Binding ShowSenateBillsCommand}" BackgroundColor="#2ecc71" TextColor="White" CornerRadius="5" />
+        
+        <BoxView Grid.Row="1" HeightRequest="1" Color="LightGray" />
+        
+        <Grid Grid.Row="1" ColumnDefinitions="*,*" BackgroundColor="White">
+            <ImageButton Grid.Column="0" 
+                         Source="house.png" 
+                         Command="{Binding ShowHouseBillsCommand}"
+                         Aspect="AspectFit"
+                         HeightRequest="40"
+                         Margin="0,10,0,10" />
+            <ImageButton Grid.Column="1" 
+                         Source="senate.png" 
+                         Command="{Binding ShowSenateBillsCommand}"
+                         Aspect="AspectFit"
+                         HeightRequest="40"
+                         Margin="0,10,0,10" />
         </Grid>
     </Grid>
 
