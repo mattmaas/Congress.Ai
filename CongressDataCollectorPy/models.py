@@ -35,7 +35,8 @@ class TextVersion(BaseModel):
     formats: List[dict]
 
 class OpenAiSummaries(BaseModel):
-    gpt4Summary: str
+    summary: str
+    keyChanges: List[str]
 
 from typing import Union
 
@@ -65,5 +66,5 @@ class Cosponsor(BaseModel):
     fullName: str
     party: str
     state: str
-    district: Optional[Union[str, int]]
+    district: Optional[str]
     sponsorshipDate: str
