@@ -56,13 +56,14 @@ async def fetch_all_bills(max_runtime=3600):  # Default to 1 hour max runtime
                         if 'actionCode' not in action:
                             action['actionCode'] = 'Unknown'  # or any default value
 
-                # Convert district to string in detailedCosponsors and ensure it's present
-                if 'detailedCosponsors' in bill_details:
-                    for cosponsor in bill_details['detailedCosponsors']:
-                        if 'district' not in cosponsor:
-                            cosponsor['district'] = 'Unknown'  # or any default value
-                        else:
-                            cosponsor['district'] = str(cosponsor['district'])
+                # Ensure detailedCosponsors is present and convert district to string
+                if 'detailedCosponsors' not in bill_details:
+                    bill_details['detailedCosponsors'] = []
+                for cosponsor in bill_details['detailedCosponsors']:
+                    if 'district' not in cosponsor:
+                        cosponsor['district'] = 'Unknown'  # or any default value
+                    else:
+                        cosponsor['district'] = str(cosponsor['district'])
 
                 # Convert number to string in detailedRelatedBills
                 if 'detailedRelatedBills' in bill_details:
