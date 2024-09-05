@@ -1,8 +1,8 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using CongressDataCollector.Core.Models;
-using System.Linq;
+using App.Models;
 using System;
+using System.Linq;
 using App.Services;
 
 namespace App.ViewModels

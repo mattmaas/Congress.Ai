@@ -1,4 +1,4 @@
-using CongressDataCollector.Core.Models;
+using App.Models;
 using App.Services;
 using System.Threading.Tasks;
 

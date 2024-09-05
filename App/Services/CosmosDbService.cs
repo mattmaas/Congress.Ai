@@ -1,5 +1,5 @@
 using Microsoft.Azure.Cosmos;
-using CongressDataCollector.Core.Models;
+using App.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
