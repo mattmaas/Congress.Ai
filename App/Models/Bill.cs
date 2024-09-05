@@ -11,6 +11,7 @@ namespace App.Models
         public string Type { get; set; }
         public DateTime IntroducedDate { get; set; }
         public LatestAction LatestAction { get; set; }
+        public List<Sponsor> Sponsors { get; set; }
         public List<Cosponsor> DetailedCosponsors { get; set; }
         public OpenAiSummaries OpenAiSummaries { get; set; }
         public List<Subject> DetailedSubjects { get; set; }
@@ -24,13 +25,21 @@ namespace App.Models
         public string Text { get; set; }
     }
 
+    public class Sponsor
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Party { get; set; }
+        public string State { get; set; }
+    }
+
     public class Cosponsor
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Party { get; set; }
         public string State { get; set; }
-        public string CosponsorType { get; set; }
+        public bool IsOriginalCosponsor { get; set; }
     }
 
     public class OpenAiSummaries
