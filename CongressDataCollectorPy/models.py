@@ -44,22 +44,22 @@ class Bill(BaseModel):
     congress: int
     type: str
     number: int
-    url: Optional[str]
+    url: str
     title: str
     latestAction: dict
     updateDate: str
     originChamber: str
-    detailedActions: Optional[List[Action]]
-    detailedCosponsors: Optional[List[Cosponsor]]
-    detailedRelatedBills: Optional[List[RelatedBill]]
-    detailedSubjects: Optional[List[Subject]]
-    detailedSummaries: Optional[List[Summary]]
-    detailedTextVersions: Optional[List[TextVersion]]
+    detailedActions: List[Action]
+    detailedCosponsors: List[Cosponsor]
+    detailedRelatedBills: List[RelatedBill]
+    detailedSubjects: List[Subject]
+    detailedSummaries: List[Summary]
+    detailedTextVersions: List[TextVersion]
     fullText: Optional[str]
     openAiSummaries: Optional[OpenAiSummaries]
 
     class Config:
-        extra = 'ignore'
+        extra = 'allow'
 
 class Cosponsor(BaseModel):
     bioguideId: str

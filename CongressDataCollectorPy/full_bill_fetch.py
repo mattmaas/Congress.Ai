@@ -20,7 +20,7 @@ async def fetch_all_bills(max_runtime=3600):  # Default to 1 hour max runtime
         cosmos_client = CosmosDbClient(config['cosmos_endpoint'], config['cosmos_key'], config['cosmos_database'], config['cosmos_container'])
         logger.debug("Initialized CosmosDbClient")
         openai_service = OpenAiService(config['openai_api_key'])
-        logger.debug(f"Initialized OpenAiService with API key: {'*' * len(config['openai_api_key'])}")
+        logger.debug("Initialized OpenAiService")
 
         bill_count = 0
         async for bill in api_client.fetch_bills(max_runtime=max_runtime):
@@ -29,11 +29,11 @@ async def fetch_all_bills(max_runtime=3600):  # Default to 1 hour max runtime
                 break
 
             bill_count += 1
-            logger.debug(f"Processing bill {bill_count}: {bill.get('id', 'Unknown ID')}")
+            logger.debug(f"Processing bill {bill_count}")
             try:
                 bill_details = await api_client.fetch_bill_details(bill)
                 if not bill_details:
-                    logger.warning(f"Empty bill details for bill {bill.get('id', 'Unknown ID')}")
+                    logger.warning(f"Empty bill details for bill {bill_count}")
                     continue
 
                 if 'fullText' in bill_details:
@@ -46,7 +46,7 @@ async def fetch_all_bills(max_runtime=3600):  # Default to 1 hour max runtime
                                 'keyChanges': summary_dict.get('keyChanges', [])
                             }
                         except json.JSONDecodeError:
-                            logger.error(f"Failed to parse OpenAI summary as JSON for bill {bill_details.get('id', 'Unknown ID')}")
+                            logger.error(f"Failed to parse OpenAI summary as JSON for bill {bill_count}")
 
                 # Ensure actionCode is present in detailedActions
                 if 'detailedActions' in bill_details:
@@ -79,7 +79,7 @@ async def fetch_all_bills(max_runtime=3600):  # Default to 1 hour max runtime
                 if bill_count % 10 == 0:  # Log every 10 bills
                     logger.info(f"Processed and stored {bill_count} bills so far")
             except Exception as e:
-                logger.error(f"Error processing bill {bill.get('id', 'Unknown ID')}: {str(e)}")
+                logger.error(f"Error processing bill {bill_count}: {str(e)}")
 
         logger.info(f"Processed and stored a total of {bill_count} bills")
         logger.debug(f"Total runtime: {time.time() - start_time:.2f} seconds")
