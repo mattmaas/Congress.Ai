@@ -23,7 +23,7 @@
                                    Padding="10"
                                    Margin="5,0,5,5">
                                 <StackLayout>
-                                    <Label Text="{Binding Number}" FontAttributes="Bold" FontSize="18" TextColor="#3498db" />
+                                    <Label Text="{Binding Number}" FontAttributes="Bold" FontSize="18" TextColor="#000080" />
                                     <Label Text="{Binding Title}" LineBreakMode="TailTruncation" MaxLines="3" Margin="0,5,0,5" />
                                     <StackLayout Orientation="Horizontal">
                                         <Label Text="{Binding IntroducedDateFormatted}" FontSize="Small" TextColor="Gray" />
@@ -39,7 +39,7 @@
                             <StackLayout IsVisible="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.IsCompactViewMode}"
                                          Margin="5,0,5,5">
                                 <BoxView HeightRequest="1" Color="LightGray" Margin="0,0,0,2" />
-                                <Label Text="{Binding Number}" FontAttributes="Bold" FontSize="16" TextColor="#3498db" Margin="0,0,0,1" />
+                                <Label Text="{Binding Number}" FontAttributes="Bold" FontSize="16" TextColor="#000080" Margin="0,0,0,1" />
                                 <Label Text="{Binding Title}" LineBreakMode="TailTruncation" MaxLines="2" Margin="0,0,0,0" />
                                 <StackLayout.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.GoToBillDetailsCommand}"
