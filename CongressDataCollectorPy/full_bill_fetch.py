@@ -48,11 +48,25 @@ async def fetch_all_bills(max_runtime=3600):  # Default to 1 hour max runtime
                         except json.JSONDecodeError:
                             logger.error(f"Failed to parse OpenAI summary as JSON for bill {bill_details.get('id', 'Unknown ID')}")
 
-                # Convert district to string in detailedCosponsors
+                # Ensure actionCode is present in detailedActions
+                if 'detailedActions' in bill_details:
+                    for action in bill_details['detailedActions']:
+                        if 'actionCode' not in action:
+                            action['actionCode'] = 'Unknown'  # or any default value
+
+                # Convert district to string in detailedCosponsors and ensure it's present
                 if 'detailedCosponsors' in bill_details:
                     for cosponsor in bill_details['detailedCosponsors']:
-                        if 'district' in cosponsor:
+                        if 'district' not in cosponsor:
+                            cosponsor['district'] = 'Unknown'  # or any default value
+                        else:
                             cosponsor['district'] = str(cosponsor['district'])
+
+                # Convert number to string in detailedRelatedBills
+                if 'detailedRelatedBills' in bill_details:
+                    for related_bill in bill_details['detailedRelatedBills']:
+                        if 'number' in related_bill:
+                            related_bill['number'] = str(related_bill['number'])
 
                 # Ensure required fields are present
                 bill_details['url'] = bill_details.get('url', '')
