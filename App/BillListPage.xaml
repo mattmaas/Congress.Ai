@@ -5,10 +5,10 @@
              Title="Bills">
 
     <Grid RowDefinitions="*,Auto">
-        <CollectionView Grid.Row="0" 
-                        ItemsSource="{Binding CurrentBills}" 
-                        RemainingItemsThreshold="1"
-                        RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}">
+        <Grid Grid.Row="0">
+            <CollectionView ItemsSource="{Binding CurrentBills}" 
+                            RemainingItemsThreshold="1"
+                            RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Frame Margin="10,5" Padding="15" BorderColor="LightGray" CornerRadius="10" HasShadow="True">
@@ -34,7 +34,10 @@
                 </StackLayout>
             </CollectionView.Footer>
         </CollectionView>
-        <Grid Grid.Row="1" ColumnDefinitions="*,*" BackgroundColor="#f0f0f0">
+        <ActivityIndicator IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}" 
+                           HorizontalOptions="Center" VerticalOptions="Center" />
+    </Grid>
+    <Grid Grid.Row="1" ColumnDefinitions="*,*" BackgroundColor="#f0f0f0">
             <Button Grid.Column="0" Text="House" Command="{Binding ShowHouseBillsCommand}" BackgroundColor="#3498db" TextColor="White" CornerRadius="0" />
             <Button Grid.Column="1" Text="Senate" Command="{Binding ShowSenateBillsCommand}" BackgroundColor="#2ecc71" TextColor="White" CornerRadius="0" />
         </Grid>

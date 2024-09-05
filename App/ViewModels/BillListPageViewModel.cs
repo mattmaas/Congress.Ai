@@ -69,7 +69,7 @@ namespace App.ViewModels
             {
                 _isHouseBills = isHouseBills;
                 _currentPage = 0;
-                CurrentBills.Clear();
+                CurrentBills = new ObservableCollection<BillViewModel>();
                 LoadInitialBills();
             }
         }
@@ -77,6 +77,7 @@ namespace App.ViewModels
         private async void LoadInitialBills()
         {
             IsLoading = true;
+            CurrentBills.Clear();
             await LoadMoreBills();
             IsLoading = false;
         }
