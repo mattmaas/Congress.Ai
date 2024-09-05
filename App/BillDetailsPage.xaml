@@ -89,5 +89,5 @@
         </ScrollView>
     </ContentPage>
 
-    <local:BillTextPage Title="Text" />
+    <local:BillTextPage Title="Text" BindingContext="{Binding .}" />
 </TabbedPage>

@@ -4,9 +4,13 @@ namespace App
 {
     public partial class BillTextPage : ContentPage
     {
-        public BillTextPage(BillDetailsPageViewModel viewModel)
+        public BillTextPage()
         {
             InitializeComponent();
+        }
+
+        public BillTextPage(BillDetailsPageViewModel viewModel) : this()
+        {
             BindingContext = viewModel;
         }
     }
