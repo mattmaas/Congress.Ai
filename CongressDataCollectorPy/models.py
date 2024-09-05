@@ -5,7 +5,7 @@ class Action(BaseModel):
     actionDate: str
     text: str
     type: str
-    actionCode: str
+    actionCode: Optional[str] = None
     sourceSystem: dict
 
 class Cosponsor(BaseModel):
@@ -13,7 +13,7 @@ class Cosponsor(BaseModel):
     fullName: str
     party: str
     state: str
-    district: Optional[str]
+    district: Optional[Union[str, int]]
     sponsorshipDate: str
 
 class RelatedBill(BaseModel):
@@ -51,7 +51,7 @@ class Bill(BaseModel):
     originChamber: str
     detailedActions: List[Action]
     detailedCosponsors: List[Cosponsor]
-    detailedRelatedBills: List[RelatedBill]
+    detailedRelatedBills: Optional[List[RelatedBill]] = None
     detailedSubjects: List[Subject]
     detailedSummaries: Optional[List[Summary]] = None
     detailedTextVersions: List[TextVersion]
