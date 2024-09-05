@@ -1,5 +1,7 @@
 using App.Models;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace App.ViewModels
 {
@@ -12,11 +14,13 @@ namespace App.ViewModels
             _bill = bill ?? new Bill();
         }
 
-        public string Id => _bill.Number;
-        public string Number => _bill.Number ?? string.Empty;
+        public string Id => _bill.Id;
+        public string Number => $"{_bill.Type}{_bill.Number}";
         public string Title => _bill.Title ?? string.Empty;
         public string Type => _bill.Type ?? string.Empty;
-        public string LatestActionText => _bill.LatestAction?.Text ?? string.Empty;
-        public DateTime IntroducedDate => _bill.IntroducedDate ?? DateTime.MinValue;
+        public string LatestActionText => _bill.LatestAction?.Text ?? "No action";
+        public DateTime IntroducedDate => _bill.IntroducedDate;
+        public DateTime LatestActionDate => _bill.LatestAction?.ActionDate ?? DateTime.MinValue;
+        public List<string> Sponsors => _bill.DetailedCosponsors?.Select(c => $"{c.FirstName} {c.LastName}").ToList() ?? new List<string>();
     }
 }
