@@ -26,9 +26,9 @@
                                     <Label Text="{Binding Number}" FontAttributes="Bold" FontSize="18" TextColor="#3498db" />
                                     <Label Text="{Binding Title}" LineBreakMode="TailTruncation" MaxLines="3" Margin="0,5,0,5" />
                                     <StackLayout Orientation="Horizontal">
-                                        <Label Text="{Binding LatestActionDateFormatted}" FontSize="Small" TextColor="Gray" />
-                                        <Label Text=" | " FontSize="Small" TextColor="Gray" />
                                         <Label Text="{Binding IntroducedDateFormatted}" FontSize="Small" TextColor="Gray" />
+                                        <Label Text=" | " FontSize="Small" TextColor="Gray" />
+                                        <Label Text="{Binding LatestActionDateFormatted}" FontSize="Small" TextColor="Gray" />
                                     </StackLayout>
                                 </StackLayout>
                                 <Frame.GestureRecognizers>
