@@ -46,7 +46,8 @@ namespace App.ViewModels
             else
             {
                 // Handle the case when the bill is not found
-                // You might want to show an error message or navigate back
+                await Application.Current.MainPage.DisplayAlert("Error", "Bill not found", "OK");
+                await Shell.Current.GoToAsync("..");
             }
         }
     }
