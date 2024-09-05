@@ -64,37 +64,27 @@ class CongressApiClient:
             data = await response.json()
             bill_details = data.get('bill', {})
             
-            for field, method in [
-                ('actions', self.fetch_detailed_actions),
-                ('cosponsors', self.fetch_detailed_cosponsors),
-                ('relatedBills', self.fetch_detailed_related_bills),
-                ('subjects', self.fetch_detailed_subjects),
-                ('summaries', self.fetch_detailed_summaries),
-                ('textVersions', self.fetch_detailed_text_versions),
-                ('sponsors', self.fetch_detailed_sponsors),
-                ('committees', self.fetch_detailed_committees),
-            ]:
-                if field in bill_details:
-                    bill_details[f'detailed{field.capitalize()}'] = await method(bill_details[field])
+            if 'actions' in bill_details:
+                bill_details['detailedActions'] = await self.fetch_detailed_actions(bill_details['actions'])
             
-            if 'detailedTextVersions' in bill_details and bill_details['detailedTextVersions']:
-                bill_details['fullText'] = await self.fetch_bill_text(bill_details['detailedTextVersions'][-1])
+            if 'cosponsors' in bill_details:
+                bill_details['detailedCosponsors'] = await self.fetch_detailed_cosponsors(bill_details['cosponsors'])
+            
+            if 'relatedBills' in bill_details:
+                bill_details['detailedRelatedBills'] = await self.fetch_detailed_related_bills(bill_details['relatedBills'])
+            
+            if 'subjects' in bill_details:
+                bill_details['detailedSubjects'] = await self.fetch_detailed_subjects(bill_details['subjects'])
+            
+            if 'summaries' in bill_details:
+                bill_details['detailedSummaries'] = await self.fetch_detailed_summaries(bill_details['summaries'])
+            
+            if 'textVersions' in bill_details:
+                bill_details['detailedTextVersions'] = await self.fetch_detailed_text_versions(bill_details['textVersions'])
+                if bill_details['detailedTextVersions']:
+                    bill_details['fullText'] = await self.fetch_bill_text(bill_details['detailedTextVersions'][-1])
             
             return bill_details
-
-    async def fetch_detailed_sponsors(self, sponsors):
-        url = f"{sponsors['url']}&api_key={self.api_key}"
-        async with self.session.get(url) as response:
-            response.raise_for_status()
-            data = await response.json()
-            return data.get('sponsors', [])
-
-    async def fetch_detailed_committees(self, committees):
-        url = f"{committees['url']}&api_key={self.api_key}"
-        async with self.session.get(url) as response:
-            response.raise_for_status()
-            data = await response.json()
-            return data.get('committees', [])
 
     async def fetch_detailed_actions(self, actions):
         url = f"{actions['url']}&api_key={self.api_key}"
