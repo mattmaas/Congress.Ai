@@ -11,14 +11,29 @@ namespace App.ViewModels
     {
         private readonly CosmosDbService _cosmosDbService;
 
+        private ObservableCollection<BillViewModel> _currentBills;
+        public ObservableCollection<BillViewModel> CurrentBills
+        {
+            get => _currentBills;
+            set
+            {
+                _currentBills = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ObservableCollection<BillViewModel> HouseBills { get; } = new ObservableCollection<BillViewModel>();
         public ObservableCollection<BillViewModel> SenateBills { get; } = new ObservableCollection<BillViewModel>();
         public ICommand GoToBillDetailsCommand { get; }
+        public ICommand ShowHouseBillsCommand { get; }
+        public ICommand ShowSenateBillsCommand { get; }
 
         public BillListPageViewModel(CosmosDbService cosmosDbService)
         {
             _cosmosDbService = cosmosDbService;
             GoToBillDetailsCommand = new Command<BillViewModel>(GoToBillDetails);
+            ShowHouseBillsCommand = new Command(() => CurrentBills = HouseBills);
+            ShowSenateBillsCommand = new Command(() => CurrentBills = SenateBills);
             LoadBills();
         }
 
@@ -46,6 +61,8 @@ namespace App.ViewModels
                     SenateBills.Add(billViewModel);
                 }
             }
+
+            CurrentBills = HouseBills; // Default to showing House bills
         }
     }
 }

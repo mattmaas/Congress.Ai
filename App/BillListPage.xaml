@@ -5,40 +5,20 @@
              Title="Bills">
 
     <Grid RowDefinitions="Auto,*">
-        <TabView Grid.Row="0">
-            <TabView.ItemsSource>
-                <x:Array Type="{x:Type TabViewItem}">
-                    <TabViewItem Text="House">
-                        <TabViewItem.Content>
-                            <ListView ItemsSource="{Binding HouseBills}">
-                                <ListView.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextCell Text="{Binding Number}" 
-                                                  Detail="{Binding Title}"
-                                                  Command="{Binding BindingContext.GoToBillDetailsCommand, Source={RelativeSource AncestorType={x:Type ListView}}}"
-                                                  CommandParameter="{Binding .}" />
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
-                            </ListView>
-                        </TabViewItem.Content>
-                    </TabViewItem>
-                    <TabViewItem Text="Senate">
-                        <TabViewItem.Content>
-                            <ListView ItemsSource="{Binding SenateBills}">
-                                <ListView.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextCell Text="{Binding Number}" 
-                                                  Detail="{Binding Title}"
-                                                  Command="{Binding BindingContext.GoToBillDetailsCommand, Source={RelativeSource AncestorType={x:Type ListView}}}"
-                                                  CommandParameter="{Binding .}" />
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
-                            </ListView>
-                        </TabViewItem.Content>
-                    </TabViewItem>
-                </x:Array>
-            </TabView.ItemsSource>
-        </TabView>
+        <StackLayout Grid.Row="0" Orientation="Horizontal">
+            <Button Text="House" Command="{Binding ShowHouseBillsCommand}" />
+            <Button Text="Senate" Command="{Binding ShowSenateBillsCommand}" />
+        </StackLayout>
+        <ListView Grid.Row="1" ItemsSource="{Binding CurrentBills}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding Number}" 
+                              Detail="{Binding Title}"
+                              Command="{Binding BindingContext.GoToBillDetailsCommand, Source={RelativeSource AncestorType={x:Type ListView}}}"
+                              CommandParameter="{Binding .}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 
 </ContentPage>
