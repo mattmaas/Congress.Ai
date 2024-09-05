@@ -3,6 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="App.BillDetailsPage"
              Title="Bill Details">
+    <ContentPage.Resources>
+        <ResourceDictionary Source="/Resources/Styles/BulletStyles.xaml" />
+    </ContentPage.Resources>
 
     <ScrollView>
         <VerticalStackLayout Padding="20">
@@ -23,7 +26,7 @@
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <Label Text="•" Grid.Column="0" Margin="0,0,5,0" VerticalOptions="Start" TextColor="Black" />
+                                    <Label Text="•" Grid.Column="0" Style="{StaticResource CustomBulletStyle}" />
                                     <Label Text="{Binding .}" Grid.Column="1" TextColor="Black" LineBreakMode="WordWrap" />
                                 </Grid>
                             </Frame>
