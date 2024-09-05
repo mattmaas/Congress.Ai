@@ -4,26 +4,22 @@ namespace App
 {
     public partial class BillDetailsPage : ContentPage
     {
-        public BillDetailsPage()
+        public BillDetailsPage(string billId)
         {
             InitializeComponent();
-            BindingContext = App.Services.GetRequiredService<BillDetailsPageViewModel>();
+            var viewModel = App.Services.GetRequiredService<BillDetailsPageViewModel>();
+            viewModel.BillId = billId;
+            BindingContext = viewModel;
         }
 
         protected override bool OnBackButtonPressed()
         {
-            GoBack();
-            return true;
+            return base.OnBackButtonPressed();
         }
 
         private void OnBackButtonClicked(object sender, EventArgs e)
         {
-            GoBack();
-        }
-
-        private async void GoBack()
-        {
-            await Shell.Current.GoToAsync("..");
+            Navigation.PopAsync();
         }
     }
 }

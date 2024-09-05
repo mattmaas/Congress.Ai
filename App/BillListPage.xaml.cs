@@ -9,5 +9,11 @@ namespace App
             InitializeComponent();
             BindingContext = App.Services.GetRequiredService<BillListPageViewModel>();
         }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            (BindingContext as BillListPageViewModel)?.RefreshBills();
+        }
     }
 }

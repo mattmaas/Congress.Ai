@@ -4,14 +4,14 @@
              x:Class="App.BillDetailsPage"
              Title="Bill Details">
 
-    <Grid RowDefinitions="Auto,Auto,*">
+    <Grid RowDefinitions="Auto,*">
         <Grid ColumnDefinitions="Auto,*" Padding="10">
             <Button Grid.Column="0" 
                     Text="&#x2190;" 
-                    FontSize="24"
-                    WidthRequest="50"
-                    HeightRequest="50"
-                    CornerRadius="25"
+                    FontSize="20"
+                    WidthRequest="40"
+                    HeightRequest="40"
+                    CornerRadius="20"
                     BackgroundColor="#007AFF"
                     TextColor="White"
                     Clicked="OnBackButtonClicked" />
@@ -19,7 +19,8 @@
                    Text="{Binding BillViewModel.Number}" 
                    FontAttributes="Bold" 
                    FontSize="24" 
-                   VerticalOptions="Center" />
+                   VerticalOptions="Center"
+                   Margin="10,0,0,0" />
         </Grid>
         
         <VerticalStackLayout Grid.Row="1" Padding="10,0,10,10">

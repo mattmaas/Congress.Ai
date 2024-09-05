@@ -56,8 +56,13 @@ namespace App.ViewModels
         {
             if (billViewModel != null && !string.IsNullOrEmpty(billViewModel.Id))
             {
-                await Shell.Current.GoToAsync($"///BillDetailsPage?billId={billViewModel.Id}");
+                await Shell.Current.Navigation.PushAsync(new BillDetailsPage(billViewModel.Id));
             }
+        }
+
+        public void RefreshBills()
+        {
+            // This method can be called when the page appears to refresh the bill list if needed
         }
 
         private async void LoadBills()
