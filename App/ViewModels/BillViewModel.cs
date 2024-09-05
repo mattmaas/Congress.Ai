@@ -31,8 +31,7 @@ namespace App.ViewModels
 
         private List<string> GetSponsors()
         {
-            var sponsors = _bill.DetailedCosponsors?
-                .Where(c => c.CosponsorType == "sponsor")
+            var sponsors = _bill.Sponsors?
                 .Select(c => $"{c.FirstName} {c.LastName} ({c.Party}-{c.State})")
                 .ToList();
             return sponsors?.Count > 0 ? sponsors : new List<string> { "No sponsors information available" };
@@ -41,7 +40,7 @@ namespace App.ViewModels
         private List<string> GetCosponsors()
         {
             var cosponsors = _bill.DetailedCosponsors?
-                .Where(c => c.CosponsorType == "cosponsor")
+                .Where(c => c.IsOriginalCosponsor)
                 .Select(c => $"{c.FirstName} {c.LastName} ({c.Party}-{c.State})")
                 .ToList();
             return cosponsors?.Count > 0 ? cosponsors : new List<string> { "No cosponsors information available" };
