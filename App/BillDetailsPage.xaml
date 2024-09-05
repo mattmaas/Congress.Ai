@@ -20,16 +20,14 @@
                 <CollectionView ItemsSource="{Binding BillViewModel.OpenAiKeyChanges}" IsEnabled="False">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Frame Padding="10,5" Margin="0,5" CornerRadius="5">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Label Text="•" Grid.Column="0" Style="{StaticResource CustomBulletStyle}" />
-                                    <Label Text="{Binding .}" Grid.Column="1" TextColor="Black" LineBreakMode="WordWrap" />
-                                </Grid>
-                            </Frame>
+                            <Grid Margin="0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Text="•" Grid.Column="0" Style="{StaticResource CustomBulletStyle}" />
+                                <Label Text="{Binding .}" Grid.Column="1" TextColor="Black" LineBreakMode="WordWrap" />
+                            </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>

@@ -6,5 +6,6 @@
         <Setter Property="FontAttributes" Value="Bold" />
         <Setter Property="Margin" Value="0,0,5,0" />
         <Setter Property="VerticalOptions" Value="Start" />
+        <Setter Property="FontSize" Value="16" />
     </Style>
 </ResourceDictionary>
