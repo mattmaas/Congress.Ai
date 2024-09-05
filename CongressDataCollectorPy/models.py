@@ -37,11 +37,13 @@ class TextVersion(BaseModel):
 class OpenAiSummaries(BaseModel):
     gpt4Summary: str
 
+from typing import Union
+
 class Bill(BaseModel):
     congress: int
     type: str
     number: int
-    url: str
+    url: Optional[str]
     title: str
     latestAction: dict
     updateDate: str
@@ -54,3 +56,14 @@ class Bill(BaseModel):
     detailedTextVersions: Optional[List[TextVersion]]
     fullText: Optional[str]
     openAiSummaries: Optional[OpenAiSummaries]
+
+    class Config:
+        extra = 'ignore'
+
+class Cosponsor(BaseModel):
+    bioguideId: str
+    fullName: str
+    party: str
+    state: str
+    district: Optional[Union[str, int]]
+    sponsorshipDate: str

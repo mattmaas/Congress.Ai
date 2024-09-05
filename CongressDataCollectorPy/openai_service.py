@@ -1,16 +1,15 @@
-import openai
+from openai import AsyncOpenAI
 import logging
 
 logger = logging.getLogger(__name__)
 
 class OpenAiService:
     def __init__(self, api_key):
-        self.api_key = api_key
-        openai.api_key = api_key
+        self.client = AsyncOpenAI(api_key=api_key)
 
     async def analyze_bill_text(self, bill_text):
         try:
-            response = await openai.ChatCompletion.acreate(
+            response = await self.client.chat.completions.create(
                 model="gpt-4o-mini",
                 messages=[
                     {"role": "system", "content": self.construct_prompt()},
@@ -20,12 +19,13 @@ class OpenAiService:
                 temperature=0.7,
                 response_format={"type": "json_object"}
             )
-            return response.choices[0].message['content'].strip()
+            return response.choices[0].message.content.strip()
         except Exception as e:
             logger.error(f"Error in OpenAI API call: {str(e)}")
             return None
 
-    def construct_prompt(self):
+    @staticmethod
+    def construct_prompt():
         return """
 Analyze the provided bill text and generate a response in JSON format that includes a brief summary and the most crucial key changes. The summary should distill the bill's primary goals and effects, excluding specific references like bill numbers which are provided elsewhere. Please start the summary by referencing the title of the bill rather than just calling it the 'bill'. Throughout both sections of your response, remember to use specific language rather than vague. This for an app that needs to educate a lot of people. Each key change should be concisely described, integrating its broader implications in a single sentence. Where relevant, include 'Affected parties' with who is impacted.
 
