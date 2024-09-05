@@ -4,17 +4,8 @@
              x:Class="App.BillListPage"
              Title="Bills">
 
-    <Grid RowDefinitions="Auto,*,Auto">
-        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Padding="10,5">
-            <Label Text="Bills" FontSize="Large" FontAttributes="Bold" VerticalOptions="Center" />
-            <ImageButton Grid.Column="1" 
-                         Source="settings_gear.png"
-                         HeightRequest="24"
-                         WidthRequest="24"
-                         Command="{Binding GoToSettingsCommand}"
-                         BackgroundColor="Transparent" />
-        </Grid>
-        <Grid Grid.Row="1">
+    <Grid RowDefinitions="*,Auto">
+        <Grid Grid.Row="0">
             <CollectionView ItemsSource="{Binding CurrentBills}" 
                             RemainingItemsThreshold="1"
                             RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}">
