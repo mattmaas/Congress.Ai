@@ -14,9 +14,9 @@
             <Label Text="{Binding BillViewModel.IntroducedDate, StringFormat='Introduced: {0:d}'}" Margin="0,0,0,20" />
             
             <VerticalStackLayout Margin="0,0,0,20">
-                <Label Text="AI Summary" FontAttributes="Bold" FontSize="18" />
+                <Label Text="AI Summary" FontAttributes="Bold" FontSize="18" TextColor="Black" />
                 <Label Text="{Binding BillViewModel.OpenAiSummary}" TextColor="Black" />
-                <Label Text="Key Changes" FontAttributes="Bold" FontSize="18" Margin="0,10,0,0" />
+                <Label Text="Key Changes" FontAttributes="Bold" FontSize="18" Margin="0,10,0,0" TextColor="Black" />
                 <CollectionView ItemsSource="{Binding BillViewModel.OpenAiKeyChanges}" IsEnabled="False">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
@@ -25,7 +25,7 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Label Text="•" Grid.Column="0" Style="{StaticResource CustomBulletStyle}" />
+                                <Label Text="•" Grid.Column="0" Style="{StaticResource CustomBulletStyle}" TextColor="Black" />
                                 <Label Text="{Binding .}" Grid.Column="1" TextColor="Black" LineBreakMode="WordWrap" />
                             </Grid>
                         </DataTemplate>
