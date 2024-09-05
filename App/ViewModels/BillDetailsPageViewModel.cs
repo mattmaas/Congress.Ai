@@ -1,10 +1,14 @@
 using CongressDataCollector.Core.Models;
+using App.Services;
+using System.Threading.Tasks;
 
 namespace App.ViewModels
 {
     [QueryProperty(nameof(BillId), "billId")]
     public class BillDetailsPageViewModel : BindableObject
     {
+        private readonly CosmosDbService _cosmosDbService;
+
         private string _billId;
         public string BillId
         {
@@ -27,18 +31,23 @@ namespace App.ViewModels
             }
         }
 
-        private void LoadBill(string billId)
+        public BillDetailsPageViewModel(CosmosDbService cosmosDbService)
         {
-            // TODO: Implement loading bill details from your data source
-            // For now, we'll use dummy data
-            var bill = new Bill
+            _cosmosDbService = cosmosDbService;
+        }
+
+        private async void LoadBill(string billId)
+        {
+            var bill = await _cosmosDbService.GetBillByIdAsync(billId);
+            if (bill != null)
             {
-                Number = billId,
-                Title = "Sample Bill " + billId,
-                Type = billId.StartsWith("H") ? "H.R." : "S.",
-                LatestAction = new LatestAction { Text = "Introduced in House" }
-            };
-            BillViewModel = new BillViewModel(bill);
+                BillViewModel = new BillViewModel(bill);
+            }
+            else
+            {
+                // Handle the case when the bill is not found
+                // You might want to show an error message or navigate back
+            }
         }
     }
 }

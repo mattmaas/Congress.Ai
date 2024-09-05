@@ -3,17 +3,21 @@ using System.Windows.Input;
 using CongressDataCollector.Core.Models;
 using System.Linq;
 using System;
+using App.Services;
 
 namespace App.ViewModels
 {
     public class BillListPageViewModel : BindableObject
     {
+        private readonly CosmosDbService _cosmosDbService;
+
         public ObservableCollection<BillViewModel> HouseBills { get; } = new ObservableCollection<BillViewModel>();
         public ObservableCollection<BillViewModel> SenateBills { get; } = new ObservableCollection<BillViewModel>();
         public ICommand GoToBillDetailsCommand { get; }
 
-        public BillListPageViewModel()
+        public BillListPageViewModel(CosmosDbService cosmosDbService)
         {
+            _cosmosDbService = cosmosDbService;
             GoToBillDetailsCommand = new Command<BillViewModel>(GoToBillDetails);
             LoadBills();
         }
@@ -26,18 +30,11 @@ namespace App.ViewModels
             }
         }
 
-        private void LoadBills()
+        private async void LoadBills()
         {
-            // TODO: Implement loading bills from your Cosmos DB
-            // For now, we'll add some dummy data
-            var bills = new List<Bill>
-            {
-                new Bill { Number = "H.R. 4250", Title = "PRESS Act", Type = "HR", IntroducedDate = DateTime.Parse("2023-06-21") },
-                new Bill { Number = "S. 455", Title = "Travel Freedom Act", Type = "S", IntroducedDate = DateTime.Parse("2023-02-15") },
-                // Add more dummy data as needed
-            };
+            var bills = await _cosmosDbService.GetBillsAsync("SELECT * FROM c ORDER BY c.introducedDate DESC");
 
-            foreach (var bill in bills.OrderByDescending(b => b.IntroducedDate))
+            foreach (var bill in bills)
             {
                 var billViewModel = new BillViewModel(bill);
                 if (bill.Type == "HR")

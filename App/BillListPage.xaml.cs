@@ -7,13 +7,7 @@ namespace App
         public BillListPage()
         {
             InitializeComponent();
-            BindingContext = new BillListPageViewModel();
-        }
-
-        public BillListPage(BillListPageViewModel viewModel)
-        {
-            InitializeComponent();
-            BindingContext = viewModel;
+            BindingContext = App.Services.GetRequiredService<BillListPageViewModel>();
         }
     }
 }
