@@ -12,18 +12,19 @@ namespace App
 
         protected override bool OnBackButtonPressed()
         {
-            return GoBack();
-        }
-
-        private bool GoBack()
-        {
-            Shell.Current.GoToAsync("..").ConfigureAwait(false);
+            _ = GoBack();
             return true;
         }
 
-        private void OnBackClicked(object sender, EventArgs e)
+        private async Task<bool> GoBack()
         {
-            GoBack();
+            await Shell.Current.GoToAsync("//BillListPage");
+            return true;
+        }
+
+        private async void OnBackClicked(object sender, EventArgs e)
+        {
+            await GoBack();
         }
     }
 }
