@@ -12,12 +12,18 @@ namespace App
 
         protected override bool OnBackButtonPressed()
         {
-            return base.OnBackButtonPressed();
+            GoBack();
+            return true;
         }
 
         private void OnBackButtonClicked(object sender, EventArgs e)
         {
-            Navigation.PopAsync();
+            GoBack();
+        }
+
+        private async void GoBack()
+        {
+            await Shell.Current.GoToAsync("..");
         }
     }
 }
