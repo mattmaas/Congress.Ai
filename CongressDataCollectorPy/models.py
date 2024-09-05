@@ -53,10 +53,10 @@ class Bill(BaseModel):
     detailedCosponsors: List[Cosponsor]
     detailedRelatedBills: List[RelatedBill]
     detailedSubjects: List[Subject]
-    detailedSummaries: List[Summary]
+    detailedSummaries: Optional[List[Summary]] = None
     detailedTextVersions: List[TextVersion]
-    fullText: Optional[str]
-    openAiSummaries: Optional[OpenAiSummaries]
+    fullText: Optional[str] = None
+    openAiSummaries: Optional[OpenAiSummaries] = None
 
     class Config:
         extra = 'allow'

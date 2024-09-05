@@ -24,7 +24,7 @@ async def fetch_recent_bills(max_runtime=1500):  # Default to 25 minutes max run
         logger.debug(f"Retrieved latest date from database: {latest_date}")
 
         bill_count = 0
-        async for bill in api_client.fetch_bills(from_date=latest_date, max_runtime=max_runtime):
+        async for bill in api_client.fetch_bills(from_date=latest_date, sort="updateDate+desc", max_runtime=max_runtime):
             if time.time() - start_time > max_runtime:
                 logger.warning(f"Reached maximum runtime of {max_runtime} seconds. Stopping processing.")
                 break
