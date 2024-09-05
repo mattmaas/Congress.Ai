@@ -74,6 +74,8 @@ async def fetch_all_bills(max_runtime=3600):  # Default to 1 hour max runtime
                 # Ensure required fields are present
                 bill_details['url'] = bill_details.get('url', '')
                 bill_details['detailedRelatedBills'] = bill_details.get('detailedRelatedBills', [])
+                bill_details['detailedSubjects'] = bill_details.get('detailedSubjects', [])
+                bill_details['detailedTextVersions'] = bill_details.get('detailedTextVersions', [])
                 bill_details['openAiSummaries'] = bill_details.get('openAiSummaries', None)
 
                 await cosmos_client.store_bill(bill_details)
