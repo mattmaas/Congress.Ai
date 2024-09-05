@@ -10,6 +10,7 @@ namespace App.ViewModels
     public class BillListPageViewModel : BindableObject
     {
         private readonly CosmosDbService _cosmosDbService;
+        private const int MaxBillsPerType = 50; // Limit to 50 bills per type
 
         private ObservableCollection<BillViewModel> _currentBills;
         public ObservableCollection<BillViewModel> CurrentBills
@@ -21,6 +22,20 @@ namespace App.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        private bool _isLoading;
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set
+            {
+                _isLoading = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsNotLoading));
+            }
+        }
+
+        public bool IsNotLoading => !IsLoading;
 
         public ObservableCollection<BillViewModel> HouseBills { get; } = new ObservableCollection<BillViewModel>();
         public ObservableCollection<BillViewModel> SenateBills { get; } = new ObservableCollection<BillViewModel>();
@@ -47,7 +62,9 @@ namespace App.ViewModels
 
         private async void LoadBills()
         {
-            var bills = await _cosmosDbService.GetBillsAsync("SELECT * FROM c ORDER BY c.introducedDate DESC");
+            IsLoading = true;
+
+            var bills = await _cosmosDbService.GetBillsAsync($"SELECT TOP {MaxBillsPerType * 2} * FROM c ORDER BY c.introducedDate DESC");
 
             HouseBills.Clear();
             SenateBills.Clear();
@@ -55,17 +72,23 @@ namespace App.ViewModels
             foreach (var bill in bills)
             {
                 var billViewModel = new BillViewModel(bill);
-                if (bill.Type == "HR")
+                if (bill.Type == "HR" && HouseBills.Count < MaxBillsPerType)
                 {
                     HouseBills.Add(billViewModel);
                 }
-                else if (bill.Type == "S")
+                else if (bill.Type == "S" && SenateBills.Count < MaxBillsPerType)
                 {
                     SenateBills.Add(billViewModel);
+                }
+
+                if (HouseBills.Count >= MaxBillsPerType && SenateBills.Count >= MaxBillsPerType)
+                {
+                    break;
                 }
             }
 
             CurrentBills = HouseBills; // Default to showing House bills
+            IsLoading = false;
         }
     }
 }

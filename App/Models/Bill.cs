@@ -12,6 +12,7 @@ namespace App.Models
         public DateTime IntroducedDate { get; set; }
         public LatestAction LatestAction { get; set; }
         public List<Cosponsor> DetailedCosponsors { get; set; }
+        public OpenAiSummaries OpenAiSummaries { get; set; }
     }
 
     public class LatestAction
@@ -24,5 +25,11 @@ namespace App.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+    }
+
+    public class OpenAiSummaries
+    {
+        public string Summary { get; set; }
+        public string KeyChanges { get; set; }
     }
 }

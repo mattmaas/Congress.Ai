@@ -4,12 +4,9 @@
              x:Class="App.BillListPage"
              Title="Bills">
 
-    <Grid RowDefinitions="Auto,*">
-        <StackLayout Grid.Row="0" Orientation="Horizontal">
-            <Button Text="House" Command="{Binding ShowHouseBillsCommand}" />
-            <Button Text="Senate" Command="{Binding ShowSenateBillsCommand}" />
-        </StackLayout>
-        <ListView Grid.Row="1" ItemsSource="{Binding CurrentBills}">
+    <Grid RowDefinitions="*,Auto">
+        <ActivityIndicator Grid.Row="0" IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}" HorizontalOptions="Center" VerticalOptions="Center" />
+        <ListView Grid.Row="0" ItemsSource="{Binding CurrentBills}" IsVisible="{Binding IsNotLoading}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <TextCell Text="{Binding Number}" 
@@ -19,6 +16,10 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        <Grid Grid.Row="1" ColumnDefinitions="*,*" BackgroundColor="#f0f0f0">
+            <Button Grid.Column="0" Text="House" Command="{Binding ShowHouseBillsCommand}" BackgroundColor="#3498db" TextColor="White" CornerRadius="0" />
+            <Button Grid.Column="1" Text="Senate" Command="{Binding ShowSenateBillsCommand}" BackgroundColor="#2ecc71" TextColor="White" CornerRadius="0" />
+        </Grid>
     </Grid>
 
 </ContentPage>
