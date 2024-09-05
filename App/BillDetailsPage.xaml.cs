@@ -9,5 +9,10 @@ namespace App
             InitializeComponent();
             BindingContext = App.Services.GetRequiredService<BillDetailsPageViewModel>();
         }
+
+        private async void OnBackButtonClicked(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync("..");
+        }
     }
 }

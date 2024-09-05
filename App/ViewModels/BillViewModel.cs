@@ -23,8 +23,6 @@ namespace App.ViewModels
         public DateTime LatestActionDate => _bill.LatestAction?.ActionDate ?? DateTime.MinValue;
         public List<string> Sponsors => _bill.DetailedCosponsors?.Select(c => $"{c.FirstName} {c.LastName}").ToList() ?? new List<string>();
         public string OpenAiSummary => _bill.OpenAiSummaries?.Summary ?? "No summary available";
-        public string OpenAiKeyChanges => _bill.OpenAiSummaries?.KeyChanges != null 
-            ? string.Join("\n", _bill.OpenAiSummaries.KeyChanges) 
-            : "No key changes available";
+        public List<string> OpenAiKeyChanges => _bill.OpenAiSummaries?.KeyChanges ?? new List<string> { "No key changes available" };
     }
 }

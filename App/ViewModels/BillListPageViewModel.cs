@@ -71,7 +71,8 @@ namespace App.ViewModels
 
             foreach (var bill in bills)
             {
-                var billViewModel = new BillViewModel(bill);
+                var fullBill = await _cosmosDbService.GetBillByIdAsync(bill.Id);
+                var billViewModel = new BillViewModel(fullBill);
                 if (bill.Type == "HR" && HouseBills.Count < MaxBillsPerType)
                 {
                     HouseBills.Add(billViewModel);
