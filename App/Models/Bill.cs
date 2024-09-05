@@ -13,6 +13,9 @@ namespace App.Models
         public LatestAction LatestAction { get; set; }
         public List<Cosponsor> DetailedCosponsors { get; set; }
         public OpenAiSummaries OpenAiSummaries { get; set; }
+        public List<Subject> DetailedSubjects { get; set; }
+        public List<RelatedBill> DetailedRelatedBills { get; set; }
+        public List<Action> DetailedActions { get; set; }
     }
 
     public class LatestAction
@@ -25,11 +28,31 @@ namespace App.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Party { get; set; }
+        public string CosponsorType { get; set; }
     }
 
     public class OpenAiSummaries
     {
         public string Summary { get; set; }
         public List<string> KeyChanges { get; set; }
+    }
+
+    public class Subject
+    {
+        public string Name { get; set; }
+    }
+
+    public class RelatedBill
+    {
+        public string Type { get; set; }
+        public string Number { get; set; }
+        public string Title { get; set; }
+    }
+
+    public class Action
+    {
+        public DateTime ActionDate { get; set; }
+        public string Text { get; set; }
     }
 }

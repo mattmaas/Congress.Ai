@@ -10,9 +10,14 @@ namespace App
             BindingContext = App.Services.GetRequiredService<BillDetailsPageViewModel>();
         }
 
-        private async void OnBackButtonClicked(object sender, EventArgs e)
+        protected override bool OnBackButtonPressed()
         {
-            await Shell.Current.GoToAsync("..");
+            return base.OnBackButtonPressed();
+        }
+
+        private void OnBackButtonClicked(object sender, EventArgs e)
+        {
+            Navigation.PopAsync();
         }
     }
 }
