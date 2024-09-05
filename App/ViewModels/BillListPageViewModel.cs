@@ -56,8 +56,6 @@ namespace App.ViewModels
 
         public int TitleMaxLines => IsFullViewMode ? 3 : 2;
 
-        public ICommand GoToSettingsCommand { get; }
-
         public ICommand GoToBillDetailsCommand { get; }
         public ICommand ShowHouseBillsCommand { get; }
         public ICommand ShowSenateBillsCommand { get; }
