@@ -12,7 +12,7 @@
             <Frame BackgroundColor="#f0f0f0" Padding="10" Margin="0,0,0,20">
                 <VerticalStackLayout>
                     <Label Text="OpenAI Summary" FontAttributes="Bold" FontSize="18" />
-                    <Label Text="{Binding BillViewModel.OpenAiSummary}" />
+                    <Label Text="{Binding BillViewModel.OpenAiSummary}" TextColor="Black" />
                     <Label Text="Key Changes" FontAttributes="Bold" FontSize="18" Margin="0,10,0,0" />
                     <CollectionView ItemsSource="{Binding BillViewModel.OpenAiKeyChanges}" IsEnabled="False">
                         <CollectionView.ItemTemplate>
@@ -22,8 +22,8 @@
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <Label Text="•" Grid.Column="0" Margin="0,0,5,0" VerticalOptions="Start" />
-                                    <Label Text="{Binding .}" Grid.Column="1" TextType="Html" LineBreakMode="WordWrap" />
+                                    <Label Text="•" Grid.Column="0" Margin="0,0,5,0" VerticalOptions="Start" TextColor="Black" />
+                                    <Label Text="{Binding .}" Grid.Column="1" TextType="Html" LineBreakMode="WordWrap" TextColor="Black" />
                                 </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
