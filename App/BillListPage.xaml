@@ -18,7 +18,7 @@
                     <DataTemplate>
                         <StackLayout Margin="0,0,0,5">
                             <Frame IsVisible="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.IsFullViewMode}"
-                                   BorderColor="#3498db"
+                                   BorderColor="#000080"
                                    CornerRadius="10"
                                    Padding="10"
                                    Margin="5,0,5,5">

@@ -4,6 +4,9 @@
         <color android:color="#000080"/>
     </item>
     <item>
-        <bitmap android:src="@drawable/congress" android:gravity="center" />
+        <bitmap 
+            android:src="@drawable/congress" 
+            android:gravity="center"
+            android:scaleType="centerInside" />
     </item>
 </layer-list>
