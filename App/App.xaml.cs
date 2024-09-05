@@ -16,8 +16,8 @@ namespace App
 
             // Register the CosmosDbService
             services.AddSingleton<CosmosDbService>(sp => new CosmosDbService(
-                "YOUR_COSMOS_DB_ENDPOINT",
-                "YOUR_COSMOS_DB_KEY",
+                "https://c-ai-cosmos.documents.azure.com:443/",
+                "YLNTD88o0cBjrrc6eWH7poHswZxMXazmzaH7IKYQ",
                 "CongressDB",
                 "Bills"
             ));
