@@ -24,17 +24,19 @@ namespace App.ViewModels
         public List<string> Sponsors => _bill.DetailedCosponsors?
             .Where(c => c.CosponsorType == "sponsor")
             .Select(c => $"{c.FirstName} {c.LastName} ({c.Party})")
-            .ToList() ?? new List<string>();
+            .ToList() ?? new List<string> { "No sponsors available" };
         public List<string> Cosponsors => _bill.DetailedCosponsors?
             .Where(c => c.CosponsorType == "cosponsor")
             .Select(c => $"{c.FirstName} {c.LastName} ({c.Party})")
-            .ToList() ?? new List<string>();
+            .ToList() ?? new List<string> { "No cosponsors available" };
         public string OpenAiSummary => _bill.OpenAiSummaries?.Summary ?? "No summary available";
-        public List<string> OpenAiKeyChanges => _bill.OpenAiSummaries?.KeyChanges ?? new List<string> { "No key changes available" };
-        public List<string> Subjects => _bill.DetailedSubjects?.Select(s => s.Name).ToList() ?? new List<string>();
+        public List<string> OpenAiKeyChanges => (_bill.OpenAiSummaries?.KeyChanges ?? new List<string> { "No key changes available" })
+            .Select(change => change.StartsWith("**Affected parties:**") ? change : change.Replace("**", "<b>").Replace("**", "</b>"))
+            .ToList();
+        public List<string> Subjects => _bill.DetailedSubjects?.Select(s => s.Name).ToList() ?? new List<string> { "No subjects available" };
         public List<string> RelatedBills => _bill.DetailedRelatedBills?
             .Select(r => $"{r.Type}{r.Number} - {r.Title}")
-            .ToList() ?? new List<string>();
+            .ToList() ?? new List<string> { "No related bills available" };
         public List<ActionViewModel> Actions => _bill.DetailedActions?
             .Select(a => new ActionViewModel { Date = a.ActionDate, Text = a.Text })
             .ToList() ?? new List<ActionViewModel>();
