@@ -16,16 +16,18 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="congress.png" translatesAutoresizingMaskIntoConstraints="NO" id="hLz-g1-Xhs">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <rect key="frame" x="82.5" y="323" width="249" height="250"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="hLz-g1-Xhs" secondAttribute="height" multiplier="1:1" id="8dX-gf-cLx"/>
+                                </constraints>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="hLz-g1-Xhs" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="2zt-Xm-9Ue"/>
-                            <constraint firstItem="hLz-g1-Xhs" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="7Xf-dG-zfK"/>
-                            <constraint firstAttribute="bottom" secondItem="hLz-g1-Xhs" secondAttribute="bottom" id="Yzw-fm-4Pf"/>
-                            <constraint firstAttribute="trailing" secondItem="hLz-g1-Xhs" secondAttribute="trailing" id="uX3-6M-Icg"/>
+                            <constraint firstItem="hLz-g1-Xhs" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="2zt-Xm-9Ue"/>
+                            <constraint firstItem="hLz-g1-Xhs" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="7Xf-dG-zfK"/>
+                            <constraint firstItem="hLz-g1-Xhs" firstAttribute="width" secondItem="Ze5-6b-2t3" secondAttribute="width" multiplier="0.6" id="Yzw-fm-4Pf"/>
                         </constraints>
                     </view>
                 </viewController>
