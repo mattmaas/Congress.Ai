@@ -12,4 +12,9 @@
         ContentTemplate="{DataTemplate local:BillListPage}"
         Route="BillListPage" />
 
+    <ShellContent
+        Title="Settings"
+        ContentTemplate="{DataTemplate local:SettingsPage}"
+        Route="SettingsPage" />
+
 </Shell>

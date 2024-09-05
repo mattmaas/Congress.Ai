@@ -39,10 +39,25 @@ namespace App.ViewModels
 
         public bool IsNotLoading => !IsLoading;
 
+        private bool _isFullViewMode = true;
+        public bool IsFullViewMode
+        {
+            get => _isFullViewMode;
+            set
+            {
+                _isFullViewMode = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(TitleMaxLines));
+            }
+        }
+
+        public int TitleMaxLines => IsFullViewMode ? 2 : 1;
+
         public ICommand GoToBillDetailsCommand { get; }
         public ICommand ShowHouseBillsCommand { get; }
         public ICommand ShowSenateBillsCommand { get; }
         public ICommand LoadMoreCommand { get; }
+        public ICommand GoToSettingsCommand { get; }
 
         public BillListPageViewModel(CosmosDbService cosmosDbService)
         {
@@ -52,6 +67,7 @@ namespace App.ViewModels
             ShowHouseBillsCommand = new Command(() => SwitchBillType(true));
             ShowSenateBillsCommand = new Command(() => SwitchBillType(false));
             LoadMoreCommand = new Command(async () => await LoadMoreBills());
+            GoToSettingsCommand = new Command(GoToSettings);
             LoadInitialBills();
         }
 
@@ -61,6 +77,11 @@ namespace App.ViewModels
             {
                 await Shell.Current.Navigation.PushAsync(new BillDetailsPage(billViewModel.Id));
             }
+        }
+
+        private async void GoToSettings()
+        {
+            await Shell.Current.Navigation.PushAsync(new SettingsPage());
         }
 
         private void SwitchBillType(bool isHouseBills)

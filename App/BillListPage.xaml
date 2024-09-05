@@ -4,40 +4,45 @@
              x:Class="App.BillListPage"
              Title="Bills">
 
-    <Grid RowDefinitions="*,Auto">
-        <Grid Grid.Row="0">
+    <Grid RowDefinitions="Auto,*,Auto">
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Padding="10,5">
+            <Label Text="Bills" FontSize="Large" FontAttributes="Bold" VerticalOptions="Center" />
+            <ImageButton Grid.Column="1" 
+                         Source="settings_gear.png"
+                         HeightRequest="24"
+                         WidthRequest="24"
+                         Command="{Binding GoToSettingsCommand}"
+                         BackgroundColor="Transparent" />
+        </Grid>
+        <Grid Grid.Row="1">
             <CollectionView ItemsSource="{Binding CurrentBills}" 
                             RemainingItemsThreshold="1"
                             RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Frame Margin="10,5" Padding="15" BorderColor="LightGray" CornerRadius="10" HasShadow="True">
-                        <Grid RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="*,Auto">
-                            <Label Grid.Row="0" Grid.Column="0" Text="{Binding Number}" FontAttributes="Bold" FontSize="18" TextColor="#3498db" />
-                            <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Title}" LineBreakMode="TailTruncation" MaxLines="2" Margin="0,5,0,5" />
-                            <Label Grid.Row="2" Grid.Column="0" Text="{Binding IntroducedDate, StringFormat='Introduced: {0:d}'}" FontSize="Small" TextColor="Gray" />
-                            <Button Grid.Row="3" Grid.Column="1" Text="View Details" 
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.GoToBillDetailsCommand}"
-                                    CommandParameter="{Binding .}" 
-                                    BackgroundColor="#3498db"
-                                    TextColor="White"
-                                    CornerRadius="5"
-                                    Padding="10,5"
-                                    Margin="0,10,0,0" />
-                        </Grid>
-                    </Frame>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-            <CollectionView.Footer>
-                <StackLayout Padding="10">
-                    <ActivityIndicator IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}" />
-                </StackLayout>
-            </CollectionView.Footer>
-        </CollectionView>
-        <ActivityIndicator IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}" 
-                           HorizontalOptions="Center" VerticalOptions="Center" />
-    </Grid>
-    <Grid Grid.Row="1" ColumnDefinitions="*,*" BackgroundColor="#f0f0f0">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Margin="10,5" Padding="15" BorderColor="LightGray" CornerRadius="10" HasShadow="True">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.GoToBillDetailsCommand}"
+                                                      CommandParameter="{Binding .}" />
+                            </Frame.GestureRecognizers>
+                            <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,Auto">
+                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding Number}" FontAttributes="Bold" FontSize="18" TextColor="#3498db" />
+                                <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Title}" LineBreakMode="TailTruncation" MaxLines="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.TitleMaxLines}" Margin="0,5,0,5" />
+                                <Label Grid.Row="2" Grid.Column="0" Text="{Binding IntroducedDate, StringFormat='Introduced: {0:d}'}" FontSize="Small" TextColor="Gray" IsVisible="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.IsFullViewMode}" />
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.Footer>
+                    <StackLayout Padding="10">
+                        <ActivityIndicator IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}" />
+                    </StackLayout>
+                </CollectionView.Footer>
+            </CollectionView>
+            <ActivityIndicator IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}" 
+                               HorizontalOptions="Center" VerticalOptions="Center" />
+        </Grid>
+        <Grid Grid.Row="2" ColumnDefinitions="*,*" BackgroundColor="#f0f0f0">
             <Button Grid.Column="0" Text="House" Command="{Binding ShowHouseBillsCommand}" BackgroundColor="#3498db" TextColor="White" CornerRadius="0" />
             <Button Grid.Column="1" Text="Senate" Command="{Binding ShowSenateBillsCommand}" BackgroundColor="#2ecc71" TextColor="White" CornerRadius="0" />
         </Grid>
