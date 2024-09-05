@@ -2,6 +2,7 @@ using Microsoft.Azure.Cosmos;
 using CongressDataCollector.Core.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace App.Services
 {
@@ -10,9 +11,14 @@ namespace App.Services
         private readonly CosmosClient _cosmosClient;
         private readonly Container _container;
 
-        public CosmosDbService(string endpoint, string key, string databaseName, string containerName)
+        public CosmosDbService(IConfiguration configuration)
         {
-            _cosmosClient = new CosmosClient(endpoint, key);
+            var endpoint = configuration["CosmosEndpoint"];
+            var key = configuration["CosmosKey"];
+            var databaseName = configuration["CosmosDatabaseId"];
+            var containerName = configuration["CosmosContainerId"];
+
+            _cosmosClient = new CosmosClient(endpoint, key, new CosmosClientOptions { ConnectionMode = ConnectionMode.Gateway });
             _container = _cosmosClient.GetContainer(databaseName, containerName);
         }
 

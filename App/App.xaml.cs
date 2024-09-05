@@ -1,6 +1,8 @@
 ﻿using App.Services;
 using App.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
+using System.Reflection;
 
 namespace App
 {
@@ -14,13 +16,17 @@ namespace App
 
             var services = new ServiceCollection();
 
+            // Build configuration
+            var assembly = Assembly.GetExecutingAssembly();
+            using var stream = assembly.GetManifestResourceStream("App.appsettings.json");
+            var config = new ConfigurationBuilder()
+                .AddJsonStream(stream)
+                .Build();
+
+            services.AddSingleton<IConfiguration>(config);
+
             // Register the CosmosDbService
-            services.AddSingleton<CosmosDbService>(sp => new CosmosDbService(
-                "https://c-ai-cosmos.documents.azure.com:443/",
-                "YLNTD88o0cBjrrc6eWH7poHswZxMXazmzaH7IKYQ",
-                "CongressDB",
-                "Bills"
-            ));
+            services.AddSingleton<CosmosDbService>();
 
             // Register your ViewModels
             services.AddTransient<BillListPageViewModel>();
