@@ -5,17 +5,31 @@
              Title="Bills">
 
     <Grid RowDefinitions="*,Auto">
-        <ActivityIndicator Grid.Row="0" IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}" HorizontalOptions="Center" VerticalOptions="Center" />
-        <ListView Grid.Row="0" ItemsSource="{Binding CurrentBills}" IsVisible="{Binding IsNotLoading}">
-            <ListView.ItemTemplate>
+        <CollectionView Grid.Row="0" 
+                        ItemsSource="{Binding CurrentBills}" 
+                        RemainingItemsThreshold="1"
+                        RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}">
+            <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Text="{Binding Number}" 
-                              Detail="{Binding Title}"
-                              Command="{Binding BindingContext.GoToBillDetailsCommand, Source={RelativeSource AncestorType={x:Type ListView}}}"
-                              CommandParameter="{Binding .}" />
+                    <Frame Margin="10,5" Padding="10" BorderColor="LightGray">
+                        <StackLayout>
+                            <Label Text="{Binding Number}" FontAttributes="Bold" />
+                            <Label Text="{Binding Title}" LineBreakMode="TailTruncation" MaxLines="2" />
+                            <Label Text="{Binding IntroducedDate, StringFormat='Introduced: {0:d}'}" FontSize="Small" TextColor="Gray" />
+                            <Button Text="View Details" 
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.GoToBillDetailsCommand}"
+                                    CommandParameter="{Binding .}" 
+                                    HorizontalOptions="End" />
+                        </StackLayout>
+                    </Frame>
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            </CollectionView.ItemTemplate>
+            <CollectionView.Footer>
+                <StackLayout Padding="10">
+                    <ActivityIndicator IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}" />
+                </StackLayout>
+            </CollectionView.Footer>
+        </CollectionView>
         <Grid Grid.Row="1" ColumnDefinitions="*,*" BackgroundColor="#f0f0f0">
             <Button Grid.Column="0" Text="House" Command="{Binding ShowHouseBillsCommand}" BackgroundColor="#3498db" TextColor="White" CornerRadius="0" />
             <Button Grid.Column="1" Text="Senate" Command="{Binding ShowSenateBillsCommand}" BackgroundColor="#2ecc71" TextColor="White" CornerRadius="0" />

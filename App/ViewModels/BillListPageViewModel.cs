@@ -10,7 +10,9 @@ namespace App.ViewModels
     public class BillListPageViewModel : BindableObject
     {
         private readonly CosmosDbService _cosmosDbService;
-        private const int MaxBillsPerType = 50; // Limit to 50 bills per type
+        private const int PageSize = 20;
+        private int _currentPage = 0;
+        private bool _isHouseBills = true;
 
         private ObservableCollection<BillViewModel> _currentBills;
         public ObservableCollection<BillViewModel> CurrentBills
@@ -37,19 +39,20 @@ namespace App.ViewModels
 
         public bool IsNotLoading => !IsLoading;
 
-        public ObservableCollection<BillViewModel> HouseBills { get; } = new ObservableCollection<BillViewModel>();
-        public ObservableCollection<BillViewModel> SenateBills { get; } = new ObservableCollection<BillViewModel>();
         public ICommand GoToBillDetailsCommand { get; }
         public ICommand ShowHouseBillsCommand { get; }
         public ICommand ShowSenateBillsCommand { get; }
+        public ICommand LoadMoreCommand { get; }
 
         public BillListPageViewModel(CosmosDbService cosmosDbService)
         {
             _cosmosDbService = cosmosDbService;
+            CurrentBills = new ObservableCollection<BillViewModel>();
             GoToBillDetailsCommand = new Command<BillViewModel>(GoToBillDetails);
-            ShowHouseBillsCommand = new Command(() => CurrentBills = HouseBills);
-            ShowSenateBillsCommand = new Command(() => CurrentBills = SenateBills);
-            LoadBills();
+            ShowHouseBillsCommand = new Command(() => SwitchBillType(true));
+            ShowSenateBillsCommand = new Command(() => SwitchBillType(false));
+            LoadMoreCommand = new Command(async () => await LoadMoreBills());
+            LoadInitialBills();
         }
 
         private async void GoToBillDetails(BillViewModel billViewModel)
@@ -60,41 +63,49 @@ namespace App.ViewModels
             }
         }
 
-        public void RefreshBills()
+        private void SwitchBillType(bool isHouseBills)
         {
-            // This method can be called when the page appears to refresh the bill list if needed
+            if (_isHouseBills != isHouseBills)
+            {
+                _isHouseBills = isHouseBills;
+                _currentPage = 0;
+                CurrentBills.Clear();
+                LoadInitialBills();
+            }
         }
 
-        private async void LoadBills()
+        private async void LoadInitialBills()
         {
             IsLoading = true;
+            await LoadMoreBills();
+            IsLoading = false;
+        }
 
-            var bills = await _cosmosDbService.GetBillsAsync($"SELECT TOP {MaxBillsPerType * 2} * FROM c ORDER BY c.introducedDate DESC");
+        private async Task LoadMoreBills()
+        {
+            if (IsLoading) return;
 
-            HouseBills.Clear();
-            SenateBills.Clear();
+            IsLoading = true;
+            var billType = _isHouseBills ? "HR" : "S";
+            var query = $"SELECT TOP {PageSize} * FROM c WHERE c.type = '{billType}' ORDER BY c.introducedDate DESC OFFSET {_currentPage * PageSize}";
+            var bills = await _cosmosDbService.GetBillsAsync(query);
 
             foreach (var bill in bills)
             {
                 var fullBill = await _cosmosDbService.GetBillByIdAsync(bill.Id);
                 var billViewModel = new BillViewModel(fullBill);
-                if (bill.Type == "HR" && HouseBills.Count < MaxBillsPerType)
-                {
-                    HouseBills.Add(billViewModel);
-                }
-                else if (bill.Type == "S" && SenateBills.Count < MaxBillsPerType)
-                {
-                    SenateBills.Add(billViewModel);
-                }
-
-                if (HouseBills.Count >= MaxBillsPerType && SenateBills.Count >= MaxBillsPerType)
-                {
-                    break;
-                }
+                CurrentBills.Add(billViewModel);
             }
 
-            CurrentBills = HouseBills; // Default to showing House bills
+            _currentPage++;
             IsLoading = false;
+        }
+
+        public void RefreshBills()
+        {
+            _currentPage = 0;
+            CurrentBills.Clear();
+            LoadInitialBills();
         }
     }
 }
