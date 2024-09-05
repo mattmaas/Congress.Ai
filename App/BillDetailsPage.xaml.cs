@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace App
 {
-    public partial class BillDetailsPage : ContentPage
+    public partial class BillDetailsPage : TabbedPage
     {
         public BillDetailsPage(string billId)
         {
@@ -11,6 +11,7 @@ namespace App
             var viewModel = App.Services.GetRequiredService<BillDetailsPageViewModel>();
             viewModel.BillId = billId;
             BindingContext = viewModel;
+            Children.Add(new BillTextPage(viewModel));
         }
 
         protected override bool OnBackButtonPressed()

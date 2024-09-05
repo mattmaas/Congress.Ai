@@ -11,19 +11,19 @@
                             RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Frame Margin="10,5" Padding="15" BorderColor="LightGray" CornerRadius="10" HasShadow="True">
+                        <StackLayout>
+                            <BoxView HeightRequest="1" Color="LightGray" IsVisible="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.IsCompactViewMode}" />
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.GoToBillDetailsCommand}"
                                                       CommandParameter="{Binding .}" />
                             </Frame.GestureRecognizers>
-                            <Grid RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*">
+                            <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,*">
                                 <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Number}" FontAttributes="Bold" FontSize="18" TextColor="#3498db" />
                                 <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Title}" LineBreakMode="TailTruncation" MaxLines="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.TitleMaxLines}" Margin="0,5,0,5" />
-                                <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding IntroducedDate, StringFormat='Introduced: {0:d}'}" FontSize="Small" TextColor="Gray" IsVisible="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.IsFullViewMode}" />
-                                <Label Grid.Row="3" Grid.Column="0" Text="Latest Action:" FontSize="Small" TextColor="Gray" IsVisible="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.IsFullViewMode}" />
-                                <Label Grid.Row="3" Grid.Column="1" Text="{Binding LatestActionText}" FontSize="Small" TextColor="Gray" IsVisible="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.IsFullViewMode}" />
+                                <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding LatestActionDate, StringFormat='Latest Action: {0:d}'}" FontSize="Small" TextColor="Gray" IsVisible="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.IsFullViewMode}" />
+                                <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding IntroducedDate, StringFormat='Introduced: {0:d}'}" FontSize="Small" TextColor="Gray" IsVisible="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.IsFullViewMode}" Margin="0,5,0,0" />
                             </Grid>
-                        </Frame>
+                        </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
                 <CollectionView.Footer>
@@ -35,9 +35,10 @@
             <ActivityIndicator IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}" 
                                HorizontalOptions="Center" VerticalOptions="Center" />
         </Grid>
-        <Grid Grid.Row="1" ColumnDefinitions="*,*" BackgroundColor="#f0f0f0">
+        <Grid Grid.Row="1" ColumnDefinitions="*,*,Auto" BackgroundColor="#f0f0f0">
             <Button Grid.Column="0" Text="House" Command="{Binding ShowHouseBillsCommand}" BackgroundColor="#3498db" TextColor="White" CornerRadius="0" />
             <Button Grid.Column="1" Text="Senate" Command="{Binding ShowSenateBillsCommand}" BackgroundColor="#2ecc71" TextColor="White" CornerRadius="0" />
+            <Button Grid.Column="2" Text="⚙️" Command="{Binding GoToSettingsCommand}" BackgroundColor="#f0f0f0" TextColor="Black" CornerRadius="0" />
         </Grid>
     </Grid>
 

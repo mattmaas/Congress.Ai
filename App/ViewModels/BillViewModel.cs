@@ -21,6 +21,7 @@ namespace App.ViewModels
         public string LatestActionText => _bill.LatestAction?.Text ?? "No action available";
         public DateTime IntroducedDate => _bill.IntroducedDate;
         public DateTime LatestActionDate => _bill.LatestAction?.ActionDate ?? DateTime.MinValue;
+        public string FullText => _bill.FullText ?? "Full text not available";
         public List<string> Sponsors => GetSponsors();
         public List<string> Cosponsors => GetCosponsors();
         public string OpenAiSummary => _bill.OpenAiSummaries?.Summary ?? "No AI-generated summary available";

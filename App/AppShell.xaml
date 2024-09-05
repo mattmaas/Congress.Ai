@@ -13,12 +13,11 @@
             Icon="&#x1F4C3;"
             ContentTemplate="{DataTemplate local:BillListPage}"
             Route="BillListPage" />
-
-        <ShellContent
-            Title="Settings"
-            Icon="&#x2699;"
-            ContentTemplate="{DataTemplate local:SettingsPage}"
-            Route="SettingsPage" />
     </TabBar>
+
+    <ShellContent
+        Title="Settings"
+        ContentTemplate="{DataTemplate local:SettingsPage}"
+        Route="SettingsPage" />
 
 </Shell>

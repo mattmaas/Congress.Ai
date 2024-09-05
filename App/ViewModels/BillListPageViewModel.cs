@@ -48,10 +48,15 @@ namespace App.ViewModels
                 _isFullViewMode = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(TitleMaxLines));
+                OnPropertyChanged(nameof(IsCompactViewMode));
             }
         }
 
+        public bool IsCompactViewMode => !IsFullViewMode;
+
         public int TitleMaxLines => IsFullViewMode ? 3 : 2;
+
+        public ICommand GoToSettingsCommand { get; }
 
         public ICommand GoToBillDetailsCommand { get; }
         public ICommand ShowHouseBillsCommand { get; }
@@ -67,7 +72,7 @@ namespace App.ViewModels
             ShowHouseBillsCommand = new Command(() => SwitchBillType(true));
             ShowSenateBillsCommand = new Command(() => SwitchBillType(false));
             LoadMoreCommand = new Command(async () => await LoadMoreBills());
-            GoToSettingsCommand = new Command(GoToSettings);
+            GoToSettingsCommand = new Command(async () => await Shell.Current.GoToAsync("SettingsPage"));
             LoadInitialBills();
 
             SettingsViewModel.ViewModeChanged += OnViewModeChanged;
