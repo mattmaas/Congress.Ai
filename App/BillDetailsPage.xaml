@@ -17,7 +17,7 @@
                 <Label Text="AI Summary" FontAttributes="Bold" FontSize="18" TextColor="Black" />
                 <Label Text="{Binding BillViewModel.OpenAiSummary}" TextColor="Black" />
                 <Label Text="Key Changes" FontAttributes="Bold" FontSize="18" Margin="0,10,0,0" TextColor="Black" />
-                <CollectionView ItemsSource="{Binding BillViewModel.OpenAiKeyChanges}" IsEnabled="False">
+                <CollectionView ItemsSource="{Binding BillViewModel.OpenAiKeyChanges}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid Margin="0,5">
