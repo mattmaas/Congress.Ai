@@ -17,6 +17,6 @@ namespace App.ViewModels
         public string Title => _bill.Title ?? string.Empty;
         public string Type => _bill.Type ?? string.Empty;
         public string LatestActionText => _bill.LatestAction?.Text ?? string.Empty;
-        public DateTime IntroducedDate => _bill.IntroducedDate;
+        public DateTime IntroducedDate => _bill.IntroducedDate ?? DateTime.MinValue;
     }
 }
