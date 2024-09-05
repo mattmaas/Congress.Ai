@@ -15,11 +15,25 @@ namespace App
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
+            builder.ConfigureMauiHandlers(handlers =>
+            {
+                handlers.AddHandler<Microsoft.Maui.Controls.Image, CustomImageHandler>();
+            });
+
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
 
             return builder.Build();
+        }
+    }
+
+    public class CustomImageHandler : Microsoft.Maui.Handlers.ImageHandler
+    {
+        protected override void ConnectHandler(Microsoft.Maui.Platform.ContentViewGroup platformView)
+        {
+            base.ConnectHandler(platformView);
+            platformView.ClipsToBounds = true;
         }
     }
 }
