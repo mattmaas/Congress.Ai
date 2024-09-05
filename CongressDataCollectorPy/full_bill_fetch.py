@@ -5,6 +5,7 @@ from cosmos_db_client import CosmosDbClient
 from openai_service import OpenAiService
 import logging
 import time
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -38,7 +39,10 @@ async def fetch_all_bills(max_runtime=3600):  # Default to 1 hour max runtime
                 if 'fullText' in bill_details:
                     openai_summary = await openai_service.analyze_bill_text(bill_details['fullText'])
                     if openai_summary:
-                        bill_details['openAiSummaries'] = {'gpt4Summary': openai_summary}
+                        try:
+                            bill_details['openAiSummaries'] = json.loads(openai_summary)
+                        except json.JSONDecodeError:
+                            logger.error(f"Failed to parse OpenAI summary as JSON for bill {bill_details.get('id', 'Unknown ID')}")
 
                 await cosmos_client.store_bill(bill_details)
                 logger.info(f"Stored bill {bill_count} in CosmosDB")
