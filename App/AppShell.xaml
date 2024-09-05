@@ -7,13 +7,11 @@
     Shell.FlyoutBehavior="Disabled"
     Title="Congress.AI">
 
-    <TabBar>
-        <ShellContent
-            Title="Bills"
-            Icon="&#x1F4C3;"
-            ContentTemplate="{DataTemplate local:BillListPage}"
-            Route="BillListPage" />
-    </TabBar>
+    <ShellContent
+        Title="Bills"
+        Icon="&#x1F4C3;"
+        ContentTemplate="{DataTemplate local:BillListPage}"
+        Route="BillListPage" />
 
     <ShellContent
         Title="Settings"

@@ -22,6 +22,8 @@ namespace App.ViewModels
         public DateTime IntroducedDate => _bill.IntroducedDate;
         public DateTime LatestActionDate => _bill.LatestAction?.ActionDate ?? DateTime.MinValue;
         public string FullText => _bill.FullText ?? "Full text not available";
+        public string IntroducedDateFormatted => $"Introduced: {IntroducedDate:d}";
+        public string LatestActionDateFormatted => $"Latest Action: {LatestActionDate:d}";
         public List<string> Sponsors => GetSponsors();
         public List<string> Cosponsors => GetCosponsors();
         public string OpenAiSummary => _bill.OpenAiSummaries?.Summary ?? "No AI-generated summary available";

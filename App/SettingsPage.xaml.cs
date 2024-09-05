@@ -9,5 +9,10 @@ namespace App
             InitializeComponent();
             BindingContext = new SettingsViewModel();
         }
+
+        protected override bool OnBackButtonPressed()
+        {
+            return base.OnBackButtonPressed();
+        }
     }
 }
