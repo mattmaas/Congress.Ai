@@ -5,82 +5,81 @@
              Title="Bill Details">
 
     <ScrollView>
-            <VerticalStackLayout Padding="20">
-                <Label Text="{Binding BillViewModel.Title}" FontSize="18" LineBreakMode="WordWrap" Margin="0,0,0,10" />
-                <Label Text="{Binding BillViewModel.IntroducedDate, StringFormat='Introduced: {0:d}'}" Margin="0,0,0,20" />
-                
-                <Frame BackgroundColor="#f0f0f0" Padding="10" Margin="0,0,0,20">
-                    <VerticalStackLayout>
-                        <Label Text="OpenAI Summary" FontAttributes="Bold" FontSize="18" />
-                        <Label Text="{Binding BillViewModel.OpenAiSummary}" />
-                        <Label Text="Key Changes" FontAttributes="Bold" FontSize="18" Margin="0,10,0,0" />
-                        <ListView ItemsSource="{Binding BillViewModel.OpenAiKeyChanges}" IsEnabled="False" HasUnevenRows="True" SeparatorVisibility="None">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <ViewCell>
-                                        <StackLayout Orientation="Horizontal" Margin="0,5">
-                                            <Label Text="•" Margin="0,0,5,0" VerticalOptions="Start" />
-                                            <Label Text="{Binding .}" TextType="Html" />
-                                        </StackLayout>
-                                    </ViewCell>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </VerticalStackLayout>
-                </Frame>
+        <VerticalStackLayout Padding="20">
+            <Label Text="{Binding BillViewModel.Title}" FontSize="18" LineBreakMode="WordWrap" Margin="0,0,0,10" />
+            <Label Text="{Binding BillViewModel.IntroducedDate, StringFormat='Introduced: {0:d}'}" Margin="0,0,0,20" />
+            
+            <Frame BackgroundColor="#f0f0f0" Padding="10" Margin="0,0,0,20">
+                <VerticalStackLayout>
+                    <Label Text="OpenAI Summary" FontAttributes="Bold" FontSize="18" />
+                    <Label Text="{Binding BillViewModel.OpenAiSummary}" />
+                    <Label Text="Key Changes" FontAttributes="Bold" FontSize="18" Margin="0,10,0,0" />
+                    <ListView ItemsSource="{Binding BillViewModel.OpenAiKeyChanges}" IsEnabled="False" HasUnevenRows="True" SeparatorVisibility="None">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <StackLayout Orientation="Horizontal" Margin="0,5">
+                                        <Label Text="•" Margin="0,0,5,0" VerticalOptions="Start" />
+                                        <Label Text="{Binding .}" TextType="Html" />
+                                    </StackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </VerticalStackLayout>
+            </Frame>
 
-                <Label Text="Latest Action" FontAttributes="Bold" FontSize="18" Margin="0,20,0,0" />
-                <Label Text="{Binding BillViewModel.LatestActionText}" />
-                <Label Text="{Binding BillViewModel.LatestActionDate, StringFormat='{0:d}'}" />
+            <Label Text="Latest Action" FontAttributes="Bold" FontSize="18" Margin="0,20,0,0" />
+            <Label Text="{Binding BillViewModel.LatestActionText}" />
+            <Label Text="{Binding BillViewModel.LatestActionDate, StringFormat='{0:d}'}" />
 
-                <Label Text="Sponsors" FontAttributes="Bold" FontSize="18" Margin="0,20,0,0" />
-                <CollectionView ItemsSource="{Binding BillViewModel.Sponsors}">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Label Text="{Binding .}" />
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+            <Label Text="Sponsors" FontAttributes="Bold" FontSize="18" Margin="0,20,0,0" />
+            <CollectionView ItemsSource="{Binding BillViewModel.Sponsors}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Label Text="{Binding .}" />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
 
-                <Label Text="Cosponsors" FontAttributes="Bold" FontSize="18" Margin="0,20,0,0" />
-                <CollectionView ItemsSource="{Binding BillViewModel.Cosponsors}">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Label Text="{Binding .}" />
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+            <Label Text="Cosponsors" FontAttributes="Bold" FontSize="18" Margin="0,20,0,0" />
+            <CollectionView ItemsSource="{Binding BillViewModel.Cosponsors}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Label Text="{Binding .}" />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
 
-                <Label Text="Subjects" FontAttributes="Bold" FontSize="18" Margin="0,20,0,0" />
-                <CollectionView ItemsSource="{Binding BillViewModel.Subjects}">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Label Text="{Binding .}" />
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+            <Label Text="Subjects" FontAttributes="Bold" FontSize="18" Margin="0,20,0,0" />
+            <CollectionView ItemsSource="{Binding BillViewModel.Subjects}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Label Text="{Binding .}" />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
 
-                <Label Text="Related Bills" FontAttributes="Bold" FontSize="18" Margin="0,20,0,0" />
-                <CollectionView ItemsSource="{Binding BillViewModel.RelatedBills}">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Label Text="{Binding .}" />
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+            <Label Text="Related Bills" FontAttributes="Bold" FontSize="18" Margin="0,20,0,0" />
+            <CollectionView ItemsSource="{Binding BillViewModel.RelatedBills}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Label Text="{Binding .}" />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
 
-                <Label Text="Actions" FontAttributes="Bold" FontSize="18" Margin="0,20,0,0" />
-                <CollectionView ItemsSource="{Binding BillViewModel.Actions}">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <StackLayout>
-                                <Label Text="{Binding Date, StringFormat='{0:d}'}" FontAttributes="Bold" />
-                                <Label Text="{Binding Text}" />
-                            </StackLayout>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </VerticalStackLayout>
-        </ScrollView>
-    </Grid>
+            <Label Text="Actions" FontAttributes="Bold" FontSize="18" Margin="0,20,0,0" />
+            <CollectionView ItemsSource="{Binding BillViewModel.Actions}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout>
+                            <Label Text="{Binding Date, StringFormat='{0:d}'}" FontAttributes="Bold" />
+                            <Label Text="{Binding Text}" />
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
