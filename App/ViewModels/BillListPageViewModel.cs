@@ -87,8 +87,7 @@ namespace App.ViewModels
 
             IsLoading = true;
             var billType = _isHouseBills ? "HR" : "S";
-            var query = $"SELECT TOP {PageSize} * FROM c WHERE c.type = '{billType}' ORDER BY c.introducedDate DESC OFFSET {_currentPage * PageSize}";
-            var bills = await _cosmosDbService.GetBillsAsync(query);
+            var bills = await _cosmosDbService.GetBillsAsync(billType, PageSize, _currentPage * PageSize);
 
             foreach (var bill in bills)
             {

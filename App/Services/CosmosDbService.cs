@@ -22,9 +22,15 @@ namespace App.Services
             _container = _cosmosClient.GetContainer(databaseName, containerName);
         }
 
-        public async Task<IEnumerable<Bill>> GetBillsAsync(string queryString)
+        public async Task<IEnumerable<Bill>> GetBillsAsync(string billType, int pageSize, int offset)
         {
-            var query = _container.GetItemQueryIterator<Bill>(new QueryDefinition(queryString));
+            var queryString = $"SELECT * FROM c WHERE c.type = @billType ORDER BY c.introducedDate DESC OFFSET @offset LIMIT @pageSize";
+            var queryDefinition = new QueryDefinition(queryString)
+                .WithParameter("@billType", billType)
+                .WithParameter("@offset", offset)
+                .WithParameter("@pageSize", pageSize);
+
+            var query = _container.GetItemQueryIterator<Bill>(queryDefinition);
             var results = new List<Bill>();
             while (query.HasMoreResults)
             {
