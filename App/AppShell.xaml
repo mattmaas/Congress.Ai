@@ -15,9 +15,6 @@
     <ShellContent
         Title="Bill Details"
         ContentTemplate="{DataTemplate local:BillDetailsPage}"
-        Route="BillDetailsPage" />
-
-    <ShellContent
         Route="BillDetailsPage"
         Shell.FlyoutItemIsVisible="False" />
 
