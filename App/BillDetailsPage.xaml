@@ -23,13 +23,11 @@
                    Margin="10,0,0,0" />
         </Grid>
         
-        <VerticalStackLayout Grid.Row="1" Padding="10,0,10,10">
-            <Label Text="{Binding BillViewModel.Title}" FontSize="18" LineBreakMode="WordWrap" />
-            <Label Text="{Binding BillViewModel.IntroducedDate, StringFormat='Introduced: {0:d}'}" />
-        </VerticalStackLayout>
-
         <ScrollView Grid.Row="1">
             <VerticalStackLayout Padding="20">
+                <Label Text="{Binding BillViewModel.Title}" FontSize="18" LineBreakMode="WordWrap" Margin="0,0,0,10" />
+                <Label Text="{Binding BillViewModel.IntroducedDate, StringFormat='Introduced: {0:d}'}" Margin="0,0,0,20" />
+                
                 <Frame BackgroundColor="#f0f0f0" Padding="10" Margin="0,0,0,20">
                     <VerticalStackLayout>
                         <Label Text="OpenAI Summary" FontAttributes="Bold" FontSize="18" />
