@@ -56,7 +56,7 @@ namespace App.ViewModels
         {
             if (billViewModel != null && !string.IsNullOrEmpty(billViewModel.Id))
             {
-                await Shell.Current.GoToAsync($"///BillDetailsPage?billId={billViewModel.Id}");
+                await Shell.Current.GoToAsync($"BillDetailsPage?billId={billViewModel.Id}");
             }
         }
 
