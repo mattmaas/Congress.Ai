@@ -3,6 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="App.SettingsPage"
              Title="Settings">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Back" Clicked="OnBackClicked" IconImageSource="back_arrow.png" />
+    </ContentPage.ToolbarItems>
     <VerticalStackLayout Padding="20">
         <Label Text="View Mode" FontSize="Large" Margin="0,0,0,10" />
         <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto">
