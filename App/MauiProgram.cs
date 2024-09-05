@@ -31,28 +31,22 @@ namespace App
     public class CustomImageHandler : Microsoft.Maui.Handlers.ImageHandler
     {
 #if IOS || MACCATALYST
-        protected override void ConnectHandler(Microsoft.Maui.Platform.PlatformView platformView)
-        {
-            base.ConnectHandler(platformView);
-            if (platformView is UIKit.UIImageView imageView)
-            {
-                imageView.ClipsToBounds = true;
-            }
-        }
-#elif ANDROID
-        protected override void ConnectHandler(Microsoft.Maui.Platform.ContentViewGroup platformView)
+        protected override void ConnectHandler(UIKit.UIImageView platformView)
         {
             base.ConnectHandler(platformView);
             platformView.ClipsToBounds = true;
         }
-#elif WINDOWS
-        protected override void ConnectHandler(Microsoft.Maui.Platform.PlatformView platformView)
+#elif ANDROID
+        protected override void ConnectHandler(Android.Widget.ImageView platformView)
         {
             base.ConnectHandler(platformView);
-            if (platformView is Microsoft.UI.Xaml.Controls.Image image)
-            {
-                image.Stretch = Microsoft.UI.Xaml.Media.Stretch.UniformToFill;
-            }
+            platformView.ClipToOutline = true;
+        }
+#elif WINDOWS
+        protected override void ConnectHandler(Microsoft.UI.Xaml.Controls.Image platformView)
+        {
+            base.ConnectHandler(platformView);
+            platformView.Stretch = Microsoft.UI.Xaml.Media.Stretch.UniformToFill;
         }
 #endif
     }
