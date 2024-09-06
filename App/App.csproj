@@ -21,10 +21,10 @@
 		<Nullable>enable</Nullable>
 
 		<!-- Display name -->
-		<ApplicationTitle>App</ApplicationTitle>
+		<ApplicationTitle>Congress.AI</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.app</ApplicationId>
+		<ApplicationId>com.companyname.congressai</ApplicationId>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
