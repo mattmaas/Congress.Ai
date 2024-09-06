@@ -37,18 +37,22 @@ class CongressApiClient:
                 if isinstance(from_date, str):
                     url += f"&fromDateTime={from_date}"
                 else:
-                    url += f"&fromDateTime={from_date.isoformat()}Z"
+                    url += f"&fromDateTime={from_date.strftime('%Y-%m-%dT%H:%M:%S')}Z"
             if to_date:
                 if isinstance(to_date, str):
                     url += f"&toDateTime={to_date}"
                 else:
-                    url += f"&toDateTime={to_date.isoformat()}Z"
+                    url += f"&toDateTime={to_date.strftime('%Y-%m-%dT%H:%M:%S')}Z"
 
             logger.debug(f"Fetching bills from URL: {url}")
             async with self.session.get(url) as response:
+                if response.status == 400:
+                    error_text = await response.text()
+                    logger.error(f"Bad request error: {error_text}")
+                    raise ValueError(f"Bad request error: {error_text}")
                 response.raise_for_status()
                 data = await response.json()
-                bills = data['bills']
+                bills = data.get('bills', [])
                 logger.info(f"Fetched {len(bills)} bills")
 
                 for bill in bills:
