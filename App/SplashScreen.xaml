@@ -10,9 +10,9 @@
         </Grid.RowDefinitions>
         <Image Grid.Row="0" 
                Source="splash.png"
-               Aspect="AspectFit"
+               Aspect="AspectFill"
                HorizontalOptions="Fill"
-               VerticalOptions="Center"/>
+               VerticalOptions="Fill"/>
         <Label Grid.Row="1" 
                Text="Congress.AI" 
                TextColor="White" 
