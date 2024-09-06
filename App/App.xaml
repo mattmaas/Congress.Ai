@@ -9,6 +9,11 @@
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="MauiSplashScreen">
+                <Setter Property="SplashScreenSource" Value="splash.png" />
+                <Setter Property="SplashScreenBackgroundColor" Value="White" />
+                <Setter Property="SplashScreenMode" Value="Full" />
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
