@@ -53,7 +53,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<MauiSplashScreen Include="Resources\Splash\splash.png" Color="#000080" BaseSize="128,128" />
+		<MauiSplashScreen Include="Resources\Splash\splash.png" Color="#000080" />
 	</ItemGroup>
 
 	<ItemGroup>
