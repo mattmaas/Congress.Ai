@@ -42,10 +42,8 @@ from typing import Union
 
 class Bill(BaseModel):
     congress: int
-    url: str
     type: str
     number: int
-    url: str
     title: str
     latestAction: dict
     updateDate: str
@@ -58,6 +56,7 @@ class Bill(BaseModel):
     detailedTextVersions: List[TextVersion]
     fullText: Optional[str] = None
     openAiSummaries: Optional[OpenAiSummaries] = None
+    url: Optional[str] = None
 
     class Config:
         extra = 'allow'

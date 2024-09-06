@@ -20,6 +20,10 @@ class CosmosDbClient:
                     if 'number' in related_bill:
                         related_bill['number'] = str(related_bill['number'])
 
+            # Remove 'url' field if it's None
+            if 'url' in bill_data and bill_data['url'] is None:
+                del bill_data['url']
+
             bill = Bill(**bill_data)
             if 'id' not in bill_data:
                 bill_data['id'] = f"{bill.type}{bill.number}-{bill.congress}"
