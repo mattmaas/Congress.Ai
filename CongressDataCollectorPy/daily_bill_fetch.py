@@ -19,9 +19,19 @@ async def fetch_recent_bills(max_runtime=1500):  # Default to 25 minutes max run
         cosmos_client = CosmosDbClient(config['cosmos_endpoint'], config['cosmos_key'], config['cosmos_database'], config['cosmos_container'])
         logger.debug("Initialized CosmosDbClient")
 
-        # Get the latest date from the database
-        _, latest_date = await cosmos_client.get_date_range()
-        logger.debug(f"Retrieved latest date from database: {latest_date}")
+        try:
+            # Get the latest date from the database
+            _, latest_date = await cosmos_client.get_date_range()
+            logger.debug(f"Retrieved latest date from database: {latest_date}")
+        except Exception as e:
+            logger.error(f"Error retrieving date range from Cosmos DB: {str(e)}")
+            latest_date = None
+
+        if latest_date:
+            start_date = (datetime.fromisoformat(latest_date) + timedelta(days=1)).strftime('%Y-%m-%d')
+        else:
+            start_date = (datetime.now(timezone.utc) - timedelta(days=30)).strftime('%Y-%m-%d')
+        logger.debug(f"Using start_date: {start_date}")
 
         bill_count = 0
         async for bill in api_client.fetch_bills(from_date=latest_date, sort="updateDate+desc", max_runtime=max_runtime):

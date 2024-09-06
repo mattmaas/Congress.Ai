@@ -22,7 +22,13 @@ class CosmosDbClient:
             logger.error(f"Failed to store bill in Cosmos DB: {str(e)}")
 
     async def get_date_range(self):
-        query = "SELECT MIN(c.updateDate) as earliest, MAX(c.updateDate) as latest FROM c"
+        earliest_date = None
+        latest_date = None
+        query = "SELECT c.updateDate FROM c"
         async for item in self.container.query_items(query, enable_cross_partition_query=True):
-            return item['earliest'], item['latest']
-        return None, None
+            date = item['updateDate']
+            if earliest_date is None or date < earliest_date:
+                earliest_date = date
+            if latest_date is None or date > latest_date:
+                latest_date = date
+        return earliest_date, latest_date
