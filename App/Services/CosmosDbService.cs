@@ -24,7 +24,7 @@ namespace App.Services
 
         public async Task<IEnumerable<Bill>> GetBillsAsync(string billType, int pageSize, int offset)
         {
-            var queryString = $"SELECT * FROM c WHERE c.type = @billType ORDER BY c._ts DESC OFFSET @offset LIMIT @pageSize";
+            var queryString = $"SELECT * FROM c WHERE c.type = @billType ORDER BY c.updateDate DESC OFFSET @offset LIMIT @pageSize";
             var queryDefinition = new QueryDefinition(queryString)
                 .WithParameter("@billType", billType)
                 .WithParameter("@offset", offset)
