@@ -36,6 +36,15 @@ namespace App
             Services = services.BuildServiceProvider();
 
             MainPage = new AppShell();
+
+            // Set up custom splash screen
+            Microsoft.Maui.Handlers.WindowHandler.Mapper.AppendToMapping(nameof(IWindow), (handler, view) =>
+            {
+                if (view is IWindow window)
+                {
+                    window.LoadingIndicator = new SplashScreen();
+                }
+            });
         }
     }
 }
