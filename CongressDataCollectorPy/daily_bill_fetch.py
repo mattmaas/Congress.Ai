@@ -3,6 +3,7 @@ from config import load_config
 from api_client import CongressApiClient
 from cosmos_db_client import CosmosDbClient
 from datetime import datetime, timezone, timedelta
+import dateutil.parser
 import logging
 import time
 
@@ -28,7 +29,7 @@ async def fetch_recent_bills(max_runtime=1500):  # Default to 25 minutes max run
             latest_date = None
 
         if latest_date:
-            start_date = (datetime.fromisoformat(latest_date) + timedelta(days=1)).strftime('%Y-%m-%d')
+            start_date = (dateutil.parser.isoparse(latest_date) + timedelta(days=1)).strftime('%Y-%m-%d')
         else:
             start_date = (datetime.now(timezone.utc) - timedelta(days=30)).strftime('%Y-%m-%d')
         logger.debug(f"Using start_date: {start_date}")
