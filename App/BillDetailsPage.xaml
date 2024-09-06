@@ -14,7 +14,7 @@
             <Label Text="{Binding BillViewModel.Number}" FontSize="20" FontAttributes="Bold" Margin="0,0,0,10" />
             <Label Text="{Binding BillViewModel.Title}" FontSize="18" LineBreakMode="WordWrap" Margin="0,0,0,10" />
             <Label Text="{Binding BillViewModel.IntroducedDate, StringFormat='Introduced: {0:d}'}" Margin="0,0,0,20" />
-            
+
             <VerticalStackLayout Margin="0,0,0,20">
                 <Label Text="AI Summary" FontAttributes="Bold" FontSize="18" TextColor="Black" />
                 <Label Text="{Binding BillViewModel.OpenAiSummary}" TextColor="Black" />
@@ -27,14 +27,13 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Label Text="•" Grid.Column="0" Style="{StaticResource CustomBulletStyle}" TextColor="Black" />
-                                <Label Grid.Column="1" TextColor="Black" LineBreakMode="WordWrap">
-                                    <Label.FormattedText>
-                                        <FormattedString>
-                                            <Span Text="{Binding ., Converter={StaticResource HtmlToFormattedStringConverter}}" />
-                                        </FormattedString>
-                                    </Label.FormattedText>
-                                </Label>
+                                <TextBlock Text="•" Grid.Column="0" Style="{StaticResource CustomBulletStyle}" />
+                                <TextBlock Grid.Column="1" TextColor="Black" LineBreakMode="WordWrap">
+                                    <TextBlock.Text>
+                                        <Binding Path="."
+                                                 Converter="{StaticResource HtmlToFormattedStringConverter}" />
+                                    </TextBlock.Text>
+                                </TextBlock>
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
