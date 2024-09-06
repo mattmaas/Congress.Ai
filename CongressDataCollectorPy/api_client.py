@@ -34,9 +34,15 @@ class CongressApiClient:
             url = f"{self.BASE_URL}/{congress}?format=json&limit={limit}&offset={offset}&sort={sort}&api_key={self.api_key}"
             
             if from_date:
-                url += f"&fromDateTime={from_date.isoformat()}Z"
+                if isinstance(from_date, str):
+                    url += f"&fromDateTime={from_date}"
+                else:
+                    url += f"&fromDateTime={from_date.isoformat()}Z"
             if to_date:
-                url += f"&toDateTime={to_date.isoformat()}Z"
+                if isinstance(to_date, str):
+                    url += f"&toDateTime={to_date}"
+                else:
+                    url += f"&toDateTime={to_date.isoformat()}Z"
 
             logger.debug(f"Fetching bills from URL: {url}")
             async with self.session.get(url) as response:
