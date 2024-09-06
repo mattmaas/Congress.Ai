@@ -42,7 +42,7 @@ namespace App
             {
                 if (view is IWindow window)
                 {
-                    Microsoft.Maui.Controls.Application.Current.MainPage = new SplashScreen();
+                    Microsoft.Maui.Controls.Application.Current.MainPage = new ContentPage { Content = new SplashScreen() };
                 }
             });
         }
