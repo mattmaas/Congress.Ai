@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace App.Converters
@@ -8,24 +9,24 @@ namespace App.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is not string text)
-                return new FormattedString();
+                return string.Empty;
 
-            var formattedString = new FormattedString();
+            var stringBuilder = new StringBuilder();
             var regex = new Regex(@"<b>(.*?)</b>|([^<]+)", RegexOptions.Singleline);
 
             foreach (Match match in regex.Matches(text))
             {
                 if (match.Groups[1].Success) // Bold text
                 {
-                    formattedString.Spans.Add(new Span { Text = match.Groups[1].Value, FontAttributes = FontAttributes.Bold });
+                    stringBuilder.Append($"<Bold>{match.Groups[1].Value}</Bold>");
                 }
                 else if (match.Groups[2].Success) // Normal text
                 {
-                    formattedString.Spans.Add(new Span { Text = match.Groups[2].Value });
+                    stringBuilder.Append(match.Groups[2].Value);
                 }
             }
 
-            return formattedString;
+            return stringBuilder.ToString();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
