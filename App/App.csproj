@@ -41,9 +41,6 @@
 	<ItemGroup>
 		<!-- App Icon -->
 
-		<!-- Splash Screen -->
-		<MauiImage Include="Resources\Splash\splash.png" />
-
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
 		<MauiImage Update="Resources\Images\dotnet_bot.png" Resize="True" BaseSize="300,185" />
@@ -53,6 +50,10 @@
 
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<MauiSplashScreen Include="Resources\Splash\splash.png" Color="#000080" BaseSize="128,128" />
 	</ItemGroup>
 
 	<ItemGroup>
