@@ -35,21 +35,14 @@ namespace App
 
             Services = services.BuildServiceProvider();
 
-            // Set up custom splash screen
-            Microsoft.Maui.Handlers.WindowHandler.Mapper.AppendToMapping(nameof(IWindow), (handler, view) =>
-            {
-                if (view is IWindow window)
-                {
-                    var splashScreen = new ContentPage { Content = new SplashScreen() };
-                    Microsoft.Maui.Controls.Application.Current.MainPage = splashScreen;
+            // Set MainPage to a ContentPage with SplashScreen
+            MainPage = new ContentPage { Content = new SplashScreen() };
 
-                    // Simulate a delay (e.g., 2 seconds) before switching to the main page
-                    Device.StartTimer(TimeSpan.FromSeconds(2), () =>
-                    {
-                        MainPage = new AppShell();
-                        return false; // Stop the timer
-                    });
-                }
+            // Simulate a delay (e.g., 2 seconds) before switching to the main page
+            Device.StartTimer(TimeSpan.FromSeconds(2), () =>
+            {
+                MainPage = new AppShell();
+                return false; // Stop the timer
             });
         }
     }
