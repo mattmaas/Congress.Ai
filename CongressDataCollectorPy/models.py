@@ -42,6 +42,7 @@ from typing import Union
 
 class Bill(BaseModel):
     congress: int
+    url: str
     type: str
     number: int
     url: str
