@@ -27,13 +27,19 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="•" Grid.Column="0" Style="{StaticResource CustomBulletStyle}" />
-                                <TextBlock Grid.Column="1" TextColor="Black" LineBreakMode="WordWrap">
-                                    <TextBlock.Text>
-                                        <Binding Path="."
-                                                 Converter="{StaticResource HtmlToFormattedStringConverter}" />
-                                    </TextBlock.Text>
-                                </TextBlock>
+                                <Label Text="•" Grid.Column="0" Style="{StaticResource CustomBulletStyle}" />
+                                <Label Grid.Column="1" TextColor="Black" LineBreakMode="WordWrap">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span>
+                                                <Span.Text>
+                                                    <Binding Path="."
+                                                             Converter="{StaticResource HtmlToFormattedStringConverter}" />
+                                                </Span.Text>
+                                            </Span>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
