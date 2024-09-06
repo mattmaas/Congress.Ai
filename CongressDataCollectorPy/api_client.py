@@ -20,7 +20,7 @@ class CongressApiClient:
     async def __aexit__(self, exc_type, exc, tb):
         await self.session.close()
 
-    async def fetch_bills(self, from_date=None, to_date=None, sort="updateDate+desc", max_runtime=300):
+    async def fetch_bills(self, from_date=None, to_date=None, sort="latestAction.actionDate+desc", max_runtime=300):
         congress = 118  # Current congress number
         offset = 0
         limit = 250
@@ -35,14 +35,14 @@ class CongressApiClient:
             
             if from_date:
                 if isinstance(from_date, str):
-                    url += f"&fromDateTime={from_date}"
+                    url += f"&fromActionDate={from_date}"
                 else:
-                    url += f"&fromDateTime={from_date.strftime('%Y-%m-%dT%H:%M:%S')}Z"
+                    url += f"&fromActionDate={from_date.strftime('%Y-%m-%d')}"
             if to_date:
                 if isinstance(to_date, str):
-                    url += f"&toDateTime={to_date}"
+                    url += f"&toActionDate={to_date}"
                 else:
-                    url += f"&toDateTime={to_date.strftime('%Y-%m-%dT%H:%M:%S')}Z"
+                    url += f"&toActionDate={to_date.strftime('%Y-%m-%d')}"
 
             logger.debug(f"Fetching bills from URL: {url}")
             async with self.session.get(url) as response:
