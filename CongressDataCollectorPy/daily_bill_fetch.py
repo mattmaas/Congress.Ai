@@ -2,7 +2,7 @@ import asyncio
 from config import load_config
 from api_client import CongressApiClient
 from cosmos_db_client import CosmosDbClient
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 import logging
 import time
 
