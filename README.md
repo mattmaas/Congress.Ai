@@ -147,7 +147,13 @@ Congress.Ai follows a modern, distributed architecture pattern combining mobile,
 
 - **.NET SDK**: Ensure you have the latest version of the .NET SDK installed.
 - **Visual Studio**: Recommended for development, with the MAUI workload installed.
-- **Cosmos DB Account**: Required to store and retrieve bill data.
+- **Azure Resources**:
+  - **Cosmos DB Account**: Required for bill data storage
+  - **Blob Storage Account**: Required for state management
+  - **Azure Functions**: Required for automated data collection
+- **API Keys**:
+  - **Congress.gov API Key**: For accessing congressional data
+  - **OpenAI API Key**: For AI-powered bill analysis
 
 ### Installation
 
@@ -158,9 +164,28 @@ Congress.Ai follows a modern, distributed architecture pattern combining mobile,
    cd Congress.Ai
    ```
 
-2. **Configure Cosmos DB**
+2. **Configure Azure Services**
 
-   - Create an `appsettings.json` file in the project root with the following structure:
+   - Create a `local.settings.json` file in the CongressDataCollector project:
+
+     ```json
+     {
+       "IsEncrypted": false,
+       "Values": {
+         "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+         "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+         "BlobContainerName": "fetchstate",
+         "CosmosEndpoint": "your-cosmos-endpoint",
+         "CosmosKey": "your-cosmos-key",
+         "CosmosDatabaseId": "your-database-id",
+         "CosmosContainerId": "your-container-id",
+         "CongressAPIKEY": "your-congress-api-key",
+         "OpenAiKey": "your-openai-api-key"
+       }
+     }
+     ```
+
+   - Create an `appsettings.json` file in the App project:
 
      ```json
      {
