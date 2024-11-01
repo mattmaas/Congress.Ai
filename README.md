@@ -1,5 +1,5 @@
 # Congress.Ai
-![Congress.Ai](Screenshots/Splashscreen.png) 
+<img src="Screenshots/Splashscreen.png" height="400" alt="Congress.Ai">
 
 ## Overview
 
