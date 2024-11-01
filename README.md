@@ -1,4 +1,4 @@
-# Congress.Ai
+# <img src="App\Resources\AppIcon\appicon.png" height="64" alt="App Icon"> Congress.Ai
 <img src="Screenshots/Splashscreen.png" height="400" alt="Congress.Ai">
 
 ## Overview
