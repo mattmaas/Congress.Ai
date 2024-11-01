@@ -103,6 +103,37 @@ CongressDataCollectorPy/
 └── README.md
 ```
 
+## Data Flow
+
+1. **Data Collection**
+   - Python scripts fetch data from Congress.gov API.
+   - Raw data is processed and enriched.
+   - Bills and related data stored in Cosmos DB.
+
+2. **AI Processing**
+   - Bill text sent to OpenAI for analysis.
+   - Summaries and key points generated.
+   - Results stored alongside bill data.
+
+3. **Mobile App Data Access**
+   - App requests bill data from Cosmos DB.
+   - Cached locally for performance.
+   - Updates fetched periodically.
+
+## Performance Considerations
+
+- **Lazy Loading**: Bill details fetched on demand.
+- **Caching**: Local storage of frequently accessed data.
+- **Async Operations**: Non-blocking UI during data operations.
+- **Batch Processing**: Efficient handling of large datasets.
+
+## Security Implementation
+
+- **Azure Key Vault**: Secure storage of API keys and secrets.
+- **HTTPS**: Encrypted data transmission.
+- **Azure AD**: Authentication for backend services.
+- **Role-Based Access**: Controlled access to sensitive operations.
+
 ## Getting Started
 
 ### Prerequisites
