@@ -26,16 +26,6 @@ Congress.Ai is a cross-platform mobile application designed to provide users wit
 - **Newtonsoft.Json**: Employed for JSON serialization and deserialization of data.
 
 
-## Architecture
-
-The application's architecture follows the MVVM pattern, ensuring a clear separation between the user interface and business logic. Here's a high-level overview:
-
-- **Models**: Define the data structures used throughout the app, representing bills, sponsors, actions, and more.
-- **Views**: XAML pages that define the layout and presentation of data to the user.
-- **ViewModels**: Act as intermediaries between the Views and Models, handling data manipulation, commands, and business logic.
-- **Services**: Handle data access and external integrations, such as communicating with Cosmos DB to fetch and store data.
-- **Infrastructure**: Manages external resources and configurations, including Cosmos DB initialization and Blob storage management.
-
 ### Project Structure
 
 ```
@@ -119,6 +109,17 @@ CongressDataCollectorPy/
    - App requests bill data from Cosmos DB.
    - Cached locally for performance.
    - Updates fetched periodically.
+   
+## Architecture
+
+The application's architecture follows the MVVM pattern, ensuring a clear separation between the user interface and business logic. Here's a high-level overview:
+
+- **Models**: Define the data structures used throughout the app, representing bills, sponsors, actions, and more.
+- **Views**: XAML pages that define the layout and presentation of data to the user.
+- **ViewModels**: Act as intermediaries between the Views and Models, handling data manipulation, commands, and business logic.
+- **Services**: Handle data access and external integrations, such as communicating with Cosmos DB to fetch and store data.
+- **Infrastructure**: Manages external resources and configurations, including Cosmos DB initialization and Blob storage management.
+
 
 ## Performance Considerations
 
