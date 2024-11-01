@@ -13,6 +13,7 @@ Congress.Ai is a cross-platform mobile application designed to provide users wit
 - **View Modes**: Toggle between full and compact view modes for better readability.
 - **Settings**: Customize your viewing preferences and app settings.
 
+
 ## Technologies Used
 
 - **.NET MAUI**: The app is built using .NET Multi-platform App UI (MAUI) to ensure it runs seamlessly on Android, iOS, and other platforms.
@@ -20,6 +21,10 @@ Congress.Ai is a cross-platform mobile application designed to provide users wit
 - **Cosmos DB**: Utilized as the backend database to store and retrieve bill data efficiently.
 - **AI Integration**: AI services are integrated to generate summaries and key changes for each bill.
 - **MVVM Architecture**: Implements the Model-View-ViewModel (MVVM) pattern to promote a clean separation of concerns and facilitate maintainability.
+- **Azure Blob Storage**: Used for storing application state and managing blobs via the BlobStorageManager.
+- **OpenAI API**: Leveraged to generate AI-based summaries and key changes for each bill.
+- **Newtonsoft.Json**: Employed for JSON serialization and deserialization of data.
+
 
 ## Architecture
 
@@ -29,18 +34,22 @@ The application's architecture follows the MVVM pattern, ensuring a clear separa
 - **Views**: XAML pages that define the layout and presentation of data to the user.
 - **ViewModels**: Act as intermediaries between the Views and Models, handling data manipulation, commands, and business logic.
 - **Services**: Handle data access and external integrations, such as communicating with Cosmos DB to fetch and store data.
+- **Infrastructure**: Manages external resources and configurations, including Cosmos DB initialization and Blob storage management.
 
 ### Project Structure
 
 ```
 App/
+├── appsettings.json
 ├── Models/
 │   ├── Bill.cs
 │   ├── Cosponsor.cs
 │   ├── RelatedBill.cs
-│   ├── Subject.cs
 │   ├── Summary.cs
 │   └── TextVersion.cs
+├── Platforms/
+│   └── Windows/
+│       └── App.xaml.cs
 ├── Services/
 │   └── CosmosDbService.cs
 ├── ViewModels/
@@ -57,6 +66,61 @@ App/
 │   └── SettingsPage.xaml.cs
 ├── AppShell.xaml.cs
 ├── App.xaml.cs
+├── README.md
+CongressDataCollector/
+├── CongressDataCollector.Core/
+│   └── Models/
+│       ├── Bill.cs
+│       ├── Cosponsor.cs
+│       ├── RelatedBill.cs
+│       ├── Summary.cs
+│       └── TextVersion.cs
+├── CongressDataCollector.Services/
+│   └── CosmosDbService.cs
+└── README.md
+```
+
+### Project Structure
+
+```
+App/
+├── appsettings.json
+├── Models/
+│   ├── Bill.cs
+│   ├── Cosponsor.cs
+│   ├── RelatedBill.cs
+│   ├── Summary.cs
+│   └── TextVersion.cs
+├── Platforms/
+│   └── Windows/
+│       └── App.xaml.cs
+├── Services/
+│   └── CosmosDbService.cs
+├── ViewModels/
+│   ├── BillDetailsPageViewModel.cs
+│   ├── BillListPageViewModel.cs
+│   ├── MainPageViewModel.cs
+│   ├── SettingsViewModel.cs
+│   └── BillViewModel.cs
+├── Views/
+│   ├── MainPage.xaml.cs
+│   ├── BillListPage.xaml.cs
+│   ├── BillDetailsPage.xaml.cs
+│   ├── BillTextPage.xaml.cs
+│   └── SettingsPage.xaml.cs
+├── AppShell.xaml.cs
+├── App.xaml.cs
+├── README.md
+CongressDataCollector/
+├── CongressDataCollector.Core/
+│   └── Models/
+│       ├── Bill.cs
+│       ├── Cosponsor.cs
+│       ├── RelatedBill.cs
+│       ├── Summary.cs
+│       └── TextVersion.cs
+├── CongressDataCollector.Services/
+│   └── CosmosDbService.cs
 └── README.md
 ```
 
