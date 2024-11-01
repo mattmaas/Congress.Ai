@@ -8,15 +8,15 @@ Congress.Ai is a cross-platform mobile application designed to provide users wit
 ## Features
 
 - **Bill Listings**: Browse through a list of bills categorized by type (e.g., House, Senate).
-<img src="Screenshots/House_bills.png" height="400" alt="House Bills"> <img src="Screenshots/Senate_bills.png" height="400" alt="Senate Bills">
+<img src="Screenshots/House_bills.png" height="400" alt="House Bills"> <img src="Screenshots/Senate_bills.png" height="400" alt="Senate Bills"> 
 - **Bill Details**: View detailed information about each bill, including sponsors, cosponsors, related bills, actions, and full text.
 - **AI-Generated Summaries**: Access AI-generated summaries and key changes for each bill to understand their impact quickly.
-<img src="Screenshots/Senate_bill_details.png" height="400" alt="Senate Bill Details"> <img src="Screenshots/Senate_bill_details_2.png" height="400" alt="Senate Bill Details 2"> <img src="Screenshots/Senate_bill_details_3.png" height="400" alt="Senate Bill Details 3"> <img src="Screenshots/Senate_bill_fulltext.png" height="400" alt="Senate Bill Full Text">
+<img src="Screenshots/Senate_bill_details.png" height="400" alt="Senate Bill Details"> <img src="Screenshots/Senate_bill_details_2.png" height="400" alt="Senate Bill Details 2"> <img src="Screenshots/Senate_bill_details_3.png" height="400" alt="Senate Bill Details 3"> <img src="Screenshots/Senate_bill_fulltext.png" height="400" alt="Senate Bill Full Text"> 
 - **Search Functionality**: Search for bills by number, title, or keywords.
 - **View Modes**: Toggle between full and compact view modes for better readability.
-<img src="Screenshots/CompactView.png" height="400" alt="Compact View">
+<img src="Screenshots/CompactView.png" height="400" alt="Compact View"> 
 - **Settings**: Customize your viewing preferences and app settings.
-<img src="Screenshots/Settings.png" height="400" alt="Settings">
+<img src="Screenshots/Settings.png" height="400" alt="Settings"> 
 
 ## Technologies Used
 
