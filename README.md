@@ -48,10 +48,22 @@ App/
 │   ├── Summary.cs
 │   └── TextVersion.cs
 ├── Platforms/
+│   ├── Android/
+│   │   └── MainApplication.cs
+│   ├── iOS/
+│   │   ├── AppDelegate.cs
+│   │   └── Program.cs
+│   ├── MacCatalyst/
+│   │   ├── AppDelegate.cs
+│   │   └── Program.cs
+│   ├── Tizen/
+│   │   └── Main.cs
 │   └── Windows/
 │       └── App.xaml.cs
 ├── Services/
-│   └── CosmosDbService.cs
+│   ├── CosmosDbService.cs
+│   ├── StateService.cs
+│   └── OpenAiService.cs
 ├── ViewModels/
 │   ├── BillDetailsPageViewModel.cs
 │   ├── BillListPageViewModel.cs
@@ -76,51 +88,9 @@ CongressDataCollector/
 │       ├── Summary.cs
 │       └── TextVersion.cs
 ├── CongressDataCollector.Services/
-│   └── CosmosDbService.cs
-└── README.md
-```
-
-### Project Structure
-
-```
-App/
-├── appsettings.json
-├── Models/
-│   ├── Bill.cs
-│   ├── Cosponsor.cs
-│   ├── RelatedBill.cs
-│   ├── Summary.cs
-│   └── TextVersion.cs
-├── Platforms/
-│   └── Windows/
-│       └── App.xaml.cs
-├── Services/
-│   └── CosmosDbService.cs
-├── ViewModels/
-│   ├── BillDetailsPageViewModel.cs
-│   ├── BillListPageViewModel.cs
-│   ├── MainPageViewModel.cs
-│   ├── SettingsViewModel.cs
-│   └── BillViewModel.cs
-├── Views/
-│   ├── MainPage.xaml.cs
-│   ├── BillListPage.xaml.cs
-│   ├── BillDetailsPage.xaml.cs
-│   ├── BillTextPage.xaml.cs
-│   └── SettingsPage.xaml.cs
-├── AppShell.xaml.cs
-├── App.xaml.cs
-├── README.md
-CongressDataCollector/
-├── CongressDataCollector.Core/
-│   └── Models/
-│       ├── Bill.cs
-│       ├── Cosponsor.cs
-│       ├── RelatedBill.cs
-│       ├── Summary.cs
-│       └── TextVersion.cs
-├── CongressDataCollector.Services/
-│   └── CosmosDbService.cs
+│   ├── CosmosDbService.cs
+│   ├── BlobStorageManager.cs
+│   └── OpenAiService.cs
 └── README.md
 ```
 
