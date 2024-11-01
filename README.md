@@ -5,6 +5,17 @@
 
 Congress.Ai is a cross-platform mobile application designed to provide users with comprehensive information about U.S. Congress bills. The app allows users to browse, search, and view detailed information about various bills, including their sponsors, cosponsors, related actions, summaries, and more. Utilizing AI-generated summaries and key changes, Congress.Ai aims to make legislative information more accessible and understandable.
 
+## Technologies Used
+
+- **.NET MAUI**: The app is built using .NET Multi-platform App UI (MAUI) to ensure it runs seamlessly on Android, iOS, and other platforms.
+- **C#**: The primary programming language used for implementing the application's logic.
+- **Azure Cosmos DB**: Utilized as the backend database to store and retrieve bill data efficiently.
+- **OpenAI AI Integration**: AI services are integrated to generate summaries and key changes for each bill.
+- **MVVM Architecture**: Implements the Model-View-ViewModel (MVVM) pattern to promote a clean separation of concerns and facilitate maintainability.
+- **Azure Blob Storage**: Used for storing application state and managing blobs via the BlobStorageManager.
+- **OpenAI API**: Leveraged to generate AI-based summaries and key changes for each bill.
+- **Newtonsoft.Json**: Employed for JSON serialization and deserialization of data.
+
 ## Features
 
 - **Bill Listings**: Browse through a list of bills categorized by type (e.g., House, Senate).
@@ -21,18 +32,6 @@ Congress.Ai is a cross-platform mobile application designed to provide users wit
 - **Settings**: Customize your viewing preferences and app settings.
   
   <img src="Screenshots/Settings.png" height="400" alt="Settings"> 
-
-## Technologies Used
-
-- **.NET MAUI**: The app is built using .NET Multi-platform App UI (MAUI) to ensure it runs seamlessly on Android, iOS, and other platforms.
-- **C#**: The primary programming language used for implementing the application's logic.
-- **Azure Cosmos DB**: Utilized as the backend database to store and retrieve bill data efficiently.
-- **OpenAI AI Integration**: AI services are integrated to generate summaries and key changes for each bill.
-- **MVVM Architecture**: Implements the Model-View-ViewModel (MVVM) pattern to promote a clean separation of concerns and facilitate maintainability.
-- **Azure Blob Storage**: Used for storing application state and managing blobs via the BlobStorageManager.
-- **OpenAI API**: Leveraged to generate AI-based summaries and key changes for each bill.
-- **Newtonsoft.Json**: Employed for JSON serialization and deserialization of data.
-
 
 ### Project Structure
 
