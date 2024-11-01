@@ -110,15 +110,21 @@ CongressDataCollectorPy/
    - Cached locally for performance.
    - Updates fetched periodically.
    
-## Architecture
+# Congress.Ai Architecture
 
-The application's architecture follows the MVVM pattern, ensuring a clear separation between the user interface and business logic. Here's a high-level overview:
+## System Overview
 
-- **Models**: Define the data structures used throughout the app, representing bills, sponsors, actions, and more.
-- **Views**: XAML pages that define the layout and presentation of data to the user.
-- **ViewModels**: Act as intermediaries between the Views and Models, handling data manipulation, commands, and business logic.
-- **Services**: Handle data access and external integrations, such as communicating with Cosmos DB to fetch and store data.
-- **Infrastructure**: Manages external resources and configurations, including Cosmos DB initialization and Blob storage management.
+Congress.Ai follows a modern, distributed architecture pattern combining mobile, cloud, and AI services:
+
+### Core Components
+
+- **.NET MAUI Mobile App**: Cross-platform frontend providing user interface and interaction.
+
+- **Azure Cloud Backend**: Scalable services handling data storage and processing.
+
+- **Python Data Collection**: Automated scripts for gathering and processing congressional data.
+
+- **OpenAI Integration**: AI-powered bill analysis and summary generation.
 
 
 ## Performance Considerations
