@@ -80,6 +80,15 @@ App/
 ├── App.xaml.cs
 ├── README.md
 CongressDataCollector/
+CongressDataCollectorPy/
+├── main.py
+├── config.py
+├── api_client.py
+├── cosmos_db_client.py
+├── models.py
+├── daily_bill_fetch.py
+├── openai_service.py
+└── full_bill_fetch.py
 ├── CongressDataCollector.Core/
 │   └── Models/
 │       ├── Bill.cs
