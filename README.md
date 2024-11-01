@@ -37,30 +37,61 @@ App/
 │   ├── RelatedBill.cs
 │   ├── Summary.cs
 │   └── TextVersion.cs
-[...]
+├── Platforms/
+│   ├── Android/
+│   │   └── MainApplication.cs
+│   ├── iOS/
+│   │   ├── AppDelegate.cs
+│   │   └── Program.cs
+│   ├── MacCatalyst/
+│   │   ├── AppDelegate.cs
+│   │   └── Program.cs
+│   ├── Tizen/
+│   │   └── Main.cs
+│   └── Windows/
+│       └── App.xaml.cs
+├── Services/
+│   ├── CosmosDbService.cs
+│   ├── StateService.cs
+│   └── OpenAiService.cs
+├── ViewModels/
+│   ├── BillDetailsPageViewModel.cs
+│   ├── BillListPageViewModel.cs
+│   ├── MainPageViewModel.cs
+│   ├── SettingsViewModel.cs
+│   └── BillViewModel.cs
+├── Views/
+│   ├── MainPage.xaml.cs
+│   ├── BillListPage.xaml.cs
+│   ├── BillDetailsPage.xaml.cs
+│   ├── BillTextPage.xaml.cs
+│   └── SettingsPage.xaml.cs
+├── AppShell.xaml.cs
+├── App.xaml.cs
+├── README.md
+CongressDataCollector/
+CongressDataCollectorPy/
+├── main.py
+├── config.py
+├── api_client.py
+├── cosmos_db_client.py
+├── models.py
+├── daily_bill_fetch.py
+├── openai_service.py
+└── full_bill_fetch.py
+├── CongressDataCollector.Core/
+│   └── Models/
+│       ├── Bill.cs
+│       ├── Cosponsor.cs
+│       ├── RelatedBill.cs
+│       ├── Summary.cs
+│       └── TextVersion.cs
+├── CongressDataCollector.Services/
+│   ├── CosmosDbService.cs
+│   ├── BlobStorageManager.cs
+│   └── OpenAiService.cs
+└── README.md
 ```
-
-## Component Architecture
-
-### Mobile App (.NET MAUI)
-
-- **MVVM Pattern**: Clear separation of concerns between Views, ViewModels, and Models.
-- **Dependency Injection**: Services registered and injected via Microsoft.Extensions.DependencyInjection.
-- **State Management**: Robust state handling using custom StateService.
-- **Data Binding**: Two-way binding between Views and ViewModels.
-
-### Backend Services
-
-- **Azure Cosmos DB**: Primary data store with optimized partitioning for bill data.
-- **Azure Blob Storage**: Binary storage for bill text and related documents.
-- **Azure Functions**: Serverless compute for data processing tasks.
-- **OpenAI API**: GPT-based text analysis and summary generation.
-
-### Data Collection System
-
-- **Python Scripts**: Automated collection from Congress.gov API.
-- **Azure Scheduled Tasks**: Timed execution of data collection.
-- **Data Processing Pipeline**: Transformation and enrichment of raw congressional data.
 
 ## Data Flow
 

@@ -30,14 +30,8 @@
                                 <Label Text="•" Grid.Column="0" Style="{StaticResource CustomBulletStyle}" />
                                 <Label Grid.Column="1" TextColor="Black" LineBreakMode="WordWrap">
                                     <Label.FormattedText>
-                                        <FormattedString>
-                                            <Span>
-                                                <Span.Text>
-                                                    <Binding Path="."
-                                                             Converter="{StaticResource HtmlToFormattedStringConverter}" />
-                                                </Span.Text>
-                                            </Span>
-                                        </FormattedString>
+                                        <Binding Path="."
+                                                 Converter="{StaticResource HtmlToFormattedStringConverter}" />
                                     </Label.FormattedText>
                                 </Label>
                             </Grid>

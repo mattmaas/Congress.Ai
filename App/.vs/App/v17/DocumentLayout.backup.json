@@ -1,0 +1,283 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "G:\\Projects\\Congress.Ai\\App\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{9A50AA61-540B-41AF-93B4-98562C6383AF}|App.csproj|g:\\projects\\congress.ai\\app\\app.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{9A50AA61-540B-41AF-93B4-98562C6383AF}|App.csproj|solutionrelative:app.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9A50AA61-540B-41AF-93B4-98562C6383AF}|App.csproj|g:\\projects\\congress.ai\\app\\splashscreen.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{9A50AA61-540B-41AF-93B4-98562C6383AF}|App.csproj|solutionrelative:splashscreen.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9A50AA61-540B-41AF-93B4-98562C6383AF}|App.csproj|g:\\projects\\congress.ai\\app\\converters\\htmltoformattedstringconverter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9A50AA61-540B-41AF-93B4-98562C6383AF}|App.csproj|solutionrelative:converters\\htmltoformattedstringconverter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9A50AA61-540B-41AF-93B4-98562C6383AF}|App.csproj|g:\\projects\\congress.ai\\app\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{9A50AA61-540B-41AF-93B4-98562C6383AF}|App.csproj|solutionrelative:app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9A50AA61-540B-41AF-93B4-98562C6383AF}|App.csproj|g:\\projects\\congress.ai\\app\\platforms\\windows\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{9A50AA61-540B-41AF-93B4-98562C6383AF}|App.csproj|solutionrelative:platforms\\windows\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9A50AA61-540B-41AF-93B4-98562C6383AF}|App.csproj|g:\\projects\\congress.ai\\app\\app.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
+      "RelativeMoniker": "D:0:0:{9A50AA61-540B-41AF-93B4-98562C6383AF}|App.csproj|solutionrelative:app.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9A50AA61-540B-41AF-93B4-98562C6383AF}|App.csproj|g:\\projects\\congress.ai\\app\\billdetailspage.xaml.cs||{8B382828-6202-11D1-8870-0000F87579D2}|",
+      "RelativeMoniker": "D:0:0:{9A50AA61-540B-41AF-93B4-98562C6383AF}|App.csproj|solutionrelative:billdetailspage.xaml.cs||{8B382828-6202-11D1-8870-0000F87579D2}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9A50AA61-540B-41AF-93B4-98562C6383AF}|App.csproj|g:\\projects\\congress.ai\\app\\billdetailspage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{9A50AA61-540B-41AF-93B4-98562C6383AF}|App.csproj|solutionrelative:billdetailspage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9A50AA61-540B-41AF-93B4-98562C6383AF}|App.csproj|g:\\projects\\congress.ai\\app\\resources\\styles\\bulletstyles.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{9A50AA61-540B-41AF-93B4-98562C6383AF}|App.csproj|solutionrelative:resources\\styles\\bulletstyles.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files\\dotnet\\packs\\Microsoft.Android.Sdk.Windows\\34.0.95\\tools\\Xamarin.Android.Aapt2.targets||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9A50AA61-540B-41AF-93B4-98562C6383AF}|App.csproj|g:\\projects\\congress.ai\\app\\resources\\appicon\\appicon.png||{58961B49-13E0-48C0-9258-13CBC4D40279}",
+      "RelativeMoniker": "D:0:0:{9A50AA61-540B-41AF-93B4-98562C6383AF}|App.csproj|solutionrelative:resources\\appicon\\appicon.png||{58961B49-13E0-48C0-9258-13CBC4D40279}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Matt\\.nuget\\packages\\microsoft.maui.resizetizer\\8.0.3\\buildTransitive\\Microsoft.Maui.Resizetizer.After.targets||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9A50AA61-540B-41AF-93B4-98562C6383AF}|App.csproj|g:\\projects\\congress.ai\\app\\billlistpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{9A50AA61-540B-41AF-93B4-98562C6383AF}|App.csproj|solutionrelative:billlistpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9A50AA61-540B-41AF-93B4-98562C6383AF}|App.csproj|g:\\projects\\congress.ai\\app\\platforms\\android\\resources\\drawable\\maui_splash.xml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{9A50AA61-540B-41AF-93B4-98562C6383AF}|App.csproj|solutionrelative:platforms\\android\\resources\\drawable\\maui_splash.xml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Matt\\.nuget\\packages\\microsoft.maui.resizetizer\\8.0.82\\buildTransitive\\Microsoft.Maui.Resizetizer.After.targets||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9A50AA61-540B-41AF-93B4-98562C6383AF}|App.csproj|g:\\projects\\congress.ai\\app\\mauiprogram.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9A50AA61-540B-41AF-93B4-98562C6383AF}|App.csproj|solutionrelative:mauiprogram.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "App",
+              "DocumentMoniker": "G:\\Projects\\Congress.Ai\\App\\App.csproj",
+              "RelativeDocumentMoniker": "App.csproj",
+              "ToolTip": "G:\\Projects\\Congress.Ai\\App\\App.csproj",
+              "RelativeToolTip": "App.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-09-06T05:15:18.006Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "SplashScreen.xaml",
+              "DocumentMoniker": "G:\\Projects\\Congress.Ai\\App\\SplashScreen.xaml",
+              "RelativeDocumentMoniker": "SplashScreen.xaml",
+              "ToolTip": "G:\\Projects\\Congress.Ai\\App\\SplashScreen.xaml",
+              "RelativeToolTip": "SplashScreen.xaml",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAAAcAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-09-06T04:32:29.569Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "HtmlToFormattedStringConverter.cs",
+              "DocumentMoniker": "G:\\Projects\\Congress.Ai\\App\\Converters\\HtmlToFormattedStringConverter.cs",
+              "RelativeDocumentMoniker": "Converters\\HtmlToFormattedStringConverter.cs",
+              "ToolTip": "G:\\Projects\\Congress.Ai\\App\\Converters\\HtmlToFormattedStringConverter.cs",
+              "RelativeToolTip": "Converters\\HtmlToFormattedStringConverter.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-06T01:27:55.342Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "App.csproj",
+              "DocumentMoniker": "G:\\Projects\\Congress.Ai\\App\\App.csproj",
+              "RelativeDocumentMoniker": "App.csproj",
+              "ToolTip": "G:\\Projects\\Congress.Ai\\App\\App.csproj",
+              "RelativeToolTip": "App.csproj",
+              "ViewState": "AgIAAE0AAAAAAAAAAAApwF0AAAA9AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-09-05T23:00:53.275Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "BillDetailsPage.xaml.cs",
+              "DocumentMoniker": "G:\\Projects\\Congress.Ai\\App\\BillDetailsPage.xaml.cs",
+              "RelativeDocumentMoniker": "BillDetailsPage.xaml.cs",
+              "ToolTip": "G:\\Projects\\Congress.Ai\\App\\BillDetailsPage.xaml.cs",
+              "RelativeToolTip": "BillDetailsPage.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAIBJwAkAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-05T23:22:52.85Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "App.xaml",
+              "DocumentMoniker": "G:\\Projects\\Congress.Ai\\App\\Platforms\\Windows\\App.xaml",
+              "RelativeDocumentMoniker": "Platforms\\Windows\\App.xaml",
+              "ToolTip": "G:\\Projects\\Congress.Ai\\App\\Platforms\\Windows\\App.xaml",
+              "RelativeToolTip": "Platforms\\Windows\\App.xaml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-09-06T01:50:08.809Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "App.xaml",
+              "DocumentMoniker": "G:\\Projects\\Congress.Ai\\App\\App.xaml",
+              "RelativeDocumentMoniker": "App.xaml",
+              "ToolTip": "G:\\Projects\\Congress.Ai\\App\\App.xaml",
+              "RelativeToolTip": "App.xaml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-09-05T23:16:30.657Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "BulletStyles.xaml",
+              "DocumentMoniker": "G:\\Projects\\Congress.Ai\\App\\Resources\\Styles\\BulletStyles.xaml",
+              "RelativeDocumentMoniker": "Resources\\Styles\\BulletStyles.xaml",
+              "ToolTip": "G:\\Projects\\Congress.Ai\\App\\Resources\\Styles\\BulletStyles.xaml",
+              "RelativeToolTip": "Resources\\Styles\\BulletStyles.xaml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-09-06T01:28:14.932Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "BillDetailsPage.xaml",
+              "DocumentMoniker": "G:\\Projects\\Congress.Ai\\App\\BillDetailsPage.xaml",
+              "RelativeDocumentMoniker": "BillDetailsPage.xaml",
+              "ToolTip": "G:\\Projects\\Congress.Ai\\App\\BillDetailsPage.xaml",
+              "RelativeToolTip": "BillDetailsPage.xaml",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAkAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-09-05T23:22:45.283Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "appicon.png",
+              "DocumentMoniker": "G:\\Projects\\Congress.Ai\\App\\Resources\\AppIcon\\appicon.png",
+              "RelativeDocumentMoniker": "Resources\\AppIcon\\appicon.png",
+              "ToolTip": "G:\\Projects\\Congress.Ai\\App\\Resources\\AppIcon\\appicon.png",
+              "RelativeToolTip": "Resources\\AppIcon\\appicon.png",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
+              "WhenOpened": "2024-09-05T23:15:58.268Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Microsoft.Maui.Resizetizer.After.targets",
+              "DocumentMoniker": "C:\\Users\\Matt\\.nuget\\packages\\microsoft.maui.resizetizer\\8.0.3\\buildTransitive\\Microsoft.Maui.Resizetizer.After.targets",
+              "ToolTip": "C:\\Users\\Matt\\.nuget\\packages\\microsoft.maui.resizetizer\\8.0.3\\buildTransitive\\Microsoft.Maui.Resizetizer.After.targets",
+              "ViewState": "AgIAAFUCAAAAAAAAAIAwwGMCAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003801|",
+              "WhenOpened": "2024-09-06T00:24:40.729Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Xamarin.Android.Aapt2.targets",
+              "DocumentMoniker": "C:\\Program Files\\dotnet\\packs\\Microsoft.Android.Sdk.Windows\\34.0.95\\tools\\Xamarin.Android.Aapt2.targets",
+              "ToolTip": "C:\\Program Files\\dotnet\\packs\\Microsoft.Android.Sdk.Windows\\34.0.95\\tools\\Xamarin.Android.Aapt2.targets",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003801|",
+              "WhenOpened": "2024-09-05T22:24:20.829Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "BillListPage.xaml",
+              "DocumentMoniker": "G:\\Projects\\Congress.Ai\\App\\BillListPage.xaml",
+              "RelativeDocumentMoniker": "BillListPage.xaml",
+              "ToolTip": "G:\\Projects\\Congress.Ai\\App\\BillListPage.xaml",
+              "RelativeToolTip": "BillListPage.xaml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-09-05T23:22:56.106Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "maui_splash.xml",
+              "DocumentMoniker": "G:\\Projects\\Congress.Ai\\App\\Platforms\\Android\\Resources\\drawable\\maui_splash.xml",
+              "RelativeDocumentMoniker": "Platforms\\Android\\Resources\\drawable\\maui_splash.xml",
+              "ToolTip": "G:\\Projects\\Congress.Ai\\App\\Platforms\\Android\\Resources\\drawable\\maui_splash.xml",
+              "RelativeToolTip": "Platforms\\Android\\Resources\\drawable\\maui_splash.xml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003576|",
+              "WhenOpened": "2024-09-05T23:04:45.711Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Microsoft.Maui.Resizetizer.After.targets",
+              "DocumentMoniker": "C:\\Users\\Matt\\.nuget\\packages\\microsoft.maui.resizetizer\\8.0.82\\buildTransitive\\Microsoft.Maui.Resizetizer.After.targets",
+              "ToolTip": "C:\\Users\\Matt\\.nuget\\packages\\microsoft.maui.resizetizer\\8.0.82\\buildTransitive\\Microsoft.Maui.Resizetizer.After.targets",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003801|",
+              "WhenOpened": "2024-09-05T22:38:22.104Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "MauiProgram.cs",
+              "DocumentMoniker": "G:\\Projects\\Congress.Ai\\App\\MauiProgram.cs",
+              "RelativeDocumentMoniker": "MauiProgram.cs",
+              "ToolTip": "G:\\Projects\\Congress.Ai\\App\\MauiProgram.cs",
+              "RelativeToolTip": "MauiProgram.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAlwBMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-05T22:16:35.837Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
