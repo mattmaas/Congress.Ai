@@ -120,7 +120,22 @@ Congress.Ai follows a modern, distributed architecture pattern combining mobile,
 
 - **.NET MAUI Mobile App**: Cross-platform frontend providing user interface and interaction.
 
-- **Azure Cloud Backend**: Scalable services handling data storage and processing.
+- **Azure Cloud Backend**: Scalable services handling data storage and processing:
+  - **Blob Storage**: Manages application state via `BlobStorageManager`
+  - **Cosmos DB**: Handles bill data storage and retrieval
+  - **Azure Functions**: Orchestrates data collection and processing
+
+- **Data Collection Services**:
+  - **BillService**: Manages bill data fetching and processing
+  - **StateService**: Handles application state persistence
+  - **CosmosDbService**: Interfaces with Cosmos DB for data operations
+  - **OpenAiService**: Integrates with OpenAI for bill analysis
+
+- **Core Models**:
+  - **Bill**: Central data model with comprehensive bill information
+  - **Legislative Models**: `LegislativeAction`, `LegislativeSubject`, etc.
+  - **Response Models**: Structured API response handlers
+  - **Support Models**: `Format`, `Committee`, `PolicyArea`, etc.
 
 - **Python Data Collection**: Automated scripts for gathering and processing congressional data.
 
